@@ -1,5 +1,6 @@
 package com.otakumap.domain.route_like.service;
 
+import com.otakumap.domain.notification.service.NotificationCommandService;
 import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place.repository.PlaceRepository;
 import com.otakumap.domain.route.converter.RouteConverter;
@@ -32,6 +33,7 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
     private final RouteRepository routeRepository;
     private final EntityManager entityManager;
     private final PlaceRepository placeRepository;
+    private final NotificationCommandService notificationCommandService;
 
     @Override
     public void saveRouteLike(User user, Long routeId) {
@@ -44,6 +46,12 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
 
         RouteLike routeLike = RouteLikeConverter.toRouteLike(user, route);
         routeLikeRepository.save(routeLike);
+
+        // 작성자에게 알림 전송
+        int likeCount = route.getRouteLikes().size();
+        if ((likeCount <= 50 && likeCount % 10 == 0) || (likeCount > 50 && likeCount <= 100 && likeCount % 50 == 0) || (likeCount > 100 && likeCount % 100 == 0)) {
+            notificationCommandService.notifyRootSaved(user, routeId, likeCount);
+        }
     }
 
     @Transactional
