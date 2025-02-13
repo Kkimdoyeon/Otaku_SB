@@ -57,7 +57,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         Route route = routeRepository.findById(routeId)
                 .orElseThrow(() -> new NotificationHandler(ErrorStatus.ROUTE_NOT_FOUND));
 
-        String message = route.getName() + "의 루트 저장이 " + rootCount + "를 돌파하였습니다!";
+        String message = route.getName() + "의 루트 저장이 " + rootCount + "을(를) 돌파하였습니다!";
         String url = "/api/routes/" + routeId;
         notificationRepository.save(NotificationConverter.toNotification(user, NotificationType.ROOT_SAVED, message, url));
     }
