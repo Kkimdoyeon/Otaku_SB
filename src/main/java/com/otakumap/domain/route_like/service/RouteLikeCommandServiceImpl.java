@@ -54,15 +54,14 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
         routeLikeRepository.save(routeLike);
 
         // 작성자에게 알림 전송
-        int likeCount = route.getRouteLikes().size();
+        int likeCount = routeLikeRepository.countByRoute(route);
         if (likeCount <= 10 ||
                 (likeCount <= 50 && likeCount % 10 == 0) ||
                 (likeCount <= 100 && likeCount % 50 == 0) ||
                 (likeCount % 100 == 0)) {
-            PlaceReview placeReview = placeReviewRepository.findByRouteId(routeId).orElse(null);
-            EventReview eventReview = eventReviewRepository.findByRouteId(routeId).orElse(null);
 
-            User author = placeReview != null ? placeReview.getUser() : eventReview != null ? eventReview.getUser() : null;
+            User author = placeReviewRepository.findUserByRouteId(routeId)
+                    .orElseGet(() -> eventReviewRepository.findUserByRouteId(routeId).orElse(null));
 
             if (author != null) {
                 notificationCommandService.notifyRootSaved(author, routeId, likeCount);

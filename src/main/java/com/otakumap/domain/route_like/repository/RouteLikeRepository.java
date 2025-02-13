@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface RouteLikeRepository extends JpaRepository<RouteLike, Long> {
     boolean existsByUserAndRoute(User user, Route route);
     Optional<RouteLike> findByUserAndRoute(User user, Route route);
+    int countByRoute(Route route);
 }
