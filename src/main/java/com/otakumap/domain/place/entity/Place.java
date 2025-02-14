@@ -1,5 +1,6 @@
 package com.otakumap.domain.place.entity;
 
+import com.otakumap.domain.image.entity.Image;
 import com.otakumap.domain.mapping.EventReviewPlace;
 import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.mapping.PlaceReviewPlace;
@@ -40,6 +41,10 @@ public class Place extends BaseEntity {
     @Column(name = "is_favorite", nullable = false)
     @ColumnDefault("false")
     private Boolean isFavorite;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "thumbnail_image_id", referencedColumnName = "id")
+    private Image thumbnailImage;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<PlaceShortReview> reviews = new ArrayList<>();
