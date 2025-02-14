@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class EventShortReviewCommandServiceImpl implements EventShortReviewCommandService{
-    private final UserRepository userRepository;
     private final EventShortReviewRepository eventShortReviewRepository;
     private final EventRepository eventRepository;
 
@@ -41,5 +40,14 @@ public class EventShortReviewCommandServiceImpl implements EventShortReviewComma
                 .orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_NOT_FOUND));
 
         return eventShortReviewRepository.findAllByEvent(event, PageRequest.of(page, 4));
+    }
+
+    @Override
+    public void updateEventShortReview(Long eventShortReviewId, EventShortReviewRequestDTO.UpdateEventShortReviewDTO request) {
+        EventShortReview eventShortReview = eventShortReviewRepository.findById(eventShortReviewId)
+                .orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_SHORT_REVIEW_NOT_FOUND));
+
+        eventShortReview.setContent(request.getContent());
+        eventShortReview.setRating(request.getRating());
     }
 }
