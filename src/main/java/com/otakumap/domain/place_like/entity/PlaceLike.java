@@ -26,10 +26,6 @@ public class PlaceLike extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "place_id", nullable = false)
-    private Place place;
-
     @ManyToOne
     @JoinColumn(name = "place_animation_id", nullable = false)
     private PlaceAnimation placeAnimation;

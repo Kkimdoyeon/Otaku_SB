@@ -33,6 +33,7 @@ public class PlaceReviewResponseDTO {
     public static class AnimationReviewGroupDTO {
         private Long animationId;
         private String animationName;
+        private List<HashTagResponseDTO.HashTagDTO> hashTags;
         private List<PlaceReviewDTO> reviews;
         private long totalReviews;
     }
@@ -46,8 +47,6 @@ public class PlaceReviewResponseDTO {
         private String placeName;
         private Float avgRating;
         private long totalReviews;
-        // place_hashtag -> place_animation_hashtag 변경에 따라 일단 주석 처리
-        //private List<HashTagResponseDTO.HashTagDTO> hashTags;
         private List<AnimationReviewGroupDTO> animationGroups;
     }
 

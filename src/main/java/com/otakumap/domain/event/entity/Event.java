@@ -34,9 +34,6 @@ public class Event extends BaseEntity {
     @Column(nullable = false, length = 50) // 이벤트 일본어 원제
     private String name;
 
-    @Column(nullable = false, length = 50) // 이벤트에 해당하는 애니메이션 이름
-    private String animationName;
-
     @Column(nullable = false)
     private LocalDate startDate;
 

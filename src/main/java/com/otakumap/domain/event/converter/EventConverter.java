@@ -21,11 +21,11 @@ public class EventConverter {
                 .build();
     }
 
-    public static EventResponseDTO.EventDetailDTO toEventDetailDTO(Event event) {
+    public static EventResponseDTO.EventDetailDTO toEventDetailDTO(Event event, String animationName) {
         return EventResponseDTO.EventDetailDTO.builder()
                 .id(event.getId())
                 .title(event.getTitle())
-                .animationName(event.getAnimationName())
+                .animationName(animationName)
                 .name(event.getName())
                 .site(event.getSite())
                 .startDate(event.getStartDate())

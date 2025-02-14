@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,7 +22,10 @@ public class EventQueryServiceImpl implements EventQueryService{
     @Override
     public EventResponseDTO.EventDetailDTO getEventDetail(Long eventId) {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_NOT_FOUND));
+        String animationName = event.getEventAnimationList().stream()
+                .map(ea -> ea.getAnimation().getName())
+                .collect(Collectors.joining(", "));
 
-        return EventConverter.toEventDetailDTO(event);
+        return EventConverter.toEventDetailDTO(event, animationName);
     }
 }
