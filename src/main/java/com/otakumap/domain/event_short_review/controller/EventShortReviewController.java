@@ -47,7 +47,7 @@ public class EventShortReviewController {
     }
 
     @Operation(summary = "이벤트 한 줄 리뷰 수정", description = "이벤트 한 줄 리뷰의 별점과 내용을 수정합니다.")
-    @PatchMapping("/short-reviews/{eventShortReviewId}")
+    @PatchMapping("/events/short-reviews/{eventShortReviewId}")
     @Parameters({
             @Parameter(name = "eventShortReviewId", description = "특정 한 줄 리뷰의 Id")
     })
@@ -57,7 +57,7 @@ public class EventShortReviewController {
     }
 
     @Operation(summary = "이벤트 한 줄 리뷰 삭제", description = "이벤트 한 줄 리뷰를 삭제합니다.")
-    @DeleteMapping("/short-reviews/{eventShortReviewId}")
+    @DeleteMapping("/events/short-reviews/{eventShortReviewId}")
     @Parameters({
             @Parameter(name = "eventShortReviewId", description = "특정 한 줄 리뷰의 Id")
     })
