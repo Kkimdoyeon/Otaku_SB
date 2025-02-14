@@ -29,6 +29,7 @@ public class MapResponseDTO {
         private Long id;
         private String name;
         private LocalDate endDate;
+        private Boolean isFavorite;
         private String locationName;
         private String animationName;
         private ImageResponseDTO.ImageDTO thumbnail;
@@ -44,6 +45,7 @@ public class MapResponseDTO {
         private Long id;
         private String name;
         private String detail;
+        private Boolean isFavorite;
         private String animationName;
         private ImageResponseDTO.ImageDTO thumbnail;
         private List<String> hashtags;

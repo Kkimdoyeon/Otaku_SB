@@ -26,6 +26,7 @@ public class MapConverter {
 
     public static MapResponseDTO.MapDetailEventDTO toMapDetailEventDTO(
             Event event,
+            Boolean isFavorite,
             String locationName,
             Animation animation,
             List<HashTag> hashTags) {
@@ -40,6 +41,7 @@ public class MapConverter {
                 .name(event.getName())
                 .thumbnail(image)
                 .endDate(event.getEndDate())
+                .isFavorite(isFavorite)
                 .locationName(locationName)
                 .animationName(animation != null ? animation.getName() : "")
                 .hashtags(hashTags.stream().map(HashTag::getName).collect(Collectors.toList()))
@@ -48,6 +50,7 @@ public class MapConverter {
 
     public static MapResponseDTO.MapDetailPlaceDTO toMapDetailPlaceDTO(
             Place place,
+            Boolean isFavorite,
             Animation animation,
             List<HashTag> hashTags) {
         ImageResponseDTO.ImageDTO image = null;
@@ -60,6 +63,7 @@ public class MapConverter {
                 .id(place.getId())
                 .name(place.getName())
                 .detail(place.getDetail())
+                .isFavorite(isFavorite)
                 .animationName(animation != null ? animation.getName() : "")
                 .thumbnail(image)
                 .hashtags(hashTags.stream().map(HashTag::getName).collect(Collectors.toList()))

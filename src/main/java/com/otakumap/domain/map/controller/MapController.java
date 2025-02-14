@@ -1,7 +1,9 @@
 package com.otakumap.domain.map.controller;
 
+import com.otakumap.domain.auth.jwt.annotation.CurrentUser;
 import com.otakumap.domain.map.dto.MapResponseDTO;
 import com.otakumap.domain.map.service.MapCustomService;
+import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,8 +30,13 @@ public class MapController {
             @Parameter(name = "latitude"),
             @Parameter(name = "longitude"),
     })
-    public ApiResponse<MapResponseDTO.MapDetailDTO> getSearchedPlaceInfoList(@RequestParam Double latitude,
+    public ApiResponse<MapResponseDTO.MapDetailDTO> getSearchedPlaceInfoList(
+                                                                @CurrentUser User user,
+                                                                @RequestParam Double latitude,
                                                                 @RequestParam Double longitude) {
-        return ApiResponse.onSuccess(mapCustomService.findAllMapDetails(latitude, longitude));
+        if(user == null) {
+            return ApiResponse.onSuccess(mapCustomService.findAllMapDetails(latitude, longitude));
+        }
+        return ApiResponse.onSuccess(mapCustomService.findAllMapDetailsWithFavorite(user, latitude, longitude));
     }
 }
