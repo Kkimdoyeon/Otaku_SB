@@ -1,4 +1,4 @@
-package com.otakumap.domain.place_short_review.DTO;
+package com.otakumap.domain.place_short_review.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

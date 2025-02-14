@@ -2,8 +2,8 @@ package com.otakumap.domain.place_short_review.converter;
 
 import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.place.entity.Place;
-import com.otakumap.domain.place_short_review.DTO.PlaceShortReviewRequestDTO;
-import com.otakumap.domain.place_short_review.DTO.PlaceShortReviewResponseDTO;
+import com.otakumap.domain.place_short_review.dto.PlaceShortReviewRequestDTO;
+import com.otakumap.domain.place_short_review.dto.PlaceShortReviewResponseDTO;
 import com.otakumap.domain.place_short_review.entity.PlaceShortReview;
 import com.otakumap.domain.user.entity.User;
 import org.springframework.data.domain.Page;
