@@ -50,4 +50,12 @@ public class EventShortReviewCommandServiceImpl implements EventShortReviewComma
         eventShortReview.setContent(request.getContent());
         eventShortReview.setRating(request.getRating());
     }
+
+    @Override
+    public void deleteEventShortReview(Long eventShortReviewId) {
+        EventShortReview eventShortReview = eventShortReviewRepository.findById(eventShortReviewId)
+                .orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_SHORT_REVIEW_NOT_FOUND));
+
+        eventShortReviewRepository.delete(eventShortReview);
+    }
 }

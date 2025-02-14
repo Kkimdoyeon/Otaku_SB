@@ -55,4 +55,14 @@ public class EventShortReviewController {
         eventShortReviewCommandService.updateEventShortReview(eventShortReviewId, request);
         return ApiResponse.onSuccess("한 줄 리뷰가 성공적으로 수정되었습니다.");
     }
+
+    @Operation(summary = "이벤트 한 줄 리뷰 삭제", description = "이벤트 한 줄 리뷰를 삭제합니다.")
+    @DeleteMapping("/short-reviews/{eventShortReviewId}")
+    @Parameters({
+            @Parameter(name = "eventShortReviewId", description = "특정 한 줄 리뷰의 Id")
+    })
+    public ApiResponse<String> deleteEventShortReview(@PathVariable Long eventShortReviewId) {
+        eventShortReviewCommandService.deleteEventShortReview(eventShortReviewId);
+        return ApiResponse.onSuccess("한 줄 리뷰가 성공적으로 삭제되었습니다.");
+    }
 }
