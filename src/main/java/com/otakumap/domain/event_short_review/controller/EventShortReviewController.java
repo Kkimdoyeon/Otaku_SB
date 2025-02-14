@@ -12,6 +12,7 @@ import com.otakumap.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 public class EventShortReviewController {
-
     private final EventShortReviewCommandService eventShortReviewCommandService;
-    private final EventShortReviewRepository eventShortReviewRepository;
 
     @Operation(summary = "이벤트 한 줄 리뷰 작성", description = "이벤트에 한 줄 리뷰를 작성합니다.")
     @PostMapping("/events/{eventId}/short-reviews")
@@ -45,5 +44,25 @@ public class EventShortReviewController {
     })
     public ApiResponse<EventShortReviewResponseDTO.EventShortReviewListDTO> getEventShortReviewList(@PathVariable(name = "eventId") Long eventId, @RequestParam(name = "page")Integer page) {
         return ApiResponse.onSuccess(EventShortReviewConverter.toEventShortReviewListDTO(eventShortReviewCommandService.getEventShortReviewsByEventId(eventId, page)));
+    }
+
+    @Operation(summary = "이벤트 한 줄 리뷰 수정", description = "이벤트 한 줄 리뷰의 별점과 내용을 수정합니다.")
+    @PatchMapping("/short-reviews/{eventShortReviewId}")
+    @Parameters({
+            @Parameter(name = "eventShortReviewId", description = "특정 한 줄 리뷰의 Id")
+    })
+    public ApiResponse<String> updateEventShortReview(@PathVariable Long eventShortReviewId, @RequestBody @Valid EventShortReviewRequestDTO.UpdateEventShortReviewDTO request) {
+        eventShortReviewCommandService.updateEventShortReview(eventShortReviewId, request);
+        return ApiResponse.onSuccess("한 줄 리뷰가 성공적으로 수정되었습니다.");
+    }
+
+    @Operation(summary = "이벤트 한 줄 리뷰 삭제", description = "이벤트 한 줄 리뷰를 삭제합니다.")
+    @DeleteMapping("/short-reviews/{eventShortReviewId}")
+    @Parameters({
+            @Parameter(name = "eventShortReviewId", description = "특정 한 줄 리뷰의 Id")
+    })
+    public ApiResponse<String> deleteEventShortReview(@PathVariable Long eventShortReviewId) {
+        eventShortReviewCommandService.deleteEventShortReview(eventShortReviewId);
+        return ApiResponse.onSuccess("한 줄 리뷰가 성공적으로 삭제되었습니다.");
     }
 }
