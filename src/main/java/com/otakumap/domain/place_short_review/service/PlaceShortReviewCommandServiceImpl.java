@@ -44,4 +44,12 @@ public class PlaceShortReviewCommandServiceImpl implements PlaceShortReviewComma
         placeShortReview.setContent(request.getContent());
         placeShortReview.setRating(request.getRating());
     }
+
+    @Override
+    public void deletePlaceShortReview(Long placeShortReviewId) {
+        PlaceShortReview placeShortReview = placeShortReviewRepository.findById(placeShortReviewId)
+                .orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_SHORT_REVIEW_NOT_FOUND));
+
+        placeShortReviewRepository.delete(placeShortReview);
+    }
 }

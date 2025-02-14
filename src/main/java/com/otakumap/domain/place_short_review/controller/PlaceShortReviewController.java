@@ -61,4 +61,14 @@ public class PlaceShortReviewController {
         placeShortReviewCommandService.updatePlaceShortReview(placeShortReviewId, request);
         return ApiResponse.onSuccess("한 줄 리뷰가 성공적으로 수정되었습니다.");
     }
+
+    @Operation(summary = "명소 한 줄 리뷰 삭제", description = "명소 한 줄 리뷰를 삭제합니다.")
+    @DeleteMapping("/places/short-reviews/{placeShortReviewId}")
+    @Parameters({
+            @Parameter(name = "placeShortReviewId", description = "특정 한 줄 리뷰의 Id")
+    })
+    public ApiResponse<String> deletePlaceShortReview(@PathVariable Long placeShortReviewId) {
+        placeShortReviewCommandService.deletePlaceShortReview(placeShortReviewId);
+        return ApiResponse.onSuccess("한 줄 리뷰가 성공적으로 삭제되었습니다.");
+    }
 }

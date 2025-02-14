@@ -7,4 +7,5 @@ import com.otakumap.domain.user.entity.User;
 public interface PlaceShortReviewCommandService {
     PlaceShortReview createReview(User user, Long placeId, PlaceShortReviewRequestDTO.CreateDTO request);
     void updatePlaceShortReview(Long placeShortReviewId, PlaceShortReviewRequestDTO.UpdatePlaceShortReviewDTO request);
+    void deletePlaceShortReview(Long placeShortReviewId);
 }
