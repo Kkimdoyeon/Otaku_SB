@@ -1,7 +1,12 @@
 package com.otakumap.domain.route_like.service;
 
+import com.otakumap.domain.event_review.entity.EventReview;
+import com.otakumap.domain.event_review.repository.EventReviewRepository;
+import com.otakumap.domain.notification.service.NotificationCommandService;
 import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place.repository.PlaceRepository;
+import com.otakumap.domain.place_review.entity.PlaceReview;
+import com.otakumap.domain.place_review.repository.PlaceReviewRepository;
 import com.otakumap.domain.route.converter.RouteConverter;
 import com.otakumap.domain.route.entity.Route;
 import com.otakumap.domain.route.repository.RouteRepository;
@@ -32,6 +37,9 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
     private final RouteRepository routeRepository;
     private final EntityManager entityManager;
     private final PlaceRepository placeRepository;
+    private final NotificationCommandService notificationCommandService;
+    private final PlaceReviewRepository placeReviewRepository;
+    private final EventReviewRepository eventReviewRepository;
 
     @Override
     public void saveRouteLike(User user, Long routeId) {
@@ -44,6 +52,21 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
 
         RouteLike routeLike = RouteLikeConverter.toRouteLike(user, route);
         routeLikeRepository.save(routeLike);
+
+        // 작성자에게 알림 전송
+        int likeCount = routeLikeRepository.countByRoute(route);
+        if (likeCount <= 10 ||
+                (likeCount <= 50 && likeCount % 10 == 0) ||
+                (likeCount <= 100 && likeCount % 50 == 0) ||
+                (likeCount % 100 == 0)) {
+
+            User author = placeReviewRepository.findUserByRouteId(routeId)
+                    .orElseGet(() -> eventReviewRepository.findUserByRouteId(routeId).orElse(null));
+
+            if (author != null) {
+                notificationCommandService.notifyRootSaved(author, routeId, likeCount);
+            }
+        }
     }
 
     @Transactional
