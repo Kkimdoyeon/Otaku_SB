@@ -11,7 +11,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
         @Query("SELECT e FROM Event e " +
                 "JOIN FETCH e.eventLocation el " +
                 "LEFT JOIN FETCH e.eventAnimationList ea " +
-                "WHERE el.lat = :latitude AND el.lng = :longitude")
+                "WHERE el.lat = :latitude AND el.lng = :longitude AND e.endDate >= CURDATE()")
         List<Event> findEventsByLocationWithAnimations(@Param("latitude") Double latitude,
                                                        @Param("longitude") Double longitude);
 }
