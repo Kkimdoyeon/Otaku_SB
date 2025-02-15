@@ -1,5 +1,6 @@
 package com.otakumap.domain.user.service;
 
+import com.otakumap.domain.auth.service.MailService;
 import com.otakumap.domain.image.entity.Image;
 import com.otakumap.domain.image.service.ImageCommandService;
 import com.otakumap.domain.user.dto.UserRequestDTO;
@@ -9,11 +10,15 @@ import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.AuthHandler;
 import com.otakumap.global.apiPayload.exception.handler.UserHandler;
 import com.otakumap.global.util.EmailUtil;
+import com.otakumap.global.util.RedisUtil;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,8 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final EmailUtil emailUtil;
     private final PasswordEncoder passwordEncoder;
     private final ImageCommandService imageCommandService;
+    private final MailService mailService;
+    private final RedisUtil redisUtil;
 
     @Override
     @Transactional
@@ -76,5 +83,16 @@ public class UserCommandServiceImpl implements UserCommandService {
         user.setProfileImage(image);
         userRepository.save(user);
         return image.getFileUrl();
+    }
+
+    @Override
+    @Transactional
+    public void changeEmail(User user, UserRequestDTO.ChangeEmailDTO request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserHandler(ErrorStatus.EMAIL_ALREADY_EXISTS);
+        }
+
+        user.updateEmail(request.getEmail());
+        userRepository.save(user);
     }
 }
