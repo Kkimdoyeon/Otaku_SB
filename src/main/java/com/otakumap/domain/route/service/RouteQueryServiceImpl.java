@@ -1,6 +1,8 @@
 package com.otakumap.domain.route.service;
 
 import com.otakumap.domain.animation.entity.Animation;
+import com.otakumap.domain.event_review.entity.EventReview;
+import com.otakumap.domain.event_review.repository.EventReviewRepository;
 import com.otakumap.domain.place.DTO.PlaceResponseDTO;
 import com.otakumap.domain.place.converter.PlaceConverter;
 import com.otakumap.domain.place.entity.Place;
@@ -13,12 +15,13 @@ import com.otakumap.domain.route.repository.RouteRepository;
 import com.otakumap.domain.route_item.repository.RouteItemRepository;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.code.status.ErrorStatus;
-import com.otakumap.global.apiPayload.exception.handler.PlaceHandler;
+import com.otakumap.global.apiPayload.exception.handler.ReviewHandler;
 import com.otakumap.global.apiPayload.exception.handler.RouteHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class RouteQueryServiceImpl implements RouteQueryService {
     private final RouteRepository routeRepository;
     private final PlaceReviewRepository placeReviewRepository;
     private final RouteItemRepository routeItemRepository;
+    private final EventReviewRepository eventReviewRepository;
 
     @Override
     public boolean isRouteExist(Long routeId) {
@@ -40,13 +44,22 @@ public class RouteQueryServiceImpl implements RouteQueryService {
         // routeId에 해당하는 Place 목록 조회
         List<Place> places = routeItemRepository.findPlacesByRouteId(routeId);
 
-        // routeId에 해당하는 PlaceReview 조회
-        PlaceReview placeReview = placeReviewRepository.findByRouteId(routeId)
-                .orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_REVIEW_NOT_FOUND));
+        // placeReview 또는 eventReview 조회
+        Optional<PlaceReview> placeReviewOpt = placeReviewRepository.findByRouteId(routeId);
+        Optional<EventReview> eventReviewOpt = eventReviewRepository.findByRouteId(routeId);
+
+        // placeReview와 eventReview가 모두 없으면 예외 발생
+        if (placeReviewOpt.isEmpty() && eventReviewOpt.isEmpty())
+            throw new ReviewHandler(ErrorStatus.REVIEW_NOT_FOUND);
 
         Animation animation = null;
-        if (placeReview.getPlaceAnimation() != null)
-            animation = placeReview.getPlaceAnimation().getAnimation();
+        if (placeReviewOpt.isPresent()) {
+            animation = placeReviewOpt.get().getPlaceAnimation() != null ?
+                    placeReviewOpt.get().getPlaceAnimation().getAnimation() : null;
+        } else {
+            animation = eventReviewOpt.get().getEventAnimation() != null ?
+                    eventReviewOpt.get().getEventAnimation().getAnimation() : null;
+        }
 
         // 관련된 애니메이션이 없으면 예외 발생
         if (animation == null)
