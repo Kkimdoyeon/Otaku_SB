@@ -49,8 +49,8 @@ public class MapRepositoryCustomImpl implements MapRepositoryCustom {
         List<MapResponseDTO.MapDetailPlaceDTO> placeDTOs = placeList.stream().map(place -> {
             List<HashTag> placeHashTags = new ArrayList<>();
             place.getPlaceAnimationList().forEach(placeAnimation -> {
-                placeAnimation.getPlaceAnimationHashTags().forEach(paht -> {
-                    placeHashTags.add(paht.getHashTag());
+                placeAnimation.getPlaceAnimationHashTags().forEach(hashTag -> {
+                    placeHashTags.add(hashTag.getHashTag());
                 });
             });
 
@@ -75,8 +75,8 @@ public class MapRepositoryCustomImpl implements MapRepositoryCustom {
             List<Animation> eventAnimations = event.getEventAnimationList().stream()
                     .map(EventAnimation::getAnimation)
                     .toList();
-
-            return MapConverter.toMapDetailEventDTO(event, eventLikeRepository.existsByUserAndEvent(user, event), event.getEventLocation().getName(), eventAnimations.isEmpty() ? null : eventAnimations.get(0), eventHashTags);
+            Boolean isLiked = eventLikeRepository.existsByUserAndEvent(user, event);
+            return MapConverter.toMapDetailEventDTO(event, isLiked, event.getEventLocation().getName(), eventAnimations.isEmpty() ? null : eventAnimations.get(0), eventHashTags);
         }).collect(Collectors.toList());
 
         List<Place> placeList = placeRepository.findPlacesByLocationWithAnimations(latitude, longitude);
@@ -88,11 +88,12 @@ public class MapRepositoryCustomImpl implements MapRepositoryCustom {
 
             if (!placeAnimations.isEmpty()) {
                 placeAnimations.forEach(placeAnimation -> {
-                    placeAnimation.getPlaceAnimationHashTags().forEach(paht -> {
-                        placeHashTags.add(paht.getHashTag());
+                    placeAnimation.getPlaceAnimationHashTags().forEach(hashTag -> {
+                        placeHashTags.add(hashTag.getHashTag());
                     });
+                    Boolean isLiked = placeLikeRepository.existsByUserAndPlaceAnimation(user, placeAnimation);
 
-                    placeDTOs.add(MapConverter.toMapDetailPlaceDTO(place, placeLikeRepository.existsByUserAndPlaceAnimation(user, placeAnimation), placeAnimation.getAnimation(), placeHashTags));
+                    placeDTOs.add(MapConverter.toMapDetailPlaceDTO(place, isLiked, placeAnimation.getAnimation(), placeHashTags));
                 });
             }
         });
