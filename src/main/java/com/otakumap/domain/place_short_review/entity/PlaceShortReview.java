@@ -44,4 +44,12 @@ public class PlaceShortReview extends BaseEntity {
     public void updateLikes(Long likes) { this.likes = likes; }
 
     public void updateDislikes(Long dislikes) { this.dislikes = dislikes; }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
 }

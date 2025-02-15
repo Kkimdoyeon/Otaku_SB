@@ -11,6 +11,7 @@ import com.otakumap.domain.event_review.repository.EventReviewRepository;
 import com.otakumap.domain.event_review_place.repository.EventReviewPlaceRepository;
 import com.otakumap.domain.image.service.ImageCommandService;
 import com.otakumap.domain.mapping.EventReviewPlace;
+import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.mapping.PlaceReviewPlace;
 import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place.repository.PlaceRepository;
@@ -68,7 +69,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         List<RouteItem> routeItems = createRouteItems(request.getRouteItems(), animation, route);
         routeItemRepository.saveAll(routeItems);
 
-        return saveReview(request, user, images, route);
+        return saveReview(request, user, images, route, animation);
     }
 
     // request의 장소 목록을 route item 객체로 변환
@@ -95,9 +96,10 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
     }
 
     // 장소 또는 이벤트에 애니메이션을 연결
-    private void associateAnimationWithPlaceOrEvent(Place place, Animation animation, ReviewType itemType) {
+    private PlaceAnimation associateAnimationWithPlaceOrEvent(Place place, Animation animation, ReviewType itemType) {
         if (itemType == ReviewType.PLACE) {
-            placeAnimationRepository.save(ReviewConverter.toPlaceAnimation(place, animation));
+            return placeAnimationRepository.findByPlaceIdAndAnimationId(place.getId(), animation.getId())
+                    .orElseGet(() -> placeAnimationRepository.save(ReviewConverter.toPlaceAnimation(place, animation))); // placeAnimation 반환
         } else {
             // Place에 해당하는 Event 찾기
             List<EventLocation> eventLocations = eventLocationRepository.findByLatAndLng(place.getLat(), place.getLng());
@@ -108,6 +110,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             // Event 객체를 이용해 EventAnimation 생성 및 저장
             eventAnimationRepository.save(ReviewConverter.toEventAnimation(event, animation));
 
+            return null; // Event는 따로 ID 반환할 필요 없음
         }
     }
 
@@ -119,7 +122,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
     }
 
     // 리뷰 저장 및 반환
-    private ReviewResponseDTO.CreatedReviewDTO saveReview(ReviewRequestDTO.CreateDTO request, User user, MultipartFile[] images, Route route) {
+    private ReviewResponseDTO.CreatedReviewDTO saveReview(ReviewRequestDTO.CreateDTO request, User user, MultipartFile[] images, Route route, Animation animation) {
         List<RouteItem> routeItems = routeItemRepository.findByRouteId(route.getId());
 
         List<Place> places = routeItems.stream()
@@ -132,7 +135,10 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             PlaceReview placeReview = ReviewConverter.toPlaceReview(request, user, new ArrayList<>(), route);
             placeReview = placeReviewRepository.save(placeReview);
 
-            // 저장된 PlaceReview를 기반으로 placeReviewPlaces 생성
+            PlaceAnimation placeAnimation = associateAnimationWithPlaceOrEvent(places.get(0), animation, ReviewType.PLACE);
+            placeReview.setPlaceAnimation(placeAnimation);
+            placeReview = placeReviewRepository.save(placeReview);
+
             List<PlaceReviewPlace> placeReviewPlaces = ReviewConverter.toPlaceReviewPlaceList(places, placeReview);
             placeReviewPlaceRepository.saveAll(placeReviewPlaces);
 

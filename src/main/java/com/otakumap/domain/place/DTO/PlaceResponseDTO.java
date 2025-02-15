@@ -1,6 +1,7 @@
 package com.otakumap.domain.place.DTO;
 
 import com.otakumap.domain.animation.dto.AnimationResponseDTO;
+import com.otakumap.domain.hash_tag.dto.HashTagResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,8 +40,8 @@ public class PlaceResponseDTO {
         private Double longitude;
         private Boolean isFavorite;
         private Boolean isLiked;
-        private PlaceResponseDTO.PlaceAnimationListDTO animationListDTO;
-        private List<String> hashtags;
+        private String animationName;
+        private List<HashTagResponseDTO.HashTagDTO> hashtags;
     }
 
     @Builder

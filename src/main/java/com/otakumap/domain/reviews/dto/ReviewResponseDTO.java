@@ -39,7 +39,6 @@ public class ReviewResponseDTO {
     @AllArgsConstructor
     public static class SearchedReviewPreViewDTO {
         Long reviewId; // 검색된 Review의 id
-        Long id; // Event 또는 Place의 id
         String title;
         String content;
         String type; // "event" 또는 "place"

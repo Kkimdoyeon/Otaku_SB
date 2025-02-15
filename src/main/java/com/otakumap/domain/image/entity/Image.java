@@ -1,10 +1,15 @@
 package com.otakumap.domain.image.entity;
 
 import com.otakumap.domain.event_review.entity.EventReview;
+import com.otakumap.domain.place_like.entity.PlaceLike;
 import com.otakumap.domain.place_review.entity.PlaceReview;
+import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -12,7 +17,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Image extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,6 +37,9 @@ public class Image extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_review_id")
     private EventReview eventReview;
+
+    @OneToMany(mappedBy = "profileImage", cascade = CascadeType.ALL)
+    private List<User> users = new ArrayList<>();
 
     public void setPlaceReview(PlaceReview placeReview) { this.placeReview = placeReview; }
 

@@ -36,10 +36,6 @@ public class PlaceReview extends BaseEntity {
     @Column(columnDefinition = "bigint default 0 not null")
     private Long view;
 
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "image_id", referencedColumnName = "id")
-//    private Image image;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "placeReview", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
@@ -59,4 +55,6 @@ public class PlaceReview extends BaseEntity {
     private Route route;
 
     public void setPlaceList(List<PlaceReviewPlace> placeList) { this.placeList = placeList; }
+
+    public void setPlaceAnimation(PlaceAnimation placeAnimation) { this.placeAnimation = placeAnimation; }
 }

@@ -9,5 +9,5 @@ import java.util.List;
 public interface PlaceQueryService {
     List<PlaceAnimation> getPlaceAnimations(Long placeId);
     boolean isPlaceExist(Long placeId);
-    PlaceResponseDTO.PlaceDetailDTO getPlaceDetail(User user, Long routeId, Long placeId);
+    PlaceResponseDTO.PlaceDetailDTO getPlaceDetail(User user, Long routeId, Long placeId, Long animationId);
 }

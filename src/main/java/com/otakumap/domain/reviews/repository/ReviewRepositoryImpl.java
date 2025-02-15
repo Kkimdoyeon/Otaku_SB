@@ -6,6 +6,7 @@ import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.event_review.entity.QEventReview;
 import com.otakumap.domain.mapping.QEventAnimation;
 import com.otakumap.domain.mapping.QPlaceAnimation;
+import com.otakumap.domain.mapping.QPlaceReviewPlace;
 import com.otakumap.domain.place.entity.QPlace;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.place_review.entity.QPlaceReview;
@@ -41,6 +42,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         QEventAnimation eventAnimation = QEventAnimation.eventAnimation;
         QPlaceAnimation placeAnimation = QPlaceAnimation.placeAnimation;
         QAnimation animation = QAnimation.animation;
+        QPlaceReviewPlace placeReviewPlace = QPlaceReviewPlace.placeReviewPlace;
 
         // 이벤트 리뷰 검색 : EventReview 제목, 내용, 또는 연관된 애니메이션 이름
         BooleanBuilder eventCondition = createSearchCondition(eventReview.title, eventReview.content, eventAnimation.animation.name, keyword);
@@ -56,7 +58,8 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .fetch();
 
         List<PlaceReview> placeReviews = queryFactory.selectFrom(placeReview)
-//                .leftJoin(placeReview.place, QPlace.place) // 해령: placeReview와 place가 N:M 관계가 되어 주석 처리
+                .leftJoin(placeReviewPlace).on(placeReviewPlace.placeReview.eq(placeReview))
+                .leftJoin(placeReviewPlace.place, QPlace.place)
                 .leftJoin(QPlace.place.placeAnimationList, placeAnimation)
                 .leftJoin(placeAnimation.animation, animation)
                 .where(placeCondition)

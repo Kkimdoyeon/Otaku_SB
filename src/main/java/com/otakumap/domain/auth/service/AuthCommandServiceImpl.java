@@ -5,6 +5,8 @@ import com.otakumap.domain.auth.dto.AuthResponseDTO;
 import com.otakumap.domain.auth.jwt.dto.JwtDTO;
 import com.otakumap.domain.auth.jwt.userdetails.PrincipalDetails;
 import com.otakumap.domain.auth.jwt.util.JwtProvider;
+import com.otakumap.domain.image.entity.Image;
+import com.otakumap.domain.image.repository.ImageRepository;
 import com.otakumap.domain.user.converter.UserConverter;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.domain.user.repository.UserRepository;
@@ -29,6 +31,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     private final RedisUtil redisUtil;
     private final MailService mailService;
     private final JwtProvider jwtProvider;
+    private final ImageRepository imageRepository;
 
     @Override
     public User signup(AuthRequestDTO.SignupDTO request) {
@@ -37,6 +40,10 @@ public class AuthCommandServiceImpl implements AuthCommandService {
         }
         User newUser = UserConverter.toUser(request);
         newUser.encodePassword(passwordEncoder.encode(request.getPassword()));
+
+        // 기본 이미지는 항상 PK값을 1로 가져오도록 설정
+        Image profileImage = imageRepository.findById(1L).orElseThrow(() -> new AuthHandler(ErrorStatus.IMAGE_NOT_FOUND));
+        newUser.setProfileImage(profileImage);
         return userRepository.save(newUser);
     }
 

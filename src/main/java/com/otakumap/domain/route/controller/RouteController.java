@@ -12,35 +12,34 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/route")
+@RequestMapping("/api/routes")
 @RequiredArgsConstructor
 @Validated
 public class RouteController {
     private final PlaceQueryService placeQueryService;
     private final RouteQueryService routeQueryService;
 
-    @Operation(summary = "루트 내 특정 장소 상세 정보 조회", description = "주어진 routeId와 placeId를 기반으로 특정 장소의 상세 정보를 불러옵니다.")
-    @GetMapping("{routeId}/{placeId}")
+    @Operation(summary = "루트 내 특정 장소 상세 정보 조회", description = "주어진 routeId, placeId, animationId를 기반으로 특정 장소의 상세 정보를 불러옵니다.")
+    @GetMapping("/{routeId}/places/{placeId}")
     @Parameters({
             @Parameter(name = "routeId", description = "루트 ID"),
-            @Parameter(name = "placeId", description = "루트 내 특정 장소 ID")
+            @Parameter(name = "placeId", description = "루트 내 특정 장소 ID"),
+            @Parameter(name = "animationId", description = "루트의 애니메이션 ID")
     })
     public ApiResponse<PlaceResponseDTO.PlaceDetailDTO> getPlaceDetail(
             @CurrentUser User user,
             @PathVariable Long routeId,
-            @PathVariable Long placeId) {
-        PlaceResponseDTO.PlaceDetailDTO placeDetail = placeQueryService.getPlaceDetail(user, routeId, placeId);
+            @PathVariable Long placeId,
+            @RequestParam Long animationId) {
+        PlaceResponseDTO.PlaceDetailDTO placeDetail = placeQueryService.getPlaceDetail(user, routeId, placeId, animationId);
         return ApiResponse.onSuccess(placeDetail);
     }
 
     @Operation(summary = "루트 상세 정보 조회", description = "주어진 routeId를 기반으로 루트의 상세 정보를 불러옵니다.")
-    @GetMapping("{routeId}")
+    @GetMapping("/{routeId}")
     @Parameters({
             @Parameter(name = "routeId", description = "루트 ID")
     })

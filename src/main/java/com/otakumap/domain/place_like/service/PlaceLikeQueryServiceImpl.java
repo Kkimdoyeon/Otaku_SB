@@ -39,7 +39,7 @@ public class PlaceLikeQueryServiceImpl implements PlaceLikeQueryService {
 
         List<PlaceLike> result = jpaQueryFactory
                 .selectFrom(qPlaceLike)
-                .leftJoin(qPlaceLike.place).fetchJoin()
+                .leftJoin(qPlaceLike.placeAnimation).fetchJoin()
                 .leftJoin(qPlaceLike.user).fetchJoin()
                 .where(predicate)
                 .orderBy(qPlaceLike.createdAt.desc())

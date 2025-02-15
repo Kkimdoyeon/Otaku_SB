@@ -18,4 +18,6 @@ public interface RouteItemRepository extends JpaRepository<RouteItem, Long> {
     List<Place> findPlacesByRouteId(@Param("routeId") Long routeId);
 
     List<RouteItem> findByRouteId(Long routeId);
+
+    List<RouteItem> findAllByPlace(Place place);
 }
