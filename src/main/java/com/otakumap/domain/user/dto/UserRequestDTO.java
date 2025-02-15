@@ -51,4 +51,11 @@ public class UserRequestDTO {
         @Schema(description = "password", example = "otakumap1234!")
         String passwordCheck;
     }
+
+    @Getter
+    public static class ChangeEmailDTO {
+        @NotBlank(message = "이메일 입력은 필수 입니다.")
+        @Email(message = "이메일 형식이 올바르지 않습니다.")
+        String email;
+    }
 }

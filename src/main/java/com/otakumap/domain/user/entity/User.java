@@ -94,4 +94,8 @@ public class User extends BaseEntity {
     public void setProfileImage(Image image) {
         this.profileImage = image;
     }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 }

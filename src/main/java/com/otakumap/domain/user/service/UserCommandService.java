@@ -10,4 +10,5 @@ public interface UserCommandService {
     void updateNotificationSettings(User user, UserRequestDTO.NotificationSettingsRequestDTO request);
     void resetPassword(UserRequestDTO.ResetPasswordDTO request);
     String updateProfileImage(User user, MultipartFile file);
+    void changeEmail(User user, UserRequestDTO.ChangeEmailDTO request);
 }
