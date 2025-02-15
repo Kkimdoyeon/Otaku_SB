@@ -11,11 +11,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-import java.util.Optional;
-
 public interface EventReviewRepository extends JpaRepository<EventReview, Long> {
     Page<EventReview> findAllByEvent(Event event, PageRequest pageRequest);
     Optional<EventReview> findByRouteId(Long routeId);
     @Query("SELECT er.user FROM EventReview er WHERE er.route.id = :routeId")
-    Optional<User> findUserByRouteId(@Param("routeId") Long routeId
+    Optional<User> findUserByRouteId(@Param("routeId") Long routeId);
 }
