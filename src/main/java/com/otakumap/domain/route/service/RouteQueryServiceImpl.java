@@ -6,6 +6,7 @@ import com.otakumap.domain.place.converter.PlaceConverter;
 import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.place_review.repository.PlaceReviewRepository;
+import com.otakumap.domain.route.converter.RouteConverter;
 import com.otakumap.domain.route.dto.RouteResponseDTO;
 import com.otakumap.domain.route.entity.Route;
 import com.otakumap.domain.route.repository.RouteRepository;
@@ -39,7 +40,7 @@ public class RouteQueryServiceImpl implements RouteQueryService {
         // routeId에 해당하는 Place 목록 조회
         List<Place> places = routeItemRepository.findPlacesByRouteId(routeId);
 
-        // routeId에 해당하는 PlaceReview 또는 EventReview 조회
+        // routeId에 해당하는 PlaceReview 조회
         PlaceReview placeReview = placeReviewRepository.findByRouteId(routeId)
                 .orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_REVIEW_NOT_FOUND));
 
@@ -54,12 +55,6 @@ public class RouteQueryServiceImpl implements RouteQueryService {
         // PlaceDTO 변환
         List<PlaceResponseDTO.PlaceDTO> placeDTOs = PlaceConverter.toPlaceDTOList(places);
 
-        return new RouteResponseDTO.RouteDetailDTO(
-                route.getId(),
-                route.getName(),
-                animation.getId(),
-                animation.getName(),
-                placeDTOs
-        );
+        return RouteConverter.toRouteDetailDTO(route, animation, placeDTOs);
     }
 }
