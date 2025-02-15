@@ -53,11 +53,6 @@ public class MapConverter {
             Boolean isLiked,
             Animation animation,
             List<HashTag> hashTags) {
-        ImageResponseDTO.ImageDTO image = null;
-        if(place.getThumbnailImage() != null) {
-            image = ImageConverter.toImageDTO(place.getThumbnailImage());
-        }
-
         return MapResponseDTO.MapDetailPlaceDTO.builder()
                 .type("place")
                 .id(place.getId())
@@ -65,7 +60,6 @@ public class MapConverter {
                 .detail(place.getDetail())
                 .isLiked(isLiked)
                 .animationName(animation != null ? animation.getName() : "")
-                .thumbnail(image)
                 .hashtags(hashTags.stream().map(HashTag::getName).collect(Collectors.toList()))
                 .build();
     }

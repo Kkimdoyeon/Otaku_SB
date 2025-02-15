@@ -15,12 +15,7 @@ public class MapCustomServiceImpl implements MapCustomService {
     private final MapRepositoryCustom mapRepositoryCustom;
 
     @Override
-    public MapResponseDTO.MapDetailDTO findAllMapDetails(Double latitude, Double longitude) {
-        return mapRepositoryCustom.findAllMapDetails(latitude, longitude);
-    }
-
-    @Override
-    public MapResponseDTO.MapDetailDTO findAllMapDetailsWithFavorite(User user, Double latitude, Double longitude) {
-        return mapRepositoryCustom.findAllMapDetailsWithFavorite(user, latitude, longitude);
+    public MapResponseDTO.MapDetailDTO findAllMapDetails(User user, Double latitude, Double longitude) {
+        return mapRepositoryCustom.findAllMapDetails(user, latitude, longitude);
     }
 }

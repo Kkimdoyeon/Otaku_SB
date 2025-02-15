@@ -34,9 +34,6 @@ public class MapController {
                                                                 @CurrentUser User user,
                                                                 @RequestParam Double latitude,
                                                                 @RequestParam Double longitude) {
-        if(user == null) {
-            return ApiResponse.onSuccess(mapCustomService.findAllMapDetails(latitude, longitude));
-        }
-        return ApiResponse.onSuccess(mapCustomService.findAllMapDetailsWithFavorite(user, latitude, longitude));
+        return ApiResponse.onSuccess(mapCustomService.findAllMapDetails(user, latitude, longitude));
     }
 }

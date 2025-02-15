@@ -47,7 +47,6 @@ public class MapResponseDTO {
         private String detail;
         private Boolean isLiked;
         private String animationName;
-        private ImageResponseDTO.ImageDTO thumbnail;
         private List<String> hashtags;
     }
 }

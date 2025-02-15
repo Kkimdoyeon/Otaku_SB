@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Repository
@@ -31,9 +32,10 @@ public class MapRepositoryCustomImpl implements MapRepositoryCustom {
     private final PlaceLikeRepository placeLikeRepository;
 
     @Override
-    public MapResponseDTO.MapDetailDTO findAllMapDetails(Double latitude, Double longitude) {
+    public MapResponseDTO.MapDetailDTO findAllMapDetails(User user, Double latitude, Double longitude) {
         List<Event> eventList = eventRepository.findEventsByLocationWithAnimations(latitude, longitude);
         List<MapResponseDTO.MapDetailEventDTO> eventDTOs = eventList.stream().map(event -> {
+            Boolean isLiked = Boolean.FALSE;
             List<HashTag> eventHashTags = event.getEventHashTagList().stream()
                     .map(EventHashTag::getHashTag)
                     .collect(Collectors.toList());
@@ -41,62 +43,34 @@ public class MapRepositoryCustomImpl implements MapRepositoryCustom {
             List<Animation> eventAnimations = event.getEventAnimationList().stream()
                     .map(EventAnimation::getAnimation)
                     .toList();
-
-            return MapConverter.toMapDetailEventDTO(event, Boolean.FALSE, event.getEventLocation().getName(), eventAnimations.isEmpty() ? null : eventAnimations.get(0), eventHashTags);
+            if(user!=null) {
+                isLiked = eventLikeRepository.existsByUserAndEvent(user, event);
+            }
+            return MapConverter.toMapDetailEventDTO(event, isLiked, event.getEventLocation().getName(), eventAnimations.isEmpty() ? null : eventAnimations.get(0), eventHashTags);
         }).collect(Collectors.toList());
 
         List<Place> placeList = placeRepository.findPlacesByLocationWithAnimations(latitude, longitude);
         List<MapResponseDTO.MapDetailPlaceDTO> placeDTOs = placeList.stream().map(place -> {
             List<HashTag> placeHashTags = new ArrayList<>();
+            AtomicReference<Boolean> isLiked = new AtomicReference<>(Boolean.FALSE);
+
             place.getPlaceAnimationList().forEach(placeAnimation -> {
                 placeAnimation.getPlaceAnimationHashTags().forEach(hashTag -> {
                     placeHashTags.add(hashTag.getHashTag());
                 });
+
+                if(user!=null) {
+                    isLiked.set(placeLikeRepository.existsByUserAndPlaceAnimation(user, placeAnimation));
+                }
             });
 
             List<Animation> placeAnimations = place.getPlaceAnimationList().stream()
                     .map(PlaceAnimation::getAnimation)
                     .toList();
 
-            return MapConverter.toMapDetailPlaceDTO(place, Boolean.FALSE, placeAnimations.isEmpty() ? null : placeAnimations.get(0), placeHashTags);
+            return MapConverter.toMapDetailPlaceDTO(place, isLiked.get(), placeAnimations.isEmpty() ? null : placeAnimations.get(0), placeHashTags);
         }).collect(Collectors.toList());
 
-        return MapConverter.toMapDetailDTO(eventDTOs, placeDTOs);
-    }
-
-    @Override
-    public MapResponseDTO.MapDetailDTO findAllMapDetailsWithFavorite(User user, Double latitude, Double longitude) {
-        List<Event> eventList = eventRepository.findEventsByLocationWithAnimations(latitude, longitude);
-        List<MapResponseDTO.MapDetailEventDTO> eventDTOs = eventList.stream().map(event -> {
-            List<HashTag> eventHashTags = event.getEventHashTagList().stream()
-                    .map(EventHashTag::getHashTag)
-                    .collect(Collectors.toList());
-
-            List<Animation> eventAnimations = event.getEventAnimationList().stream()
-                    .map(EventAnimation::getAnimation)
-                    .toList();
-            Boolean isLiked = eventLikeRepository.existsByUserAndEvent(user, event);
-            return MapConverter.toMapDetailEventDTO(event, isLiked, event.getEventLocation().getName(), eventAnimations.isEmpty() ? null : eventAnimations.get(0), eventHashTags);
-        }).collect(Collectors.toList());
-
-        List<Place> placeList = placeRepository.findPlacesByLocationWithAnimations(latitude, longitude);
-        List<MapResponseDTO.MapDetailPlaceDTO> placeDTOs = new ArrayList<>();
-
-        placeList.forEach(place -> {
-            List<HashTag> placeHashTags = new ArrayList<>();
-            List<PlaceAnimation> placeAnimations = place.getPlaceAnimationList();
-
-            if (!placeAnimations.isEmpty()) {
-                placeAnimations.forEach(placeAnimation -> {
-                    placeAnimation.getPlaceAnimationHashTags().forEach(hashTag -> {
-                        placeHashTags.add(hashTag.getHashTag());
-                    });
-                    Boolean isLiked = placeLikeRepository.existsByUserAndPlaceAnimation(user, placeAnimation);
-
-                    placeDTOs.add(MapConverter.toMapDetailPlaceDTO(place, isLiked, placeAnimation.getAnimation(), placeHashTags));
-                });
-            }
-        });
         return MapConverter.toMapDetailDTO(eventDTOs, placeDTOs);
     }
 }
