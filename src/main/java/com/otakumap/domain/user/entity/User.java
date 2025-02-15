@@ -3,6 +3,7 @@ package com.otakumap.domain.user.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.otakumap.domain.image.entity.Image;
 import com.otakumap.domain.place_like.entity.PlaceLike;
+import com.otakumap.domain.route.entity.Route;
 import com.otakumap.domain.route_like.entity.RouteLike;
 import com.otakumap.domain.user.entity.enums.Role;
 import com.otakumap.domain.user.entity.enums.SocialType;
@@ -53,11 +54,13 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Integer donation;
 
+    @ColumnDefault("true")
     @Column(nullable = false)
-    private Boolean isCommunityActivityNotified = true;
+    private Boolean isCommunityActivityNotified;
 
+    @ColumnDefault("true")
     @Column(nullable = false)
-    private Boolean isEventBenefitsNotified = true;
+    private Boolean isEventBenefitsNotified;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'", nullable = false)
@@ -67,7 +70,7 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(10) DEFAULT 'USER'", nullable = false)
     private Role role;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
     private Image profileImage;
 
@@ -90,5 +93,9 @@ public class User extends BaseEntity {
 
     public void setProfileImage(Image image) {
         this.profileImage = image;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
     }
 }

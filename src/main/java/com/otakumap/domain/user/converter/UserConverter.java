@@ -18,6 +18,7 @@ public class UserConverter {
     public static User toUser(AuthRequestDTO.SignupDTO request) {
         return User.builder()
                 .name(request.getName())
+                .nickname(UuidGenerator.generateUuid())
                 .userId(request.getUserId())
                 .email(request.getEmail())
                 .password(request.getPassword())

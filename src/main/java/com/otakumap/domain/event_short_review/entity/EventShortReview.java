@@ -17,7 +17,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class EventShortReview extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,4 +41,11 @@ public class EventShortReview extends BaseEntity {
     @ColumnDefault("0")
     private int dislikes;
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
 }

@@ -79,4 +79,6 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventHashTag> eventHashTagList = new ArrayList<>();
+
+    public void startEvent() { this.status = EventStatus.IN_PROCESS; }
 }

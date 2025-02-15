@@ -8,4 +8,6 @@ import org.springframework.data.domain.Page;
 public interface EventShortReviewCommandService {
     EventShortReview createEventShortReview(Long eventId, User user, EventShortReviewRequestDTO.NewEventShortReviewDTO request);
     Page<EventShortReview> getEventShortReviewsByEventId(Long eventId, Integer page);
+    void updateEventShortReview(Long eventShortReviewId, EventShortReviewRequestDTO.UpdateEventShortReviewDTO request);
+    void deleteEventShortReview(Long eventShortReviewId);
 }
