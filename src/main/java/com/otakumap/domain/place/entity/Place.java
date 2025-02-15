@@ -1,5 +1,6 @@
 package com.otakumap.domain.place.entity;
 
+import com.otakumap.domain.image.entity.Image;
 import com.otakumap.domain.mapping.EventReviewPlace;
 import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.mapping.PlaceReviewPlace;
