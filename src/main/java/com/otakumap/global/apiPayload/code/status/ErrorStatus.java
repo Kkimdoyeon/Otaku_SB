@@ -72,6 +72,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 루트 관련 에러
     ROUTE_NOT_FOUND(HttpStatus.NOT_FOUND, "ROUTE4001", "존재하지 않은 루트입니다."),
 
+    // 루트 애니메이션 관련 에러
+    ROUTE_ANIMATION_NOT_FOUND(HttpStatus.NOT_FOUND, "ROUTE_ANIMATION4001", "관련된 애니메이션이 존재하지 않습니다."),
+
     // 루트 좋아요 관련 에러
     ROUTE_LIKE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "ROUTE4002", "이미 좋아요를 누른 루트입니다."),
     ROUTE_LIKE_NOT_FOUND(HttpStatus.BAD_REQUEST, "ROUTE4003", "저장되지 않은 루트입니다."),
