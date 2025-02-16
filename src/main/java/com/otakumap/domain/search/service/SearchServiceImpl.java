@@ -135,6 +135,7 @@ public class SearchServiceImpl implements SearchService {
                                         isLiked = placeLikeRepository.existsByUserAndPlaceAnimation(user, placeAnimation);
                                     }
 
+                                    // 해시태그 조회
                                     List<HashTagResponseDTO.HashTagDTO> placeHashTags = place.getPlaceAnimationList().stream()
                                             .flatMap(pa -> pa.getAnimation().getAnimationHashtags().stream())
                                             .map(ah -> HashTagConverter.toHashTagDTO(ah.getHashTag()))
