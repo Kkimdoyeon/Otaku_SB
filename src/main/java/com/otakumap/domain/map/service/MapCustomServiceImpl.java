@@ -7,15 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class MapCustomServiceImpl implements MapCustomService {
-
-    private final MapRepositoryCustom mapRepositoryCustom;
-
-    @Override
-    public MapResponseDTO.MapDetailDTO findAllMapDetails(User user, Double latitude, Double longitude) {
-        return mapRepositoryCustom.findAllMapDetails(user, latitude, longitude);
-    }
-}
+//@Service
+//@RequiredArgsConstructor
+//@Transactional(readOnly = true)
+//public class MapCustomServiceImpl implements MapCustomService {
+//
+//    private final MapRepositoryCustom mapRepositoryCustom;
+//
+//    @Override
+//    public MapResponseDTO.MapDetailDTO findAllMapDetails(User user, Double latitude, Double longitude) {
+//        return mapRepositoryCustom.findAllMapDetails(user, latitude, longitude);
+//    }
+//}
