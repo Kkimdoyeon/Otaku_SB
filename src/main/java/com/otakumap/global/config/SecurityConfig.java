@@ -40,6 +40,8 @@ public class SecurityConfig {
     private final String[] allowGetUrl = {
             "/api/events/**",
             "/api/reviews/**",
+            "/api/places/**",
+            "/api/routes/**",
             "/api/map/**",
     };
 
