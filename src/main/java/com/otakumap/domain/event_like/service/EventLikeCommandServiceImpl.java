@@ -27,6 +27,9 @@ public class EventLikeCommandServiceImpl implements EventLikeCommandService {
     @Override
     public void addEventLike(User user, Long eventId) {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_NOT_FOUND));
+        if(eventLikeRepository.existsByUserAndEvent(user, event)) {
+            throw new EventHandler(ErrorStatus.EVENT_LIKE_ALREADY_EXISTS);
+        }
         eventLikeRepository.save(EventLikeConverter.toEventLike(user, event));
     }
 
