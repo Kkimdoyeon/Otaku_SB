@@ -6,6 +6,7 @@ import com.otakumap.domain.place_short_review.converter.PlaceShortReviewConverte
 import com.otakumap.domain.place_short_review.dto.PlaceShortReviewRequestDTO;
 import com.otakumap.domain.place_short_review.entity.PlaceShortReview;
 import com.otakumap.domain.place_short_review.service.PlaceShortReviewCommandService;
+import com.otakumap.domain.place_short_review.service.PlaceShortReviewQueryService;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.ApiResponse;
 import com.otakumap.global.validation.annotation.ExistPlace;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class PlaceShortReviewController {
 
-
+    private final PlaceShortReviewQueryService placeShortReviewQueryService;
     private final PlaceShortReviewCommandService placeShortReviewCommandService;
 
     @GetMapping("/places/{placeId}/short-review")
@@ -37,7 +38,7 @@ public class PlaceShortReviewController {
             @Parameter(name = "page", description = "페이지 번호입니다. 0부터 시작합니다.", example = "0")
     })
     public ApiResponse<PlaceShortReviewResponseDTO.PlaceShortReviewListDTO> getPlaceShortReviewList(@ExistPlace @PathVariable(name = "placeId") Long placeId, @RequestParam(name = "page") Integer page){
-        return ApiResponse.onSuccess(PlaceShortReviewConverter.placeShortReviewListDTO(placeShortReviewCommandService.getPlaceShortReviews(placeId, page)));
+        return ApiResponse.onSuccess(PlaceShortReviewConverter.placeShortReviewListDTO(placeShortReviewQueryService.getPlaceShortReviews(placeId, page)));
     }
 
     @PostMapping("/places/{placeId}/short-review")
