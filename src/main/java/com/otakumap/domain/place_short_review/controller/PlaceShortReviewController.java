@@ -3,10 +3,10 @@ package com.otakumap.domain.place_short_review.controller;
 import com.otakumap.domain.auth.jwt.annotation.CurrentUser;
 import com.otakumap.domain.place_short_review.dto.PlaceShortReviewResponseDTO;
 import com.otakumap.domain.place_short_review.converter.PlaceShortReviewConverter;
-import com.otakumap.domain.place_short_review.service.PlaceShortReviewQueryService;
 import com.otakumap.domain.place_short_review.dto.PlaceShortReviewRequestDTO;
 import com.otakumap.domain.place_short_review.entity.PlaceShortReview;
 import com.otakumap.domain.place_short_review.service.PlaceShortReviewCommandService;
+import com.otakumap.domain.place_short_review.service.PlaceShortReviewQueryService;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.ApiResponse;
 import com.otakumap.global.validation.annotation.ExistPlace;
@@ -25,9 +25,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class PlaceShortReviewController {
 
-
-    private final PlaceShortReviewCommandService placeShortReviewCommandService;
     private final PlaceShortReviewQueryService placeShortReviewQueryService;
+    private final PlaceShortReviewCommandService placeShortReviewCommandService;
 
     @GetMapping("/places/{placeId}/short-review")
     @Operation(summary = "특정 명소의 한 줄 리뷰 목록 조회", description = "특정 명소의 한 줄 리뷰 목록을 불러옵니다.")

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Transactional
 public class PlaceShortReviewCommandServiceImpl implements PlaceShortReviewCommandService {
-    private final PlaceShortReviewRepository placeShortReviewRepository;;
+    private final PlaceShortReviewRepository placeShortReviewRepository;
     private final PlaceRepository placeRepository;
     private final PlaceAnimationRepository placeAnimationRepository;
 

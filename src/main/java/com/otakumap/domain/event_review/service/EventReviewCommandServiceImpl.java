@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EventReviewCommandServivceImpl implements EventReviewCommandServivce {
+public class EventReviewCommandServiceImpl implements EventReviewCommandService {
 
     private final EventRepository eventRepository;
     private final EventReviewRepository eventReviewRepository;
