@@ -55,9 +55,9 @@ public class PlaceLikeConverter {
                 .lng(place.getLng())
                 .isLiked(Boolean.TRUE) // 저장한 장소를 조회하는 거니까 항상 true
                 // 장소-애니메이션에 대한 해시태그
-                .hashtags(placeLike.getPlaceAnimation().getPlaceAnimationHashTags()
-                        .stream()
-                        .map(placeHashTag -> HashTagConverter.toHashTagDTO(placeHashTag.getHashTag())).toList())
+                .hashtags(placeLike.getPlaceAnimation().getAnimation().getAnimationHashtags().stream()
+                        .map(placeHashTag -> HashTagConverter.toHashTagDTO(placeHashTag.getHashTag()))
+                        .toList())
                 .build();
     }
 }

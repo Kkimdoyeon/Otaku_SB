@@ -1,8 +1,8 @@
 package com.otakumap.domain.event_review.entity;
 
+import com.otakumap.domain.animation.entity.Animation;
 import com.otakumap.domain.event.entity.Event;
 import com.otakumap.domain.image.entity.Image;
-import com.otakumap.domain.mapping.EventAnimation;
 import com.otakumap.domain.mapping.EventReviewPlace;
 import com.otakumap.domain.route.entity.Route;
 import com.otakumap.domain.user.entity.User;
@@ -36,13 +36,6 @@ public class EventReview extends BaseEntity {
     @Column(columnDefinition = "bigint default 0 not null")
     private Long view;
 
-    @Column(nullable = false)
-    private Float rating;
-
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "image_id", referencedColumnName = "id")
-//    private Image image;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventReview")
     private List<Image> images = new ArrayList<>();
 
@@ -58,12 +51,14 @@ public class EventReview extends BaseEntity {
     private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_animation_id")
-    private EventAnimation eventAnimation;
+    @JoinColumn(name = "animation_id")
+    private Animation animation;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", referencedColumnName = "id")
     private Route route;
 
     public void setPlaceList(List<EventReviewPlace> placeList) { this.placeList = placeList; }
+
+    public void setAnimation(Animation animation) { this.animation = animation; }
 }
