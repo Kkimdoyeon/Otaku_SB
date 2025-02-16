@@ -17,7 +17,7 @@ public class PlaceReviewResponseDTO {
     @AllArgsConstructor
     public static class PlaceReviewDTO {
         private Long reviewId;
-        private List<Long> placeIds; // 해령: ids로 수정
+        private Long placeId;
         private String title;
         private String content;
         private Long view;
