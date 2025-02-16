@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface EventLikeCommandService {
     void addEventLike(User user, Long eventId);
-    void deleteEventLike(List<Long> eventIds);
+    void deleteEventLike(List<Long> eventIds, User user);
     EventLike favoriteEventLike(Long eventLikeId, EventLikeRequestDTO.FavoriteDTO request);
 }
