@@ -65,7 +65,7 @@ public class UserConverter {
 
     public static User toKakaoUser(KakaoUserInfo kakaoUserInfo) {
         return User.builder()
-                .name(kakaoUserInfo.getKakao_account().getName())
+                .name(kakaoUserInfo.getKakao_account().getProfile().getNickname())
                 .nickname(UuidGenerator.generateUuid())
                 .email(kakaoUserInfo.getKakao_account().getEmail())
                 .socialType(SocialType.KAKAO)
