@@ -3,6 +3,7 @@ package com.otakumap.domain.place_short_review.service;
 import com.otakumap.domain.place_short_review.dto.PlaceShortReviewRequestDTO;
 import com.otakumap.domain.place_short_review.entity.PlaceShortReview;
 import com.otakumap.domain.user.entity.User;
+import org.springframework.data.domain.Page;
 
 public interface PlaceShortReviewCommandService {
     PlaceShortReview createReview(User user, Long placeId, PlaceShortReviewRequestDTO.CreateDTO request);

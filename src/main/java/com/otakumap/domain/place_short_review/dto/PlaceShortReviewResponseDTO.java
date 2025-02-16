@@ -42,9 +42,9 @@ public class PlaceShortReviewResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PlaceShortReviewUserDTO {
-        Long id;
+        String userId;
         String nickname;
-        // ImageResponseDTO.ImageDTO profileImage;
+        String profileImage;
     }
 
     @Builder
