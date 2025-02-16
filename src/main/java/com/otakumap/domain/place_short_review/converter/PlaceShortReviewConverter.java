@@ -8,20 +8,25 @@ import com.otakumap.domain.place_short_review.entity.PlaceShortReview;
 import com.otakumap.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlaceShortReviewConverter {
-    public static PlaceShortReviewResponseDTO.PlaceShortReviewDTO placeShortReviewDTO(PlaceShortReview placeShortReview) {
-        PlaceShortReviewResponseDTO.PlaceShortReviewUserDTO user = PlaceShortReviewResponseDTO.PlaceShortReviewUserDTO.builder()
-                .id(placeShortReview.getUser().getId())
-                .nickname(placeShortReview.getUser().getNickname())
-                //.profilePicture(placeShortReview.getUser().getProfilePicture()
+    public static PlaceShortReviewResponseDTO.PlaceShortReviewUserDTO placeShortReviewUserDTO(User user) {
+        return PlaceShortReviewResponseDTO.PlaceShortReviewUserDTO.builder()
+                .userId(user.getUserId())
+                .nickname(user.getNickname())
+                .profileImage(user.getProfileImage().getFileUrl())
                 .build();
+    }
+
+    public static PlaceShortReviewResponseDTO.PlaceShortReviewDTO placeShortReviewDTO(PlaceShortReview placeShortReview) {
+        User user = placeShortReview.getUser();
 
         return PlaceShortReviewResponseDTO.PlaceShortReviewDTO.builder()
                 .id(placeShortReview.getId())
-                .user(user)
+                .user(PlaceShortReviewConverter.placeShortReviewUserDTO(user))
                 .content(placeShortReview.getContent())
                 .rating(placeShortReview.getRating())
                 .createdAt(placeShortReview.getCreatedAt())
@@ -31,18 +36,22 @@ public class PlaceShortReviewConverter {
     }
 
     public static PlaceShortReviewResponseDTO.PlaceShortReviewListDTO placeShortReviewListDTO(Page<PlaceShortReview> reviewList) {
-
-        if(reviewList == null || reviewList.isEmpty()) return null;
+        if(reviewList == null || reviewList.isEmpty()) {
+            return PlaceShortReviewResponseDTO.PlaceShortReviewListDTO.builder()
+                    .shortReviews(new ArrayList<>())
+                    .totalPages(0)
+                    .build();
+        }
 
         List<PlaceShortReviewResponseDTO.PlaceShortReviewDTO> placeShortReviewDTOList = reviewList.stream()
                 .map(PlaceShortReviewConverter::placeShortReviewDTO).collect(Collectors.toList());
-
         PlaceShortReview review = reviewList.getContent().get(0);
+        Place place = review.getPlace();
 
         return PlaceShortReviewResponseDTO.PlaceShortReviewListDTO.builder()
-                .placeId(review.getPlace().getId())
-                .placeName(review.getPlace().getName())
-                .currentPage(reviewList.getNumber() + 1)
+                .placeId(place.getId())
+                .placeName(place.getName())
+                .currentPage(reviewList.getNumber())
                 .totalPages(reviewList.getTotalPages())
                 .shortReviews(placeShortReviewDTOList)
                 .build();

@@ -13,13 +13,15 @@ import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.PlaceHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class PlaceShortReviewCommandServiceImpl implements PlaceShortReviewCommandService {
-    private final PlaceShortReviewRepository placeShortReviewRepository;;
+    private final PlaceShortReviewRepository placeShortReviewRepository;
     private final PlaceRepository placeRepository;
     private final PlaceAnimationRepository placeAnimationRepository;
 
@@ -51,5 +53,12 @@ public class PlaceShortReviewCommandServiceImpl implements PlaceShortReviewComma
                 .orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_SHORT_REVIEW_NOT_FOUND));
 
         placeShortReviewRepository.delete(placeShortReview);
+    }
+
+
+    @Override
+    public Page<PlaceShortReview> getPlaceShortReviews(Long placeId, Integer page) {
+        Place place = placeRepository.findById(placeId).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
+        return placeShortReviewRepository.findAllByPlace(place, PageRequest.of(page, 6));
     }
 }

@@ -3,7 +3,6 @@ package com.otakumap.domain.place_short_review.controller;
 import com.otakumap.domain.auth.jwt.annotation.CurrentUser;
 import com.otakumap.domain.place_short_review.dto.PlaceShortReviewResponseDTO;
 import com.otakumap.domain.place_short_review.converter.PlaceShortReviewConverter;
-import com.otakumap.domain.place_short_review.service.PlaceShortReviewQueryService;
 import com.otakumap.domain.place_short_review.dto.PlaceShortReviewRequestDTO;
 import com.otakumap.domain.place_short_review.entity.PlaceShortReview;
 import com.otakumap.domain.place_short_review.service.PlaceShortReviewCommandService;
@@ -27,7 +26,6 @@ public class PlaceShortReviewController {
 
 
     private final PlaceShortReviewCommandService placeShortReviewCommandService;
-    private final PlaceShortReviewQueryService placeShortReviewQueryService;
 
     @GetMapping("/places/{placeId}/short-review")
     @Operation(summary = "특정 명소의 한 줄 리뷰 목록 조회", description = "특정 명소의 한 줄 리뷰 목록을 불러옵니다.")
@@ -39,7 +37,7 @@ public class PlaceShortReviewController {
             @Parameter(name = "page", description = "페이지 번호입니다. 0부터 시작합니다.", example = "0")
     })
     public ApiResponse<PlaceShortReviewResponseDTO.PlaceShortReviewListDTO> getPlaceShortReviewList(@ExistPlace @PathVariable(name = "placeId") Long placeId, @RequestParam(name = "page") Integer page){
-        return ApiResponse.onSuccess(PlaceShortReviewConverter.placeShortReviewListDTO(placeShortReviewQueryService.getPlaceShortReviews(placeId, page)));
+        return ApiResponse.onSuccess(PlaceShortReviewConverter.placeShortReviewListDTO(placeShortReviewCommandService.getPlaceShortReviews(placeId, page)));
     }
 
     @PostMapping("/places/{placeId}/short-review")
