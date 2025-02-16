@@ -8,7 +8,6 @@ import com.otakumap.domain.place_review.dto.PlaceReviewResponseDTO;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlaceReviewConverter {
     // PlaceReview -> PlaceReviewDTO 변환
@@ -16,7 +15,8 @@ public class PlaceReviewConverter {
 
         return PlaceReviewResponseDTO.PlaceReviewDTO.builder()
                 .reviewId(placeReview.getId())
-                .placeIds(placeReview.getPlaceList().stream().map(prp -> prp.getPlace().getId()).collect(Collectors.toList())) // 해령: placeId -> placeIds로 변경
+                .placeId(placeReview.getPlaceList().stream()
+                        .map(prp -> prp.getPlace().getId()).toList().get(0))
                 .title(placeReview.getTitle())
                 .content(placeReview.getContent())
                 .view(placeReview.getView())
