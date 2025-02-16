@@ -142,8 +142,6 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .limit(7)
                 .collect(Collectors.toList());
 
-        return ReviewResponseDTO.Top7ReviewPreViewListDTO.builder()
-                .reviews(top7Reviews)
-                .build();
+        return ReviewConverter.top7ReviewPreViewListDTO(top7Reviews);
     }
 }

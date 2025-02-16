@@ -4,6 +4,8 @@ import com.otakumap.domain.animation.entity.Animation;
 import com.otakumap.domain.event.entity.Event;
 import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.image.converter.ImageConverter;
+import com.otakumap.domain.image.dto.ImageResponseDTO;
+import com.otakumap.domain.image.entity.Image;
 import com.otakumap.domain.mapping.EventAnimation;
 import com.otakumap.domain.mapping.EventReviewPlace;
 import com.otakumap.domain.mapping.PlaceAnimation;
@@ -24,12 +26,16 @@ import java.util.stream.Collectors;
 public class ReviewConverter {
 
     public static ReviewResponseDTO.Top7ReviewPreViewDTO toTop7EventReviewPreViewDTO(EventReview eventReview) {
+        List<Image> images = eventReview.getImages();
+        ImageResponseDTO.ImageDTO imageDTO = null;
+        if(images != null && !images.isEmpty()) {
+            imageDTO = ImageConverter.toImageDTO(images.get(0));
+        }
+
         return ReviewResponseDTO.Top7ReviewPreViewDTO.builder()
                 .id(eventReview.getId())
                 .title(eventReview.getTitle())
-                .reviewImage(eventReview.getImages() != null && !eventReview.getImages().isEmpty() ?
-                        ImageConverter.toImageDTO(eventReview.getImages().get(0)) :
-                        null) // 나중에 수정
+                .reviewImage(imageDTO)
                 .view(eventReview.getView())
                 .createdAt(eventReview.getCreatedAt())
                 .type("event")
@@ -37,15 +43,25 @@ public class ReviewConverter {
     }
 
     public static ReviewResponseDTO.Top7ReviewPreViewDTO toTop7PlaceReviewPreViewDTO(PlaceReview eventReview) {
+        List<Image> images = eventReview.getImages();
+        ImageResponseDTO.ImageDTO imageDTO = null;
+        if(images != null && !images.isEmpty()) {
+            imageDTO = ImageConverter.toImageDTO(images.get(0));
+        }
+
         return ReviewResponseDTO.Top7ReviewPreViewDTO.builder()
                 .id(eventReview.getId())
                 .title(eventReview.getTitle())
-                .reviewImage(eventReview.getImages() != null && !eventReview.getImages().isEmpty() ?
-                        ImageConverter.toImageDTO(eventReview.getImages().get(0)) :
-                        null) // 나중에 수정
+                .reviewImage(imageDTO)
                 .view(eventReview.getView())
                 .createdAt(eventReview.getCreatedAt())
                 .type("place")
+                .build();
+    }
+
+    public static ReviewResponseDTO.Top7ReviewPreViewListDTO top7ReviewPreViewListDTO(List<ReviewResponseDTO.Top7ReviewPreViewDTO> reviews) {
+        return ReviewResponseDTO.Top7ReviewPreViewListDTO.builder()
+                .reviews(reviews)
                 .build();
     }
 
