@@ -110,7 +110,9 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             // placeList 업데이트
             placeReview.setPlaceList(placeReviewPlaces);
 
-            imageCommandService.uploadReviewImages(List.of(images), placeReview.getId(), ReviewType.PLACE);
+            if(images != null) {
+                imageCommandService.uploadReviewImages(List.of(images), placeReview.getId(), ReviewType.PLACE);
+            }
 
             return ReviewConverter.toCreatedReviewDTO(placeReview.getId(), placeReview.getTitle());
         } else if (request.getReviewType() == ReviewType.EVENT) {
@@ -126,7 +128,9 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             // placeList 업데이트
             eventReview.setPlaceList(eventReviewPlaces);
 
-            imageCommandService.uploadReviewImages(List.of(images), eventReview.getId(), ReviewType.EVENT);
+            if(images != null) {
+                imageCommandService.uploadReviewImages(List.of(images), eventReview.getId(), ReviewType.EVENT);
+            }
             return ReviewConverter.toCreatedReviewDTO(eventReview.getId(), eventReview.getTitle());
         } else {
             throw new ReviewHandler(ErrorStatus.INVALID_REVIEW_TYPE);
