@@ -1,9 +1,8 @@
 package com.otakumap.domain.place_review.entity;
 
+import com.otakumap.domain.animation.entity.Animation;
 import com.otakumap.domain.image.entity.Image;
-import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.mapping.PlaceReviewPlace;
-import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.route.entity.Route;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.common.BaseEntity;
@@ -47,8 +46,8 @@ public class PlaceReview extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "place_animation_id")
-    private PlaceAnimation placeAnimation;
+    @JoinColumn(name = "animation_id")
+    private Animation animation;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", referencedColumnName = "id")
@@ -56,5 +55,5 @@ public class PlaceReview extends BaseEntity {
 
     public void setPlaceList(List<PlaceReviewPlace> placeList) { this.placeList = placeList; }
 
-    public void setPlaceAnimation(PlaceAnimation placeAnimation) { this.placeAnimation = placeAnimation; }
+    public void setAnimation(Animation animation) { this.animation = animation; }
 }

@@ -44,7 +44,7 @@ public class PlaceConverter {
     }
 
     public static List<HashTagResponseDTO.HashTagDTO> toPlaceHashtagsDTO(PlaceAnimation placeAnimation) {
-        return placeAnimation.getPlaceAnimationHashTags()
+        return placeAnimation.getAnimation().getAnimationHashtags()
                 .stream()
                 .map(placeAnimationHashTag -> HashTagConverter.toHashTagDTO(placeAnimationHashTag.getHashTag())).toList();
     }

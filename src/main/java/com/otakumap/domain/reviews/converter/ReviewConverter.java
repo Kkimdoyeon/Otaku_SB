@@ -1,7 +1,6 @@
 package com.otakumap.domain.reviews.converter;
 
 import com.otakumap.domain.animation.entity.Animation;
-import com.otakumap.domain.event.entity.Event;
 import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.image.converter.ImageConverter;
 import com.otakumap.domain.image.dto.ImageResponseDTO;
@@ -93,7 +92,7 @@ public class ReviewConverter {
     public static ReviewResponseDTO.ReviewDetailDTO toPlaceReviewDetailDTO(PlaceReview placeReview) {
         return ReviewResponseDTO.ReviewDetailDTO.builder()
                 .reviewId(placeReview.getId())
-                .animationName(placeReview.getPlaceAnimation().getAnimation().getName() != null ? placeReview.getPlaceAnimation().getAnimation().getName() : null)
+                .animationName(placeReview.getAnimation().getName() != null ? placeReview.getAnimation().getName() : null)
                 .title(placeReview.getTitle())
                 .view(placeReview.getView())
                 .content(placeReview.getContent())
@@ -111,7 +110,7 @@ public class ReviewConverter {
     public static ReviewResponseDTO.ReviewDetailDTO toEventReviewDetailDTO(EventReview eventReview) {
         return ReviewResponseDTO.ReviewDetailDTO.builder()
                 .reviewId(eventReview.getId())
-                .animationName(eventReview.getEventAnimation().getAnimation().getName() != null ? eventReview.getEventAnimation().getAnimation().getName() : null)
+                .animationName(eventReview.getAnimation().getName() != null ? eventReview.getAnimation().getName() : null)
                 .title(eventReview.getTitle())
                 .view(eventReview.getView())
                 .content(eventReview.getContent())
@@ -134,25 +133,22 @@ public class ReviewConverter {
                 .build();
     }
 
-    public static EventReview toEventReview(ReviewRequestDTO.CreateDTO request, User user, List<EventReviewPlace> eventReviewPlaces, Route route) {
+    public static EventReview toEventReview(ReviewRequestDTO.CreateDTO request, User user, Route route) {
         return EventReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
-                .placeList(eventReviewPlaces)
                 .route(route)
-                .rating(0F)
                 .build();
     }
 
-    public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, List<PlaceReviewPlace> placeReviewPlaces, Route route) {
+    public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, Route route) {
         return PlaceReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
-                .placeList(placeReviewPlaces)
                 .route(route)
                 .build();
     }
@@ -188,13 +184,6 @@ public class ReviewConverter {
     public static PlaceAnimation toPlaceAnimation(Place place, Animation animation) {
         return PlaceAnimation.builder()
                 .place(place)
-                .animation(animation)
-                .build();
-    }
-
-    public static EventAnimation toEventAnimation(Event event, Animation animation) {
-        return EventAnimation.builder()
-                .event(event)
                 .animation(animation)
                 .build();
     }

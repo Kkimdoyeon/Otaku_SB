@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class PlaceAnimation extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,9 +27,6 @@ public class PlaceAnimation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "animation_id")
     private Animation animation;
-
-    @OneToMany(mappedBy = "placeAnimation", cascade = CascadeType.ALL)
-    private List<PlaceAnimationHashTag> placeAnimationHashTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "placeAnimation", cascade = CascadeType.ALL)
     private List<PlaceLike> placeLikes = new ArrayList<>();

@@ -54,11 +54,11 @@ public class RouteQueryServiceImpl implements RouteQueryService {
 
         Animation animation = null;
         if (placeReviewOpt.isPresent()) {
-            animation = placeReviewOpt.get().getPlaceAnimation() != null ?
-                    placeReviewOpt.get().getPlaceAnimation().getAnimation() : null;
+            animation = placeReviewOpt.get().getAnimation() != null ?
+                    placeReviewOpt.get().getAnimation() : null;
         } else {
-            animation = eventReviewOpt.get().getEventAnimation() != null ?
-                    eventReviewOpt.get().getEventAnimation().getAnimation() : null;
+            animation = eventReviewOpt.get().getAnimation() != null ?
+                    eventReviewOpt.get().getAnimation() : null;
         }
 
         // 관련된 애니메이션이 없으면 예외 발생

@@ -33,6 +33,12 @@ public class RouteConverter {
         return route;
     }
 
+    public static Route toRoute(String name) {
+        return Route.builder()
+                .name(name)
+                .build();
+    }
+
     public static RouteResponseDTO.RouteDetailDTO toRouteDetailDTO(Route route, Animation animation, List<PlaceResponseDTO.PlaceDTO> placeDTOs) {
         return new RouteResponseDTO.RouteDetailDTO(
                 route.getId(),
