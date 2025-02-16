@@ -52,10 +52,10 @@ public class EventLikeController {
     @Operation(summary = "저장된 이벤트 삭제(이벤트 찜하기 취소)", description = "저장된 이벤트를 삭제합니다.")
     @DeleteMapping("")
     @Parameters({
-            @Parameter(name = "eventIds", description = "저장된 이벤트 ID List"),
+            @Parameter(name = "eventIds", description = "이벤트 ID List"),
     })
-    public ApiResponse<String> deleteEventLike(@RequestParam(required = false) @ExistEventLike List<Long> eventIds) {
-        eventLikeCommandService.deleteEventLike(eventIds);
+    public ApiResponse<String> deleteEventLike(@RequestParam(required = false) List<Long> eventIds, @CurrentUser User user) {
+        eventLikeCommandService.deleteEventLike(eventIds, user);
         return ApiResponse.onSuccess("저장된 이벤트가 성공적으로 삭제되었습니다");
     }
 

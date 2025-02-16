@@ -31,8 +31,15 @@ public class EventLikeCommandServiceImpl implements EventLikeCommandService {
     }
 
     @Override
-    public void deleteEventLike(List<Long> eventIds) {
-        eventLikeRepository.deleteAllByIdInBatch(eventIds);
+    public void deleteEventLike(List<Long> eventIds, User user) {
+        List<Long> eventLikeIds = eventIds.stream()
+                .map(eventId -> eventLikeRepository.findByEventIdAndUserId(eventId, user.getId())
+                        .orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_LIKE_NOT_FOUND))
+                        .getId()
+                )
+                .toList();
+
+        eventLikeRepository.deleteAllByIdInBatch(eventLikeIds);
         entityManager.flush();
         entityManager.clear();
     }
