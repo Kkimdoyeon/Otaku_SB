@@ -8,6 +8,7 @@ import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place_animation.repository.PlaceAnimationRepository;
 import com.otakumap.domain.place_like.repository.PlaceLikeRepository;
 import com.otakumap.domain.route.repository.RouteRepository;
+import com.otakumap.domain.route_item.repository.RouteItemRepository;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.PlaceHandler;
@@ -26,6 +27,7 @@ public class PlaceQueryServiceImpl implements PlaceQueryService {
     private final PlaceAnimationRepository placeAnimationRepository;
     private final PlaceLikeRepository placeLikeRepository;
     private final RouteRepository routeRepository;
+    private final RouteItemRepository routeItemRepository;
 
     @Override
     public boolean isPlaceExist(Long placeId) {
@@ -48,7 +50,7 @@ public class PlaceQueryServiceImpl implements PlaceQueryService {
         }
 
         // Place 조회
-        Place place = placeRepository.findById(placeId).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
+        Place place = routeItemRepository.findPlaceByRouteIdAndPlaceId(routeId, placeId).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
 
         // 애니메이션 관련 정보 조회
         PlaceAnimation placeAnimation = placeAnimationRepository.findByPlaceIdAndAnimationId(placeId, animationId).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_ANIMATION_NOT_FOUND));
