@@ -3,6 +3,7 @@ package com.otakumap.domain.event.service;
 import com.otakumap.domain.event.dto.EventResponseDTO;
 import com.otakumap.domain.event.repository.EventRepositoryCustom;
 import com.otakumap.domain.image.dto.ImageResponseDTO;
+import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.EventHandler;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class EventCustomServiceImpl implements EventCustomService {
     private final EventRepositoryCustom eventRepository;
 
     @Override
-    public List<EventResponseDTO.EventDTO> getPopularEvents() {
-        return eventRepository.getPopularEvents();
+    public List<EventResponseDTO.EventWithLikeDTO> getPopularEvents(User user) {
+        return eventRepository.getPopularEvents(user);
     }
 
     @Override

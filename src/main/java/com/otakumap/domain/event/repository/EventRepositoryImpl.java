@@ -6,8 +6,10 @@ import com.otakumap.domain.event.entity.Event;
 import com.otakumap.domain.event.entity.QEvent;
 import com.otakumap.domain.event.entity.enums.EventType;
 import com.otakumap.domain.event.entity.enums.Genre;
+import com.otakumap.domain.event_like.repository.EventLikeRepository;
 import com.otakumap.domain.image.converter.ImageConverter;
 import com.otakumap.domain.image.dto.ImageResponseDTO;
+import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.EventHandler;
 import com.querydsl.core.BooleanBuilder;
@@ -17,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,63 +30,52 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class EventRepositoryImpl implements EventRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final EventLikeRepository eventLikeRepository;
 
     @Override
-    public List<EventResponseDTO.EventDTO> getPopularEvents() {
+    public List<EventResponseDTO.EventWithLikeDTO> getPopularEvents(User user) {
         QEvent event = QEvent.event;
 
-        List<Long> eventIds = queryFactory.select(event.id)
-                .from(event)
+        List<Event> events = queryFactory.selectFrom(event)
                 .where(event.endDate.goe(LocalDate.now())
                         .and(event.startDate.loe(LocalDate.now())))
                 .fetch();
 
-        List<Long> randomIds;
-        if(eventIds.size() <= 8) {
-            randomIds = eventIds;
-        } else {
-            Collections.shuffle(eventIds);
-            randomIds = eventIds.subList(0, 8);
+        if(events.size() > 8) {
+            Collections.shuffle(events);
+            events = events.subList(0, 8);
         }
 
-        List<Event> events = queryFactory.selectFrom(event)
-                .where(event.id.in(randomIds))
-                .fetch();
-
         return events.stream()
-                .map(EventConverter::toEventDTO)
-                .collect(Collectors.toList());
+                .map(eve -> {
+                    Boolean isLiked = (user != null) ? eventLikeRepository.existsByUserAndEvent(user, eve) : false;
+                    return EventConverter.toEventWithLikeDTO(eve, isLiked);
+                }).collect(Collectors.toList());
     }
 
     @Override
     public ImageResponseDTO.ImageDTO getEventBanner() {
         QEvent event = QEvent.event;
 
-        List<Long> targetEventIds = queryFactory.select(event.id)
-                .from(event)
+        List<Event> targetEvents = queryFactory.selectFrom(event)
                 .where(event.endDate.goe(LocalDate.now())
                         .and(event.startDate.loe(LocalDate.now()))
                         .and(event.thumbnailImage.isNotNull()))
                 .fetch();
 
-        Long targetEventId;
-        if(targetEventIds.isEmpty()) {
+        if(targetEvents.isEmpty()) {
             return ImageResponseDTO.ImageDTO.builder()
                 .fileUrl("default_banner_url")
                 .build();
-        } else if(targetEventIds.size() > 1) {
-            Collections.shuffle(targetEventIds);
+        } else if(targetEvents.size() > 1) {
+            Collections.shuffle(targetEvents);
         }
-        targetEventId = targetEventIds.get(0);
 
-        Event targetEvent = queryFactory.selectFrom(event)
-                .where(event.id.eq(targetEventId))
-                .fetchOne();
-
-        return ImageConverter.toImageDTO((targetEvent)
+        return ImageConverter.toImageDTO((targetEvents.get(0))
                 .getThumbnailImage());
     }
 

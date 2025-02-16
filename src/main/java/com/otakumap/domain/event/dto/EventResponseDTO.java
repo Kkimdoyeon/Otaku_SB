@@ -28,6 +28,19 @@ public class EventResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class EventWithLikeDTO {
+        Long id;
+        String title;
+        Boolean isLiked;
+        LocalDate startDate;
+        LocalDate endDate;
+        ImageResponseDTO.ImageDTO thumbnail;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class EventDetailDTO {
         Long id;
         String title;

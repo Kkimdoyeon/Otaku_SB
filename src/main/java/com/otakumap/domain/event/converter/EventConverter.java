@@ -56,4 +56,16 @@ public class EventConverter {
                 .hashTags(hashTags)
                 .build();
     }
+
+    public static EventResponseDTO.EventWithLikeDTO toEventWithLikeDTO(Event event, Boolean isLiked) {
+        return EventResponseDTO.EventWithLikeDTO.builder()
+                .id(event.getId())
+                .title(event.getTitle())
+                .isLiked(isLiked)
+                .startDate(event.getStartDate())
+                .endDate(event.getEndDate())
+                .thumbnail(ImageConverter.toImageDTO(event.getThumbnailImage()))
+                .build();
+
+    }
 }
