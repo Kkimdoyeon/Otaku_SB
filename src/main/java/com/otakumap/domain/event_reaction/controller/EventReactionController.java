@@ -1,7 +1,7 @@
 package com.otakumap.domain.event_reaction.controller;
 
 import com.otakumap.domain.auth.jwt.annotation.CurrentUser;
-import com.otakumap.domain.event_reaction.DTO.EventReactionResponseDTO;
+import com.otakumap.domain.event_reaction.dto.EventReactionResponseDTO;
 import com.otakumap.domain.event_reaction.converter.EventReactionConverter;
 import com.otakumap.domain.event_reaction.entity.EventReaction;
 import com.otakumap.domain.event_reaction.service.EventReactionCommandService;

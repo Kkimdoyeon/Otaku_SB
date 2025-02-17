@@ -1,4 +1,4 @@
-package com.otakumap.domain.event_reaction.DTO;
+package com.otakumap.domain.event_reaction.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

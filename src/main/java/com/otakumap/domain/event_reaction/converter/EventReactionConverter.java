@@ -1,6 +1,6 @@
 package com.otakumap.domain.event_reaction.converter;
 
-import com.otakumap.domain.event_reaction.DTO.EventReactionResponseDTO;
+import com.otakumap.domain.event_reaction.dto.EventReactionResponseDTO;
 import com.otakumap.domain.event_reaction.entity.EventReaction;
 import com.otakumap.domain.event_short_review.entity.EventShortReview;
 import com.otakumap.domain.user.entity.User;

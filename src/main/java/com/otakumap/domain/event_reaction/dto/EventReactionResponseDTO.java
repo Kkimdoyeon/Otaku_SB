@@ -1,4 +1,4 @@
-package com.otakumap.domain.event_reaction.DTO;
+package com.otakumap.domain.event_reaction.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
