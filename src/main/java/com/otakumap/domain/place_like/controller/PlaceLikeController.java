@@ -9,6 +9,7 @@ import com.otakumap.domain.place_like.service.PlaceLikeQueryService;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.ApiResponse;
 
+import com.otakumap.global.validation.annotation.ExistAnimation;
 import com.otakumap.global.validation.annotation.ExistPlace;
 import com.otakumap.global.validation.annotation.ExistPlaceLike;
 import com.otakumap.global.validation.annotation.ExistPlaceListLike;
@@ -41,13 +42,24 @@ public class PlaceLikeController {
         return ApiResponse.onSuccess(placeLikeQueryService.getPlaceLikeList(user, isFavorite, lastId, limit));
     }
 
-    @Operation(summary = "저장된 장소 삭제", description = "저장된 장소를 삭제합니다.")
+    @Operation(summary = "저장된 장소 삭제 - 나의 좋아요 > 찜한 장소", description = "나의 좋아요 > 찜한 장소에서 저장된 장소를 삭제합니다.")
     @DeleteMapping("")
     @Parameters({
             @Parameter(name = "placeIds", description = "저장된 장소 id List"),
     })
     public ApiResponse<String> deletePlaceLike(@RequestParam(required = false) @ExistPlaceListLike List<Long> placeIds) {
         placeLikeCommandService.deletePlaceLike(placeIds);
+        return ApiResponse.onSuccess("저장된 장소가 성공적으로 삭제되었습니다");
+    }
+
+    @Operation(summary = "저장된 장소 삭제 - 지도창에서 하트 누르기", description = "지도창에서 하트를 눌러서 저장된 장소를 삭제합니다.")
+    @DeleteMapping("/{placeId}")
+    @Parameters({
+            @Parameter(name = "placeId", description = "장소 id"),
+            @Parameter(name = "animationId", description = "장소에 해당하는 애니메이션 id"),
+    })
+    public ApiResponse<String> deletePlaceLikeOnMap(@PathVariable @ExistPlace Long placeId, @RequestParam @ExistAnimation Long animationId, @CurrentUser User user) {
+        placeLikeCommandService.deletePlaceLike(placeId, animationId, user);
         return ApiResponse.onSuccess("저장된 장소가 성공적으로 삭제되었습니다");
     }
 
