@@ -1,10 +1,12 @@
 package com.otakumap.domain.event.controller;
 
+import com.otakumap.domain.auth.jwt.annotation.CurrentUser;
 import com.otakumap.domain.event.converter.EventConverter;
 import com.otakumap.domain.event.dto.EventResponseDTO;
 import com.otakumap.domain.event.service.EventCustomService;
 import com.otakumap.domain.event.service.EventQueryService;
 import com.otakumap.domain.image.dto.ImageResponseDTO;
+import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,8 +27,8 @@ public class EventController {
 
     @Operation(summary = "진행 중인 인기 이벤트 조회", description = "진행 중인 인기 이벤트의 목록(8개)를 불러옵니다.")
     @GetMapping("/events/popular")
-    public ApiResponse<List<EventResponseDTO.EventDTO>> getEventDetail() {
-        return ApiResponse.onSuccess(eventCustomService.getPopularEvents());
+    public ApiResponse<List<EventResponseDTO.EventWithLikeDTO>> getEventDetail(@CurrentUser User user) {
+        return ApiResponse.onSuccess(eventCustomService.getPopularEvents(user));
     }
 
     @Operation(summary = "이벤트 상세 정보 조회", description = "특정 이벤트의 상세 정보를 불러옵니다.")
