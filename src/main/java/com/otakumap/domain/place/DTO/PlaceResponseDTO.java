@@ -40,7 +40,7 @@ public class PlaceResponseDTO {
         private Double longitude;
         private Boolean isFavorite;
         private Boolean isLiked;
-        private String animationName;
+        private AnimationResponseDTO.AnimationResultDTO animation;
         private List<HashTagResponseDTO.HashTagDTO> hashtags;
     }
 
