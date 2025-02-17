@@ -1,5 +1,6 @@
 package com.otakumap.domain.place.converter;
 
+import com.otakumap.domain.animation.converter.AnimationConverter;
 import com.otakumap.domain.animation.dto.AnimationResponseDTO;
 import com.otakumap.domain.hash_tag.converter.HashTagConverter;
 import com.otakumap.domain.hash_tag.dto.HashTagResponseDTO;
@@ -38,7 +39,7 @@ public class PlaceConverter {
                 .longitude(place.getLng())
                 .isFavorite(place.getIsFavorite())
                 .isLiked(isLiked)
-                .animationName(placeAnimation.getAnimation().getName())
+                .animation(AnimationConverter.animationResultDTO(placeAnimation.getAnimation()))
                 .hashtags(hashtags)
                 .build();
     }

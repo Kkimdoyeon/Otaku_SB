@@ -1,5 +1,6 @@
 package com.otakumap.domain.place_like.dto;
 
+import com.otakumap.domain.animation.dto.AnimationResponseDTO;
 import com.otakumap.domain.hash_tag.dto.HashTagResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,8 +49,9 @@ public class PlaceLikeResponseDTO {
     @AllArgsConstructor
     public static class PlaceLikeDetailDTO {
         Long placeLikeId;
+        Long placeId;
         String placeName;
-        String animationName;
+        AnimationResponseDTO.AnimationResultDTO animation;
         Double lat;
         Double lng;
         Boolean isLiked;
