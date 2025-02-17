@@ -38,9 +38,6 @@ public class Point extends BaseEntity {
     @Column(name = "charged_by")
     private String chargedBy;
 
-    @Column(name = "point_after_charge")
-    private Long pointAfterCharge;
-
     @Column(name = "merchant_uid", unique = true, nullable = false)
     private String merchantUid;
 
