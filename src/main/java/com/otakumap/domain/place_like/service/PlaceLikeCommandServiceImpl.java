@@ -23,7 +23,6 @@ import java.util.List;
 public class PlaceLikeCommandServiceImpl implements PlaceLikeCommandService {
     private final PlaceLikeRepository placeLikeRepository;
     private final EntityManager entityManager;
-    private final PlaceRepository placeRepository;
     private final PlaceAnimationRepository placeAnimationRepository;
 
     @Override
@@ -31,6 +30,14 @@ public class PlaceLikeCommandServiceImpl implements PlaceLikeCommandService {
         placeLikeRepository.deleteAllByIdInBatch(placeIds);
         entityManager.flush();
         entityManager.clear();
+    }
+
+    @Override
+    public void deletePlaceLike(Long placeId, Long animationId, User user) {
+        PlaceAnimation placeAnimation = placeAnimationRepository.findByPlaceIdAndAnimationId(placeId, animationId).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_ANIMATION_NOT_FOUND));
+        PlaceLike placeLike = placeLikeRepository.findByUserAndPlaceAnimation(user, placeAnimation).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_LIKE_NOT_FOUND));
+
+        placeLikeRepository.delete(placeLike);
     }
 
     @Override
