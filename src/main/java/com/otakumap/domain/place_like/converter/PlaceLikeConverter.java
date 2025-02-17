@@ -1,5 +1,6 @@
 package com.otakumap.domain.place_like.converter;
 
+import com.otakumap.domain.animation.converter.AnimationConverter;
 import com.otakumap.domain.hash_tag.converter.HashTagConverter;
 import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.place.entity.Place;
@@ -49,8 +50,9 @@ public class PlaceLikeConverter {
     public static PlaceLikeResponseDTO.PlaceLikeDetailDTO placeLikeDetailDTO(PlaceLike placeLike, Place place) {
         return PlaceLikeResponseDTO.PlaceLikeDetailDTO.builder()
                 .placeLikeId(placeLike.getId())
+                .placeId(place.getId())
                 .placeName(place.getName())
-                .animationName(placeLike.getPlaceAnimation().getAnimation().getName())
+                .animation(AnimationConverter.animationResultDTO(placeLike.getPlaceAnimation().getAnimation()))
                 .lat(place.getLat())
                 .lng(place.getLng())
                 .isLiked(Boolean.TRUE) // 저장한 장소를 조회하는 거니까 항상 true
