@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/points")
@@ -43,5 +40,11 @@ public class PointController {
     @PostMapping("/transactions/charges")
     public ApiResponse<PointResponseDTO.PointPreViewListDTO> getChargePointList(@CurrentUser User user, @RequestParam(name = "page") Integer page) {
         return ApiResponse.onSuccess(PointConverter.pointPreViewListDTO(pointQueryservice.getChargePointList(user, page)));
+    }
+
+    @Operation(summary = "현재 포인트 조회", description = "현재 포인트를 조회합니다.")
+    @GetMapping("/balance")
+    public ApiResponse<PointResponseDTO.CurrentPointDTO> getCurrentPointBalance(@CurrentUser User user) {
+        return ApiResponse.onSuccess(pointQueryservice.getCurrentPoint(user));
     }
 }
