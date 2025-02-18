@@ -82,4 +82,16 @@ public class ReviewController {
         ReviewResponseDTO.CreatedReviewDTO createdReview = reviewCommandService.createReview(request, user, images);
         return ApiResponse.onSuccess(createdReview);
     }
+
+    @PostMapping(value = "/reviews/purchase")
+    @Operation(summary = "후기 구매", description = "후기를 구매합니다.")
+    @Parameters({
+            @Parameter(name = "reviewId", description = "이벤트 or 명소의 후기 id 입니다."),
+            @Parameter(name = "type", description = "리뷰의 종류를 특정합니다. 'EVENT' 또는 'PLACE' 여야 합니다.")
+    })
+    public ApiResponse<ReviewResponseDTO.PurchaseReviewDTO> purchaseReview(@CurrentUser User user,
+                                                                          @RequestParam @ValidReviewId Long reviewId,
+                                                        @RequestParam(defaultValue = "PLACE") ReviewType type) {
+        return ApiResponse.onSuccess(reviewCommandService.purchaseReview(user, reviewId, type));
+    }
 }

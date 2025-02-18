@@ -65,4 +65,17 @@ public class Point extends BaseEntity {
         this.merchantUid = merchantUid;
         this.point = point;
     }
+
+    public void addPoint(Long point) {
+        this.point += point;
+    }
+
+    public Long subPoint(Long point) {
+        this.point -= point;
+        return this.point;
+    }
+
+    public boolean isAffordable(Long point) {
+        return this.point >= point;
+    }
 }

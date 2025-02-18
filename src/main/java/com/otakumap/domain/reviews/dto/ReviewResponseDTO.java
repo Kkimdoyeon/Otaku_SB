@@ -17,7 +17,7 @@ public class ReviewResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Top7ReviewPreViewListDTO {
-        List<Top7ReviewPreViewDTO> reviews;
+        private List<Top7ReviewPreViewDTO> reviews;
     }
 
     @Builder
@@ -25,12 +25,12 @@ public class ReviewResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Top7ReviewPreViewDTO {
-        Long id;
-        String title;
-        ImageResponseDTO.ImageDTO reviewImage;
-        Long view;
-        String type;
-        LocalDateTime createdAt;
+        private Long id;
+        private String title;
+        private ImageResponseDTO.ImageDTO reviewImage;
+        private Long view;
+        private String type;
+        private LocalDateTime createdAt;
     }
 
     @Builder
@@ -74,5 +74,13 @@ public class ReviewResponseDTO {
         Long reviewId;
         String title;
         LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PurchaseReviewDTO {
+        private Long remainingPoints;
     }
 }
