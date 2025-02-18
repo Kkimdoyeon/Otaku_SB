@@ -31,4 +31,14 @@ public class PointResponseDTO {
         Long point;
         LocalDateTime chargedAt;
     }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CurrentPointDTO {
+        String userId;
+        Long point;
+    }
 }

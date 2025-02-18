@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface PointRepository extends JpaRepository<Point, Long> {
     Optional<Point> findByMerchantUid(String merchantUid);
     Page<Point> findAllByUser(User user, PageRequest pageRequest);
+    Point findTopByUserOrderByCreatedAtDesc(User user);
 }

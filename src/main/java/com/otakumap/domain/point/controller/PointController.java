@@ -44,4 +44,10 @@ public class PointController {
     public ApiResponse<PointResponseDTO.PointPreViewListDTO> getChargePointList(@CurrentUser User user, @RequestParam(name = "page") Integer page) {
         return ApiResponse.onSuccess(PointConverter.pointPreViewListDTO(pointQueryservice.getChargePointList(user, page)));
     }
+
+    @Operation(summary = "현재 포인트 조회", description = "현재 포인트를 조회합니다.")
+    @PostMapping("/balance")
+    public ApiResponse<PointResponseDTO.CurrentPointDTO> getCurrentPointBalance(@CurrentUser User user) {
+        return ApiResponse.onSuccess(pointQueryservice.getCurrentPoint(user));
+    }
 }

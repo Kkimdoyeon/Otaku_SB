@@ -28,4 +28,11 @@ public class PointConverter {
                 .pointList(pointPreViewDTOList)
                 .build();
     }
+
+    public static PointResponseDTO.CurrentPointDTO toCurrentPointDTO(Point point){
+        return PointResponseDTO.CurrentPointDTO.builder()
+                .userId(point.getUser().getUserId())
+                .point(point.getPoint())
+                .build();
+    }
 }
