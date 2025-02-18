@@ -6,11 +6,9 @@ import lombok.Getter;
 @Getter
 public class PaymentVerifyRequest {
     @NotNull(message = "imp_uid는 필수입니다.")
-    private String impUid;
-
+    String impUid;
     @NotNull(message = "merchant_uid는 필수입니다.")
-    private String merchantUid;
-
+    String merchantUid;
     @NotNull(message = "amount는 필수입니다.")
-    private Long amount;
+    Long amount;
 }

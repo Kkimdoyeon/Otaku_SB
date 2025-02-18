@@ -28,7 +28,7 @@ public class PointController {
             @RequestBody @Valid PointRequestDTO.PointChargeDTO request,
             @CurrentUser User user
     ) {
-        pointCommandService.chargePoints(user, request.getPoint());
+        pointCommandService.chargePoints(user, request.getPoint(), request.getMerchantUid());
         return ApiResponse.onSuccess("충전 성공하였습니다.");
     }
 

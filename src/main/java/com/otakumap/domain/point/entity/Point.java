@@ -1,5 +1,6 @@
 package com.otakumap.domain.point.entity;
 
+import com.otakumap.domain.payment.entity.UserPayment;
 import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.transaction.entity.Transaction;
 import com.otakumap.domain.user.entity.User;
@@ -11,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +47,6 @@ public class Point extends BaseEntity {
     @Column(name = "charged_by")
     private String chargedBy;
 
-    // 주문 ID
-    @Column(name = "merchant_uid", unique = true, nullable = false)
-    private String merchantUid;
-
-    // Iamport 결제 고유 ID
-    @Column(name = "imp_uid")
-    private String impUid;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentStatus status = PaymentStatus.PENDING;
@@ -60,9 +54,16 @@ public class Point extends BaseEntity {
     @OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
 
-    public Point(User user, String merchantUid, Long point) {
-        this.user = user;
-        this.merchantUid = merchantUid;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_payment_id", nullable = false)
+    private UserPayment userPayment;
+
+    public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user, UserPayment userPayment) {
         this.point = point;
+        this.chargedAt = chargedAt;
+        this.status = status;
+        this.user = user;
+        this.userPayment = userPayment; // userPayment 필드를 추가로 설정
     }
+
 }

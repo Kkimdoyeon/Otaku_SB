@@ -1,5 +1,6 @@
 package com.otakumap.domain.point.converter;
 
+import com.otakumap.domain.payment.entity.UserPayment;
 import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.point.dto.PointResponseDTO;
 import com.otakumap.domain.point.entity.Point;
@@ -18,6 +19,7 @@ public class PointConverter {
                 .chargedAt(point.getChargedAt())
                 .build();
     }
+
     public static PointResponseDTO.PointPreViewListDTO pointPreViewListDTO(Page<Point> pointList) {
         List<PointResponseDTO.PointPreViewDTO> pointPreViewDTOList = pointList.stream()
                 .map(PointConverter::pointPreViewDTO).collect(Collectors.toList());
@@ -32,14 +34,21 @@ public class PointConverter {
                 .build();
     }
 
-    public static Point createPoint(User user, Long point, String merchantUid) {
+//    public static Point toPoint(User user, BigDecimal point) {
+//        return Point.builder()
+//                .user(user)
+//                .point(point)
+//                .build();
+//    }
+
+    public static Point savePoint(User user, Long point, UserPayment userPayment) {
         return Point.builder()
                 .user(user)
                 .point(point)
-                .merchantUid(merchantUid)
-                .chargedBy(user.getName())
-                .chargedAt(LocalDateTime.now())
-                .status(PaymentStatus.PAID)
+                .chargedAt(LocalDateTime.now()) // 현재 시간
+                .chargedBy(user.getName()) // 충전한 사용자
+                .status(PaymentStatus.PAID) // 결제 완료 상태
+                .userPayment(userPayment) // 결제 정보 추가
                 .build();
     }
 }

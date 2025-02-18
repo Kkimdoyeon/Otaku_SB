@@ -1,7 +1,7 @@
 package com.otakumap.domain.payment.entity;
 
-
 import com.otakumap.domain.payment.enums.PaymentStatus;
+import com.otakumap.domain.point.entity.Point;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -17,8 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "payment")
-public class Payment extends BaseEntity{
+public class UserPayment extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +42,12 @@ public class Payment extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentStatus status = PaymentStatus.PENDING;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "point_id", nullable = false)
+    private Point point;
+
+    public void setPoint(Point point) {
+        this.point = point;
+    }
 }
