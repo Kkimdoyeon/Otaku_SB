@@ -43,7 +43,8 @@ public class MapConverter {
                 .endDate(event.getEndDate())
                 .isLiked(isLiked)
                 .locationName(locationName)
-                .animationName(animation != null ? animation.getName() : "")
+                .animationId(animation.getId())
+                .animationName(animation.getName())
                 .hashtags(hashTags.stream().map(HashTag::getName).collect(Collectors.toList()))
                 .build();
     }
@@ -59,7 +60,8 @@ public class MapConverter {
                 .name(place.getName())
                 .detail(place.getDetail())
                 .isLiked(isLiked)
-                .animationName(animation != null ? animation.getName() : "")
+                .animationId(animation.getId())
+                .animationName(animation.getName())
                 .hashtags(hashTags.stream().map(HashTag::getName).collect(Collectors.toList()))
                 .build();
     }
