@@ -36,10 +36,10 @@ public class EventShortReview extends BaseEntity {
     private Float rating;
 
     @ColumnDefault("0")
-    private int likes;
+    private Long likes;
 
     @ColumnDefault("0")
-    private int dislikes;
+    private Long dislikes;
 
     public void setContent(String content) {
         this.content = content;
@@ -48,4 +48,8 @@ public class EventShortReview extends BaseEntity {
     public void setRating(Float rating) {
         this.rating = rating;
     }
+
+    public void updateLikes(Long likes) { this.likes = likes; }
+
+    public void updateDislikes(Long dislikes) { this.dislikes = dislikes; }
 }
