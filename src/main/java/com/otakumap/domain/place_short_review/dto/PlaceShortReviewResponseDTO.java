@@ -15,11 +15,11 @@ public class PlaceShortReviewResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PlaceShortReviewListDTO {
-        Long placeId;
-        String placeName;
-        Integer currentPage;
-        Integer totalPages;
-        List<PlaceShortReviewDTO> shortReviews;
+        private Long placeId;
+        private String placeName;
+        private Integer currentPage;
+        private Integer totalPages;
+        private List<PlaceShortReviewDTO> shortReviews;
     }
 
     @Builder
@@ -27,13 +27,13 @@ public class PlaceShortReviewResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PlaceShortReviewDTO {
-        Long id;
-        PlaceShortReviewUserDTO user;
-        String content;
-        Float rating;
-        LocalDateTime createdAt;
-        Long likes;
-        Long dislikes;
+        private Long id;
+        private PlaceShortReviewUserDTO user;
+        private String content;
+        private Float rating;
+        private LocalDateTime createdAt;
+        private Long likes;
+        private Long dislikes;
     }
 
 
@@ -42,9 +42,9 @@ public class PlaceShortReviewResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PlaceShortReviewUserDTO {
-        String userId;
-        String nickname;
-        String profileImage;
+        private Long userId;
+        private String nickname;
+        private String profileImage;
     }
 
     @Builder

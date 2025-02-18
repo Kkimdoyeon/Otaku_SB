@@ -51,4 +51,11 @@ public class PointConverter {
                 .userPayment(userPayment) // 결제 정보 추가
                 .build();
     }
+
+    public static PointResponseDTO.CurrentPointDTO toCurrentPointDTO(Point point){
+        return PointResponseDTO.CurrentPointDTO.builder()
+                .userId(point.getUser().getUserId())
+                .point(point.getPoint())
+                .build();
+    }
 }

@@ -1,5 +1,7 @@
 package com.otakumap.domain.point.service;
 
+import com.otakumap.domain.point.converter.PointConverter;
+import com.otakumap.domain.point.dto.PointResponseDTO;
 import com.otakumap.domain.point.entity.Point;
 import com.otakumap.domain.point.repository.PointRepository;
 import com.otakumap.domain.user.entity.User;
@@ -16,5 +18,10 @@ public class PointQueryserviceImpl implements PointQueryservice {
     @Override
     public Page<Point> getChargePointList(User user, Integer page) {
         return pointRepository.findAllByUser(user, PageRequest.of(page - 1, 6));
+    }
+
+    @Override
+    public PointResponseDTO.CurrentPointDTO getCurrentPoint(User user) {
+        return PointConverter.toCurrentPointDTO(pointRepository.findTopByUserOrderByCreatedAtDesc(user));
     }
 }
