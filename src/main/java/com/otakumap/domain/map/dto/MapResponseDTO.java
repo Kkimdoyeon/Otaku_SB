@@ -1,6 +1,5 @@
 package com.otakumap.domain.map.dto;
 
-import com.otakumap.domain.image.dto.ImageResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,8 +30,9 @@ public class MapResponseDTO {
         private LocalDate endDate;
         private Boolean isLiked;
         private String locationName;
+        private Long animationId;
         private String animationName;
-        private ImageResponseDTO.ImageDTO thumbnail;
+        private String thumbnail;
         private List<String> hashtags;
     }
 
@@ -46,6 +46,7 @@ public class MapResponseDTO {
         private String name;
         private String detail;
         private Boolean isLiked;
+        private Long animationId;
         private String animationName;
         private List<String> hashtags;
     }
