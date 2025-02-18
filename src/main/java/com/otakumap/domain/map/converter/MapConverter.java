@@ -4,7 +4,6 @@ import com.otakumap.domain.animation.entity.Animation;
 import com.otakumap.domain.event.entity.Event;
 import com.otakumap.domain.hash_tag.entity.HashTag;
 import com.otakumap.domain.image.converter.ImageConverter;
-import com.otakumap.domain.image.dto.ImageResponseDTO;
 import com.otakumap.domain.map.dto.MapResponseDTO;
 import com.otakumap.domain.place.entity.Place;
 import org.springframework.stereotype.Component;
@@ -30,9 +29,9 @@ public class MapConverter {
             String locationName,
             Animation animation,
             List<HashTag> hashTags) {
-        ImageResponseDTO.ImageDTO image = null;
+        String image = "";
         if(event.getThumbnailImage() != null) {
-            image = ImageConverter.toImageDTO(event.getThumbnailImage());
+            image = ImageConverter.toImageDTO(event.getThumbnailImage()).getFileUrl();
         }
 
         return MapResponseDTO.MapDetailEventDTO.builder()
