@@ -1,6 +1,5 @@
 package com.otakumap.domain.transaction.entity;
 
-
 import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.point.entity.Point;
@@ -41,6 +40,4 @@ public class Transaction extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_review_id", referencedColumnName = "id")
     private PlaceReview placeReview;
-
-
 }

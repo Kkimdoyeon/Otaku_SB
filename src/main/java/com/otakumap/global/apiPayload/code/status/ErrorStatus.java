@@ -106,7 +106,13 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 한 줄 리뷰 관련 에러
     EVENT_SHORT_REVIEW_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4008", "존재하지 않는 이벤트 한 줄 리뷰입니다."),
-    PLACE_SHORT_REVIEW_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLACE4006", "존재하지 않는 이벤트 한 줄 리뷰입니다."),;
+    PLACE_SHORT_REVIEW_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLACE4006", "존재하지 않는 이벤트 한 줄 리뷰입니다."),
+
+    // 결제 관련 에러
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAYMENT4001", "결제 정보를 찾을 수 없습니다."),
+    PAYMENT_STATUS_INVALID(HttpStatus.BAD_REQUEST, "PAYMENT4002", "결제 상태가 유효하지 않습니다."),
+    PAYMENT_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST, "PAYMENT4003", "결제 금액이 일치하지 않습니다."),
+    PAYMENT_DUPLICATE(HttpStatus.BAD_REQUEST, "PAYMENT4004", "이미 처리된 결제입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
