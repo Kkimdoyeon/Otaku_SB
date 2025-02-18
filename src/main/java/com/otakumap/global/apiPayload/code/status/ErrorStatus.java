@@ -59,6 +59,9 @@ public enum ErrorStatus implements BaseErrorCode {
     EVENT_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4006", "존재하지 않는 이벤트 종류입니다."),
     EVENT_STATUS_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4007", "존재하지 않는 이벤트 상태입니다."),
 
+    // 이벤트 검색 관련 에러
+    EVENT_SEARCH_NOT_FOUND(HttpStatus.NOT_FOUND, "EVENT4008", "검색된 이벤트가 없습니다."),
+
     // 후기 검색 관련 에러
     REVIEW_SEARCH_NOT_FOUND(HttpStatus.NOT_FOUND, "SEARCH4001", "검색된 후기가 없습니다."),
 
