@@ -57,6 +57,7 @@ public class ReviewResponseDTO {
         String title;
         Long view;
         String content;
+        Long price;
         List<ImageResponseDTO.ImageDTO> reviewImages;
 
         String userName;
