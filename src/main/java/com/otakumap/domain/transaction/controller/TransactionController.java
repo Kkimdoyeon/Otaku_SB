@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -25,7 +22,7 @@ public class TransactionController {
     private final TransactionQueryService transactionQueryService;
 
     @Operation(summary = "구매 내역 확인", description = "구매 내역을 조회합니다.")
-    @PostMapping("/usages")
+    @GetMapping("/usages")
     @Parameters({
             @Parameter(name = "page", description = "페이지 번호입니다. 0부터 시작합니다.", example = "0"),
             @Parameter(name = "size", description = "한 페이지당 내역 수", example = "5"),
@@ -37,7 +34,7 @@ public class TransactionController {
     }
 
     @Operation(summary = "수익 내역 확인", description = "수익 내역을 조회합니다.")
-    @PostMapping("/earnings")
+    @GetMapping("/earnings")
     @Parameters({
             @Parameter(name = "page", description = "페이지 번호입니다. 0부터 시작합니다.", example = "0"),
             @Parameter(name = "size", description = "한 페이지당 불러올 수익 내역 수", example = "5"),
