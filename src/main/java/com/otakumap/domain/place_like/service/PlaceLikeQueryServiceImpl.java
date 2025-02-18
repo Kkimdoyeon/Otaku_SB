@@ -49,7 +49,8 @@ public class PlaceLikeQueryServiceImpl implements PlaceLikeQueryService {
         return createPlaceLikePreviewListDTO(result, limit);
     }
 
-    private PlaceLikeResponseDTO.PlaceLikePreViewListDTO createPlaceLikePreviewListDTO(List<PlaceLike> placeLikes, int limit) {
+    @Override
+    public PlaceLikeResponseDTO.PlaceLikePreViewListDTO createPlaceLikePreviewListDTO(List<PlaceLike> placeLikes, int limit) {
         boolean hasNext = placeLikes.size() > limit;
         Long lastId = null;
 
