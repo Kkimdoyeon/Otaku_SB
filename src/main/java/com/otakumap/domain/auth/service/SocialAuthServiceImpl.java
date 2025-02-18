@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.otakumap.domain.auth.dto.*;
 import com.otakumap.domain.auth.jwt.userdetails.PrincipalDetails;
 import com.otakumap.domain.auth.jwt.util.JwtProvider;
+import com.otakumap.domain.image.entity.Image;
+import com.otakumap.domain.image.repository.ImageRepository;
 import com.otakumap.domain.user.converter.UserConverter;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.domain.user.repository.UserRepository;
@@ -31,6 +33,7 @@ public class SocialAuthServiceImpl implements SocialAuthService {
     private final SocialProperties socialProperties;
     private final RestTemplate restTemplate;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
     private final JwtProvider jwtProvider;
     private final Gson gson;
 
@@ -127,9 +130,12 @@ public class SocialAuthServiceImpl implements SocialAuthService {
     private <T> AuthResponseDTO.LoginResultDTO socialLogin(String provider, T userInfo){
         Optional<User> userOptional = userRepository.findByEmail(getEmail(provider, userInfo));
         User user;
+        // 기본 이미지는 항상 PK값을 1로 가져오도록 설정
+        Image profileImage = imageRepository.findById(1L).orElseThrow(() -> new AuthHandler(ErrorStatus.IMAGE_NOT_FOUND));
 
         if (userOptional.isEmpty()) {    // 회원가입
             user = createUser(provider, userInfo);
+            user.setProfileImage(profileImage);
             userRepository.save(user);
         } else {
             user = userOptional.get();
