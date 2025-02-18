@@ -1,6 +1,5 @@
 package com.otakumap.domain.point.entity;
 
-
 import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.transaction.entity.Transaction;
 import com.otakumap.domain.user.entity.User;
@@ -28,23 +27,29 @@ public class Point extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 충전 받는 사람
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    // 충전된 포인트 금액
     @Column(nullable = false)
     private Long point;
 
+    // 충전된 시간
     @Column(name = "charged_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime chargedAt;
 
+    // 충전한 사람
     @Column(name = "charged_by")
     private String chargedBy;
 
+    // 주문 ID
     @Column(name = "merchant_uid", unique = true, nullable = false)
     private String merchantUid;
 
+    // Iamport 결제 고유 ID
     @Column(name = "imp_uid")
     private String impUid;
 
@@ -54,4 +59,10 @@ public class Point extends BaseEntity {
 
     @OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
+
+    public Point(User user, String merchantUid, Long point) {
+        this.user = user;
+        this.merchantUid = merchantUid;
+        this.point = point;
+    }
 }
