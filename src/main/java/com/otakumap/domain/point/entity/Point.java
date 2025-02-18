@@ -2,6 +2,7 @@ package com.otakumap.domain.point.entity;
 
 
 import com.otakumap.domain.payment.enums.PaymentStatus;
+import com.otakumap.domain.transaction.entity.Transaction;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -48,4 +51,7 @@ public class Point extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentStatus status = PaymentStatus.PENDING;
+
+    @OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
+    private List<Transaction> transactionList = new ArrayList<>();
 }
