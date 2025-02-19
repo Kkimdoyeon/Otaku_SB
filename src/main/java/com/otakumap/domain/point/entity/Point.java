@@ -1,6 +1,5 @@
 package com.otakumap.domain.point.entity;
 
-import com.otakumap.domain.payment.entity.UserPayment;
 import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.transaction.entity.Transaction;
 import com.otakumap.domain.user.entity.User;
@@ -38,7 +37,7 @@ public class Point extends BaseEntity {
     private Long point;
 
     // 충전된 시간
-    @Column(name = "charged_at", nullable = false, updatable = false)
+    @Column(name = "charged_at", nullable = false, updatable = true)
     @CreationTimestamp
     private LocalDateTime chargedAt;
 
@@ -53,27 +52,11 @@ public class Point extends BaseEntity {
     @OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_payment_id", nullable = true)
-    private UserPayment userPayment;
-
     public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user) {
         this.point = point;
         this.chargedAt = chargedAt;
         this.status = status;
         this.user = user;
-    }
-      
-    public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user, UserPayment userPayment) {
-        this.point = point;
-        this.chargedAt = chargedAt;
-        this.status = status;
-        this.user = user;
-        this.userPayment = userPayment; // userPayment 필드를 추가로 설정
-    }
-
-    public void setUserPayment(UserPayment userPayment) {
-        this.userPayment = userPayment;
     }
 
     public void addPoint(Long point) {
@@ -87,5 +70,13 @@ public class Point extends BaseEntity {
 
     public boolean isAffordable(Long point) {
         return this.point >= point;
+    }
+
+    public void setPoint(Long totalPoint) {
+        this.point = totalPoint;
+    }
+
+    public void setChargedAt(LocalDateTime now) {
+        this.chargedAt = now;
     }
 }

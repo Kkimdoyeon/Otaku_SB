@@ -1,90 +1,104 @@
 package com.otakumap.domain.payment.service;
 
-import com.otakumap.domain.payment.dto.PaymentVerifyRequest;
-import com.otakumap.domain.payment.entity.UserPayment;
-import com.otakumap.domain.payment.enums.PaymentStatus;
-import com.otakumap.domain.payment.repository.PaymentRepository;
+import com.otakumap.domain.event_review.repository.EventReviewRepository;
+import com.otakumap.domain.order.dto.OrderDto;
+import com.otakumap.domain.order.repository.OrderRepository;
+import com.otakumap.domain.place_review.repository.PlaceReviewRepository;
+import com.otakumap.domain.point.converter.PointConverter;
 import com.otakumap.domain.point.entity.Point;
 import com.otakumap.domain.point.repository.PointRepository;
+import com.otakumap.domain.transaction.repository.TransactionRepository;
 import com.otakumap.domain.user.entity.User;
-import com.otakumap.global.apiPayload.code.status.ErrorStatus;
-import com.otakumap.global.apiPayload.exception.handler.PaymentHandler;
 import com.siot.IamportRestClient.IamportClient;
-import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PaymentCommandServiceImpl implements PaymentCommandService {
 
     private final IamportClient iamportClient;
+    private final OrderRepository orderRepository;
     private final PointRepository pointRepository;
-    private final PaymentRepository paymentRepository;
 
-    @Transactional
-    public void verifyPayment(User user, PaymentVerifyRequest request) throws IOException, IamportResponseException {
-        // 아임포트 결제 정보 조회
-        IamportResponse<Payment> paymentResponse = iamportClient.paymentByImpUid(request.getImpUid());
-        Payment payment = paymentResponse.getResponse();
-
-        System.out.println("✅ Payment 정보: " + payment.getImpUid() + " " + payment.getMerchantUid() + " " + payment.getAmount());
-
-        if (payment == null) {
-            throw new PaymentHandler(ErrorStatus.PAYMENT_NOT_FOUND);
+    /**
+     * 아임포트 서버로부터 결제 정보를 검증
+     * @param imp_uid
+     */
+    public IamportResponse<Payment> validateIamport(String imp_uid) {
+        try {
+            IamportResponse<Payment> payment = iamportClient.paymentByImpUid(imp_uid);
+            log.info("결제 요청 응답. 결제 내역 - 주문 번호: {}", payment.getResponse());
+            return payment;
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return null;
         }
+    }
 
-        // 결제 상태 확인
-        if (!"paid".equals(payment.getStatus())) {
-            throw new PaymentHandler(ErrorStatus.PAYMENT_STATUS_INVALID);
+    /**
+     * 아임포트 서버로부터 결제 취소 요청
+     *
+     * @param imp_uid
+     * @return
+     */
+    public IamportResponse<Payment> cancelPayment(String imp_uid) {
+        try {
+            CancelData cancelData = new CancelData(imp_uid, true);
+            IamportResponse<Payment> payment = iamportClient.cancelPaymentByImpUid(cancelData);
+            return payment;
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return null;
         }
+    }
 
-        // 결제 금액 검증
-        if (!payment.getAmount().equals(request.getAmount())) {
-            throw new PaymentHandler(ErrorStatus.PAYMENT_AMOUNT_MISMATCH);
+    /**
+     * 주문 정보 저장
+     * @param orderDto
+     * @return
+     */
+    public String saveOrder(OrderDto orderDto, User user){
+        try {
+            // 주문 정보 저장
+            orderRepository.save(orderDto.toEntity());
+
+            // 사용자에 해당하는 모든 Point 객체 조회
+            List<Point> existingPoints = pointRepository.findByUserId(user.getId());
+
+            // 기존 포인트가 없다면 새로 생성하여 저장
+            if (existingPoints.isEmpty()) {
+                PointConverter.savePoint(orderDto, user);
+            } else {
+                // 여러 포인트 객체가 있을 때 합산
+                Long totalPoint = existingPoints.stream()
+                        .mapToLong(Point::getPoint)
+                        .sum(); // 여러 포인트 합산
+
+                // 새로 받은 포인트 합산
+                totalPoint += orderDto.getPrice();
+
+                // 첫 번째 Point 객체에 업데이트하거나, 새로 포인트 객체를 만들어서 저장
+                Point updatedPoint = existingPoints.get(0); // 기존 첫 번째 Point 객체 선택
+                updatedPoint.setPoint(totalPoint); // 합산된 포인트로 업데이트
+                updatedPoint.setChargedAt(LocalDateTime.now());
+                pointRepository.save(updatedPoint);
+            }
+            return "주문 정보가 성공적으로 저장되었습니다.";
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            cancelPayment(orderDto.getImpUid());
+            return "주문 정보 저장에 실패했습니다.";
         }
-
-        // 중복 결제 방지
-        if (paymentRepository.findByMerchantUid(request.getMerchantUid()).isPresent()) {
-            throw new PaymentHandler(ErrorStatus.PAYMENT_DUPLICATE);
-        }
-
-        // 포인트 먼저 생성 후 저장
-        Point point = new Point(
-                Long.valueOf(String.valueOf(payment.getAmount())), // 충전된 포인트
-                LocalDateTime.now(), // 충전 시간
-                PaymentStatus.PAID, // 상태 설정
-                user, // 사용자 정보
-                null  // 🔥 UserPayment는 아직 생성되지 않았으므로 null로 설정
-        );
-
-        point = pointRepository.save(point);
-
-        // 포인트를 포함한 UserPayment 생성 및 저장
-        UserPayment userPayment = UserPayment.builder()
-                .user(user)
-                .impUid(payment.getImpUid())
-                .merchantUid(payment.getMerchantUid())
-                .amount(payment.getAmount().longValue())
-                .verifiedAt(LocalDateTime.now())
-                .status(PaymentStatus.PAID)
-                .point(point)
-                .build();
-
-        userPayment = paymentRepository.save(userPayment);
-
-        // Point에 UserPayment 설정 후 다시 저장
-        point.setUserPayment(userPayment);
-        pointRepository.save(point);
-
-        System.out.println("✅ UserPayment 정보: " + userPayment);
-        System.out.println("✅ 생성된 Point 정보: " + point);
     }
 }

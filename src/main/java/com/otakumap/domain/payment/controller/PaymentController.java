@@ -1,13 +1,11 @@
 package com.otakumap.domain.payment.controller;
 
-import com.otakumap.domain.auth.jwt.annotation.CurrentUser;
-import com.otakumap.domain.payment.dto.PaymentVerifyRequest;
 import com.otakumap.domain.payment.service.PaymentCommandService;
-import com.otakumap.domain.user.entity.User;
-import com.otakumap.global.apiPayload.ApiResponse;
 import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -18,23 +16,24 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
-@Validated
 @Slf4j
+@Validated
+@Tag(name = "Payments", description = "결제 API")
 public class PaymentController {
 
     private final PaymentCommandService paymentCommandService;
 
-    @Operation(summary = "결제 검증", description = "결제가 제대로 진행됐는지 검증합니다.")
-    @PostMapping("/verify")
-    public ApiResponse<String> verifyPayment(
-            @Valid @RequestBody PaymentVerifyRequest request,
-            @CurrentUser User user
-    ) throws IamportResponseException, IOException {
+    @Operation(summary = "아임포트 결제 정보 검증", description = "아임포트 결제 정보를 검증합니다.")
+    @PostMapping("/verify/{imp_uid}")
+    public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid) throws IamportResponseException, IOException {
+        log.info("imp_uid: {}", imp_uid);
+        log.info("validateIamport");
+        return paymentCommandService.validateIamport(imp_uid);
+    }
 
-        // 결제 검증 서비스 호출
-        paymentCommandService.verifyPayment(user, request);
-
-        // 성공적인 응답 반환
-        return ApiResponse.onSuccess("결제가 검증되었습니다.");
+    @Operation(summary = "결제 취소", description = "결제를 취소합니다.")
+    @PostMapping("/cancel/{imp_uid}")
+    public IamportResponse<Payment> cancelPayment(@PathVariable String imp_uid) throws IamportResponseException, IOException {
+        return paymentCommandService.cancelPayment(imp_uid);
     }
 }
