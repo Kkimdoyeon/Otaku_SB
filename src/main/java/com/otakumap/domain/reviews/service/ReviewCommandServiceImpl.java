@@ -8,6 +8,7 @@ import com.otakumap.domain.event_review_place.repository.EventReviewPlaceReposit
 import com.otakumap.domain.image.service.ImageCommandService;
 import com.otakumap.domain.mapping.EventReviewPlace;
 import com.otakumap.domain.mapping.PlaceReviewPlace;
+import com.otakumap.domain.notification.service.NotificationCommandService;
 import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place.repository.PlaceRepository;
 import com.otakumap.domain.place_animation.repository.PlaceAnimationRepository;
@@ -52,6 +53,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
     private final PlaceAnimationRepository placeAnimationRepository;
     private final PlaceReviewPlaceRepository placeReviewPlaceRepository;
     private final EventReviewPlaceRepository eventReviewPlaceRepository;
+    private final NotificationCommandService notificationCommandService;
 
     @Override
     @Transactional
@@ -141,6 +143,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 
     @Override
     public ReviewResponseDTO.PurchaseReviewDTO purchaseReview(User user, Long reviewId, ReviewType type) {
+        notificationCommandService.notifyReviewPurchased(user, reviewId, type);
         return reviewRepositoryCustom.purchaseReview(user, reviewId, type);
     }
 }
