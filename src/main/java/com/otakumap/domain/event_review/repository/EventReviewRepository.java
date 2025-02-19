@@ -20,5 +20,6 @@ public interface EventReviewRepository extends JpaRepository<EventReview, Long> 
     @Query("SELECT er.user FROM EventReview er WHERE er.id = :reviewId")
     User findUserById(@Param("reviewId") Long reviewId);
     List<EventReview> findAllByUserId(Long userId);
+    void deleteAllByUserId(Long userId);
 }
 

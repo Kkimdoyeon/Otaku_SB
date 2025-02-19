@@ -6,6 +6,7 @@ import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.event_review.repository.EventReviewRepository;
 import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.EventHandler;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,5 +23,11 @@ public class EventReviewCommandServiceImpl implements EventReviewCommandService 
     public Page<EventReview> getEventReviews(Long eventId, Integer page) {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_NOT_FOUND));
         return eventReviewRepository.findAllByEvent(event, PageRequest.of(page, 4));
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllByUserId(Long userId) {
+        eventReviewRepository.deleteAllByUserId(userId);
     }
 }

@@ -5,4 +5,5 @@ import org.springframework.data.domain.Page;
 
 public interface EventReviewCommandService {
     Page<EventReview> getEventReviews(Long eventId, Integer page);
+    void deleteAllByUserId(Long userId);
 }
