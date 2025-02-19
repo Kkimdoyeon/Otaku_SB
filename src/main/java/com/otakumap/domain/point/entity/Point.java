@@ -60,9 +60,29 @@ public class Point extends BaseEntity {
     @OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
 
+    public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user) {
+        this.point = point;
+        this.chargedAt = chargedAt;
+        this.status = status;
+        this.user = user;
+    }
+
     public Point(User user, String merchantUid, Long point) {
         this.user = user;
         this.merchantUid = merchantUid;
         this.point = point;
+    }
+
+    public void addPoint(Long point) {
+        this.point += point;
+    }
+
+    public Long subPoint(Long point) {
+        this.point -= point;
+        return this.point;
+    }
+
+    public boolean isAffordable(Long point) {
+        return this.point >= point;
     }
 }

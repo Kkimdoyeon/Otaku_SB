@@ -16,4 +16,7 @@ public interface EventReviewRepository extends JpaRepository<EventReview, Long> 
     Optional<EventReview> findByRouteId(Long routeId);
     @Query("SELECT er.user FROM EventReview er WHERE er.route.id = :routeId")
     Optional<User> findUserByRouteId(@Param("routeId") Long routeId);
+    @Query("SELECT er.user FROM EventReview er WHERE er.id = :reviewId")
+    User findUserById(@Param("reviewId") Long reviewId);
 }
+
