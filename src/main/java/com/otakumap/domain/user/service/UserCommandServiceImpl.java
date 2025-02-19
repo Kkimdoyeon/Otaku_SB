@@ -96,7 +96,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     @Transactional
     public void changePassword(User user, UserRequestDTO.ChangePasswordDTO request) {
-        user.updatePassword(passwordEncoder.encode(request.getPassword()));
+        user.encodePassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
     }
 }
