@@ -4,7 +4,6 @@ import com.otakumap.domain.event.entity.Event;
 import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.user.entity.User;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +19,6 @@ public interface EventReviewRepository extends JpaRepository<EventReview, Long> 
     Optional<User> findUserByRouteId(@Param("routeId") Long routeId);
     @Query("SELECT er.user FROM EventReview er WHERE er.id = :reviewId")
     User findUserById(@Param("reviewId") Long reviewId);
-//    Page<EventReview> findAllByUserId(Long userId, PageRequest pageRequest);
     List<EventReview> findAllByUserId(Long userId);
 }
 

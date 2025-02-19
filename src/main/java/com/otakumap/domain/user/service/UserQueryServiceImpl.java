@@ -45,7 +45,6 @@ public class UserQueryServiceImpl implements UserQueryService {
             sortOrder = Sort.by(Sort.Order.desc("view"), Sort.Order.desc("createdAt"));
         }
 
-        // 전체 데이터를 먼저 가져옵니다
         List<PlaceReview> placeReviews = placeReviewRepository.findAllByUserId(user.getId());
         List<EventReview> eventReviews = eventReviewRepository.findAllByUserId(user.getId());
 

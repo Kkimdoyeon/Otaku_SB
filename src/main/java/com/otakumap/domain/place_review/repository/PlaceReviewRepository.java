@@ -13,7 +13,6 @@ import java.util.Optional;
 
 
 public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long>, PlaceReviewRepositoryCustom {
-//    Page<PlaceReview> findAllByUserId(Long userId, PageRequest pageRequest);
     List<PlaceReview> findAllByUserId(Long userId);
     void deleteAllByUserId(Long userId);
     Optional<PlaceReview> findByRouteId(Long routeId);
