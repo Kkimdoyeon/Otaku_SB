@@ -106,4 +106,11 @@ public class UserController {
         userCommandService.changeEmail(user, request);
         return ApiResponse.onSuccess("이메일 변경이 성공적으로 완료되었습니다.");
     }
+
+    @PatchMapping("/password")
+    @Operation(summary = "비밀번호 변경 API", description = "비밀번호 변경을 위한 기능입니다.")
+    public ApiResponse<String> changePassword(@RequestBody @Valid UserRequestDTO.ChangePasswordDTO request, @CurrentUser User user) {
+        userCommandService.changePassword(user, request);
+        return ApiResponse.onSuccess("비밀번호 변경이 성공적으로 완료되었습니다.");
+    }
 }

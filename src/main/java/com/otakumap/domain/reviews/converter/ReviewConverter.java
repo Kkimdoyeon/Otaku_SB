@@ -5,7 +5,6 @@ import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.image.converter.ImageConverter;
 import com.otakumap.domain.image.dto.ImageResponseDTO;
 import com.otakumap.domain.image.entity.Image;
-import com.otakumap.domain.mapping.EventAnimation;
 import com.otakumap.domain.mapping.EventReviewPlace;
 import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.mapping.PlaceReviewPlace;
@@ -114,6 +113,7 @@ public class ReviewConverter {
                 .title(eventReview.getTitle())
                 .view(eventReview.getView())
                 .content(eventReview.getContent())
+                .price(eventReview.getPrice())
                 .reviewImages(eventReview.getImages().stream()
                         .filter(Objects::nonNull)
                         .map(ImageConverter::toImageDTO)

@@ -3,9 +3,13 @@ package com.otakumap.domain.place_short_review.entity;
 import com.otakumap.domain.mapping.PlaceAnimation;
 import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.user.entity.User;
+import com.otakumap.domain.user_reaction.entity.UserReaction;
 import com.otakumap.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +44,9 @@ public class PlaceShortReview extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_animation_id")
     private PlaceAnimation placeAnimation;
+
+    @OneToMany(mappedBy = "placeShortReview", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<UserReaction> reactions = new ArrayList<>();
 
     public void updateLikes(Long likes) { this.likes = likes; }
 

@@ -18,6 +18,7 @@ import com.otakumap.domain.reviews.converter.ReviewConverter;
 import com.otakumap.domain.reviews.dto.ReviewRequestDTO;
 import com.otakumap.domain.reviews.dto.ReviewResponseDTO;
 import com.otakumap.domain.reviews.enums.ReviewType;
+import com.otakumap.domain.reviews.repository.ReviewRepositoryCustom;
 import com.otakumap.domain.route.converter.RouteConverter;
 import com.otakumap.domain.route.entity.Route;
 import com.otakumap.domain.route.repository.RouteRepository;
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReviewCommandServiceImpl implements ReviewCommandService {
+    private final ReviewRepositoryCustom reviewRepositoryCustom;
     private final PlaceReviewRepository placeReviewRepository;
     private final EventReviewRepository eventReviewRepository;
     private final AnimationRepository animationRepository;
@@ -135,5 +137,10 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         } else {
             throw new ReviewHandler(ErrorStatus.INVALID_REVIEW_TYPE);
         }
+    }
+
+    @Override
+    public ReviewResponseDTO.PurchaseReviewDTO purchaseReview(User user, Long reviewId, ReviewType type) {
+        return reviewRepositoryCustom.purchaseReview(user, reviewId, type);
     }
 }

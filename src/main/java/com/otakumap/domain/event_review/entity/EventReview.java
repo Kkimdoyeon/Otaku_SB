@@ -37,6 +37,9 @@ public class EventReview extends BaseEntity {
     @Column(columnDefinition = "bigint default 0 not null")
     private Long view;
 
+    @Column(columnDefinition = "bigint default 0 not null")
+    private Long price;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventReview")
     private List<Image> images = new ArrayList<>();
 
