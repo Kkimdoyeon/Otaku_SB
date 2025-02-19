@@ -1,8 +1,8 @@
-package com.otakumap.domain.event_reaction.service;
+package com.otakumap.domain.event_short_review_reaction.service;
 
-import com.otakumap.domain.event_reaction.converter.EventReactionConverter;
-import com.otakumap.domain.event_reaction.entity.EventReaction;
-import com.otakumap.domain.event_reaction.repository.EventReactionRepository;
+import com.otakumap.domain.event_short_review_reaction.converter.EventShortReviewReactionConverter;
+import com.otakumap.domain.event_short_review_reaction.entity.EventShortReviewReaction;
+import com.otakumap.domain.event_short_review_reaction.repository.EventShortReviewReactionRepository;
 import com.otakumap.domain.event_short_review.entity.EventShortReview;
 import com.otakumap.domain.event_short_review.repository.EventShortReviewRepository;
 import com.otakumap.domain.user.entity.User;
@@ -14,54 +14,54 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EventReactionCommandServiceImpl implements EventReactionCommandService {
-    private final EventReactionRepository eventReactionRepository;
+public class EventShortReviewReactionCommandServiceImpl implements EventShortReviewReactionCommandService {
+    private final EventShortReviewReactionRepository eventShortReviewReactionRepository;
     private final EventShortReviewRepository eventShortReviewRepository;
 
     @Override
     @Transactional
-    public EventReaction reactToReview(User user, Long reviewId, int reactionType) {
+    public EventShortReviewReaction reactToReview(User user, Long reviewId, int reactionType) {
         EventShortReview eventShortReview = eventShortReviewRepository.findById(reviewId).orElseThrow(() -> new ReviewHandler(ErrorStatus.PLACE_REVIEW_NOT_FOUND));
 
-        EventReaction eventReaction = eventReactionRepository.findByUserIdAndEventShortReviewId(user.getId(), reviewId).orElse(null);
+        EventShortReviewReaction eventShortReviewReaction = eventShortReviewReactionRepository.findByUserIdAndEventShortReviewId(user.getId(), reviewId).orElse(null);
 
-        if (eventReaction == null) {
+        if (eventShortReviewReaction == null) {
             if (reactionType == 0) { // dislike
-                eventReaction = EventReactionConverter.toDislike(user, eventShortReview, true);
+                eventShortReviewReaction = EventShortReviewReactionConverter.toDislike(user, eventShortReview, true);
                 eventShortReview.updateDislikes(eventShortReview.getDislikes() + 1);
             } else { // like
-                eventReaction = EventReactionConverter.toLike(user, eventShortReview, true);
+                eventShortReviewReaction = EventShortReviewReactionConverter.toLike(user, eventShortReview, true);
                 eventShortReview.updateLikes(eventShortReview.getLikes() + 1);
             }
         } else {
             if (reactionType == 0) { // dislike
-                if (!eventReaction.isDisliked()) {
-                    eventReaction.updateDisliked(true);
-                    eventReaction.updateLiked(false);
+                if (!eventShortReviewReaction.isDisliked()) {
+                    eventShortReviewReaction.updateDisliked(true);
+                    eventShortReviewReaction.updateLiked(false);
                     eventShortReview.updateDislikes(eventShortReview.getDislikes() + 1);
-                    if (eventReaction.isLiked()) {
+                    if (eventShortReviewReaction.isLiked()) {
                         eventShortReview.updateLikes(eventShortReview.getLikes() - 1);
                     }
                 } else {
-                    eventReaction.updateDisliked(false);
+                    eventShortReviewReaction.updateDisliked(false);
                     eventShortReview.updateDislikes(eventShortReview.getDislikes() - 1);
                 }
             } else { // like
-                if (!eventReaction.isLiked()) {
-                    eventReaction.updateLiked(true);
-                    eventReaction.updateDisliked(false);
+                if (!eventShortReviewReaction.isLiked()) {
+                    eventShortReviewReaction.updateLiked(true);
+                    eventShortReviewReaction.updateDisliked(false);
                     eventShortReview.updateLikes(eventShortReview.getLikes() + 1);
-                    if (eventReaction.isDisliked()) {
+                    if (eventShortReviewReaction.isDisliked()) {
                         eventShortReview.updateDislikes(eventShortReview.getDislikes() - 1);
                     }
                 } else {
-                    eventReaction.updateLiked(false);
+                    eventShortReviewReaction.updateLiked(false);
                     eventShortReview.updateLikes(eventShortReview.getLikes() - 1);
                 }
             }
         }
 
         eventShortReviewRepository.save(eventShortReview);
-        return eventReactionRepository.save(eventReaction);
+        return eventShortReviewReactionRepository.save(eventShortReviewReaction);
     }
 }
