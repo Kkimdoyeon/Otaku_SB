@@ -1,7 +1,6 @@
 package com.otakumap.domain.user.contoller;
 
 import com.otakumap.domain.auth.jwt.annotation.CurrentUser;
-import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.place_review.service.PlaceReviewCommandService;
 import com.otakumap.domain.user.converter.UserConverter;
 import com.otakumap.domain.user.dto.UserRequestDTO;
@@ -72,7 +71,7 @@ public class UserController {
     public ApiResponse<UserResponseDTO.UserReviewListDTO> getMyReviews(
             @CurrentUser User user, @CheckPage @RequestParam(name = "page") Integer page,
             @RequestParam(name = "sort", defaultValue = "createdAt") String sort) {
-        Page<PlaceReview> reviews = userQueryService.getMyReviews(user, page, sort);
+        Page<UserResponseDTO.UserReviewDTO> reviews = userQueryService.getMyReviews(user, page, sort);
         return ApiResponse.onSuccess(UserConverter.reviewListDTO(reviews));
     }
 

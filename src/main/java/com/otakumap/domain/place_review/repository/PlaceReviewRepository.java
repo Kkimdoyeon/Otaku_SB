@@ -8,11 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 
 public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long>, PlaceReviewRepositoryCustom {
-    Page<PlaceReview> findAllByUserId(Long userId, PageRequest pageRequest);
+//    Page<PlaceReview> findAllByUserId(Long userId, PageRequest pageRequest);
+    List<PlaceReview> findAllByUserId(Long userId);
     void deleteAllByUserId(Long userId);
     Optional<PlaceReview> findByRouteId(Long routeId);
     @Query("SELECT pr.user FROM PlaceReview pr WHERE pr.route.id = :routeId")
