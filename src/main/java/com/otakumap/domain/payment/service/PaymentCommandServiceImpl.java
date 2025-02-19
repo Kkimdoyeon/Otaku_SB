@@ -56,7 +56,6 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
             throw new PaymentHandler(ErrorStatus.PAYMENT_DUPLICATE);
         }
 
-
         // 포인트 먼저 생성 후 저장
         Point point = new Point(
                 Long.valueOf(String.valueOf(payment.getAmount())), // 충전된 포인트
