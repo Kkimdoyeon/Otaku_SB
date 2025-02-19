@@ -4,16 +4,28 @@ import com.otakumap.domain.animation.entity.QAnimation;
 import com.otakumap.domain.event.entity.QEvent;
 import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.event_review.entity.QEventReview;
+import com.otakumap.domain.event_review.repository.EventReviewRepository;
 import com.otakumap.domain.mapping.QEventAnimation;
 import com.otakumap.domain.mapping.QPlaceAnimation;
 import com.otakumap.domain.mapping.QPlaceReviewPlace;
+import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.place.entity.QPlace;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.place_review.entity.QPlaceReview;
+import com.otakumap.domain.place_review.repository.PlaceReviewRepository;
+import com.otakumap.domain.point.entity.Point;
+import com.otakumap.domain.point.repository.PointRepository;
 import com.otakumap.domain.reviews.converter.ReviewConverter;
 import com.otakumap.domain.reviews.dto.ReviewResponseDTO;
+import com.otakumap.domain.reviews.enums.ReviewType;
+import com.otakumap.domain.transaction.entity.Transaction;
+import com.otakumap.domain.transaction.enums.TransactionType;
+import com.otakumap.domain.transaction.repository.TransactionRepository;
+import com.otakumap.domain.user.entity.User;
 import com.otakumap.global.apiPayload.code.status.ErrorStatus;
+import com.otakumap.global.apiPayload.exception.handler.ReviewHandler;
 import com.otakumap.global.apiPayload.exception.handler.SearchHandler;
+import com.otakumap.global.apiPayload.exception.handler.TransactionHandler;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,9 +35,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +48,10 @@ import java.util.stream.Stream;
 public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final EventReviewRepository eventReviewRepository;
+    private final PointRepository pointRepository;
+    private final PlaceReviewRepository placeReviewRepository;
+    private final TransactionRepository transactionRepository;
 
     @Override
     public Page<ReviewResponseDTO.SearchedReviewPreViewDTO> getReviewsByKeyword(String keyword, int page, int size, String sort) {
@@ -143,5 +161,70 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .collect(Collectors.toList());
 
         return ReviewConverter.top7ReviewPreViewListDTO(top7Reviews);
+    }
+
+    @Override
+    public ReviewResponseDTO.PurchaseReviewDTO purchaseReview(User user, Long reviewId, ReviewType type) {
+        Point buyerPoint = pointRepository.findTopByUserOrderByCreatedAtDesc(user);
+        // 이벤트 리뷰인 경우
+        if(type == ReviewType.EVENT) {
+            EventReview review = eventReviewRepository.findById(reviewId)
+                    .orElseThrow(() -> new ReviewHandler(ErrorStatus.EVENT_REVIEW_NOT_FOUND));
+            if (transactionRepository.existsByPoint_UserAndEventReview(user, review)) {
+                throw new TransactionHandler(ErrorStatus.PURCHASE_ALREADY_EXISTS);
+            }
+
+            return processReviewPurchase(user, buyerPoint, review, review.getPrice(),
+                    eventReviewRepository.findUserById(reviewId), true);
+        }
+        // 장소 리뷰인 경우
+        PlaceReview review = placeReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewHandler(ErrorStatus.PLACE_REVIEW_NOT_FOUND));
+        if (transactionRepository.existsByPoint_UserAndPlaceReview(user, review)) {
+            throw new TransactionHandler(ErrorStatus.PURCHASE_ALREADY_EXISTS);
+        }
+
+        return processReviewPurchase(user, buyerPoint, review, review.getPrice(),
+                placeReviewRepository.findUserById(reviewId), false);
+    }
+
+    private ReviewResponseDTO.PurchaseReviewDTO processReviewPurchase(
+            User user, Point buyerPoint, Object review, Long price, User seller, boolean isEventReview) {
+        // 무료 글인 경우
+        if(price == 0L) {
+            throw new TransactionHandler(ErrorStatus.PURCHASE_FREE_CONTENT);
+        }
+        // 포인트 부족 확인
+        if (!buyerPoint.isAffordable(price)) {
+            throw new TransactionHandler(ErrorStatus.PURCHASE_INSUFFICIENT_POINTS);
+        }
+        // 글쓴이와 구매자가 다른지 확인
+        if (Objects.equals(user.getId(), seller.getId())) {
+            throw new TransactionHandler(ErrorStatus.PURCHASE_SELF_CONTENT);
+        }
+
+        Point sellerPoint = pointRepository.findTopByUserOrderByCreatedAtDesc(seller);
+        if (sellerPoint == null) {
+            sellerPoint = new Point(0L, LocalDateTime.now(), PaymentStatus.PAID, seller);
+        }
+
+        // 포인트 수정 후 업데이트
+        sellerPoint.addPoint(price);
+        Long remainingPoints = buyerPoint.subPoint(price);
+        pointRepository.save(sellerPoint);
+        pointRepository.save(buyerPoint);
+
+        int priceInt = Math.toIntExact(price);
+        // 거래 내역 저장(사용한 것과 번 것)
+        if (isEventReview) {
+            transactionRepository.save(new Transaction(buyerPoint, TransactionType.USAGE, priceInt, (EventReview) review, null));
+            transactionRepository.save(new Transaction(sellerPoint, TransactionType.EARNING, priceInt, (EventReview) review, null));
+        } else {
+            transactionRepository.save(new Transaction(buyerPoint, TransactionType.USAGE, priceInt, null, (PlaceReview) review));
+            transactionRepository.save(new Transaction(sellerPoint, TransactionType.EARNING, priceInt, null, (PlaceReview) review));
+        }
+        return ReviewResponseDTO.PurchaseReviewDTO.builder()
+                .remainingPoints(remainingPoints)
+                .build();
     }
 }

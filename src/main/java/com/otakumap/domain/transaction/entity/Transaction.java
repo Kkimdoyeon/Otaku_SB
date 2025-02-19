@@ -41,4 +41,16 @@ public class Transaction extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_review_id", referencedColumnName = "id")
     private PlaceReview placeReview;
+
+    public Transaction(Point point, TransactionType type, int amount, EventReview eventReview, PlaceReview placeReview) {
+        this.point = point;
+        this.type = type;
+        this.amount = amount;
+
+        if(eventReview != null) {
+            this.eventReview = eventReview;
+        } else {
+            this.placeReview = placeReview;
+        }
+    }
 }

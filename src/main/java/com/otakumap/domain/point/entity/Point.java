@@ -58,6 +58,18 @@ public class Point extends BaseEntity {
     @JoinColumn(name = "user_payment_id", nullable = true)
     private UserPayment userPayment;
 
+    public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user) {
+        this.point = point;
+        this.chargedAt = chargedAt;
+        this.status = status;
+        this.user = user;
+    }
+
+    public Point(User user, String merchantUid, Long point) {
+        this.user = user;
+        this.merchantUid = merchantUid;
+    }
+      
     public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user, UserPayment userPayment) {
         this.point = point;
         this.chargedAt = chargedAt;
@@ -68,5 +80,18 @@ public class Point extends BaseEntity {
 
     public void setUserPayment(UserPayment userPayment) {
         this.userPayment = userPayment;
+    }
+
+    public void addPoint(Long point) {
+        this.point += point;
+    }
+
+    public Long subPoint(Long point) {
+        this.point -= point;
+        return this.point;
+    }
+
+    public boolean isAffordable(Long point) {
+        return this.point >= point;
     }
 }

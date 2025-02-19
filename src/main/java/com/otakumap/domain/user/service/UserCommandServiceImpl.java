@@ -11,14 +11,11 @@ import com.otakumap.global.apiPayload.exception.handler.AuthHandler;
 import com.otakumap.global.apiPayload.exception.handler.UserHandler;
 import com.otakumap.global.util.EmailUtil;
 import com.otakumap.global.util.RedisUtil;
-import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -93,6 +90,13 @@ public class UserCommandServiceImpl implements UserCommandService {
         }
 
         user.updateEmail(request.getEmail());
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(User user, UserRequestDTO.ChangePasswordDTO request) {
+        user.encodePassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
     }
 }

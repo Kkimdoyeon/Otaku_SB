@@ -54,4 +54,14 @@ public class EventController {
             @RequestParam Integer size) {
         return ApiResponse.onSuccess(EventConverter.toEventSearchResultDTO(eventCustomService.searchEventByCategory(genre, status, type, page, size)));
     }
+
+    @Operation(summary = "이벤트 이름/작품명으로 이벤트 검색", description = "이벤트 이름과 작품명으로 이벤트를 검색합니다.")
+    @GetMapping("/events/search")
+    public ApiResponse<EventResponseDTO.EventSearchResultDTO> searchEventByKeyword(
+            @Parameter(description = "검색어") @RequestParam String keyword,
+            @Parameter(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam Integer page,
+            @Parameter(description = "한 페이지에 가져올 이벤트 개수", example = "10") @RequestParam Integer size) {
+
+        return ApiResponse.onSuccess(eventQueryService.searchEventByKeyword(keyword, page, size));
+    }
 }

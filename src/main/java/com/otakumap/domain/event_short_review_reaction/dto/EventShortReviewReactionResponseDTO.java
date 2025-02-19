@@ -1,11 +1,11 @@
-package com.otakumap.domain.event_reaction.dto;
+package com.otakumap.domain.event_short_review_reaction.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class EventReactionResponseDTO {
+public class EventShortReviewReactionResponseDTO {
     @Builder
     @Getter
     @NoArgsConstructor

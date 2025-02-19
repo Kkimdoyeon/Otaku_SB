@@ -1,5 +1,6 @@
 package com.otakumap.domain.event_short_review.entity;
 
+import com.otakumap.domain.event_short_review_reaction.entity.EventShortReviewReaction;
 import com.otakumap.domain.user.entity.User;
 import com.otakumap.domain.event.entity.Event;
 import com.otakumap.global.common.BaseEntity;
@@ -8,6 +9,9 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +44,9 @@ public class EventShortReview extends BaseEntity {
 
     @ColumnDefault("0")
     private Long dislikes;
+
+    @OneToMany(mappedBy = "eventShortReview", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<EventShortReviewReaction> reactions = new ArrayList<>();
 
     public void setContent(String content) {
         this.content = content;

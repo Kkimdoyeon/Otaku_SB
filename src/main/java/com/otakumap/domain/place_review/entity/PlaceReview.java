@@ -36,6 +36,9 @@ public class PlaceReview extends BaseEntity {
     @Column(columnDefinition = "bigint default 0 not null")
     private Long view;
 
+    @Column(columnDefinition = "bigint default 0 not null")
+    private Long price;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "placeReview", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 

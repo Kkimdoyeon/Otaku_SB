@@ -59,6 +59,9 @@ public enum ErrorStatus implements BaseErrorCode {
     EVENT_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4006", "존재하지 않는 이벤트 종류입니다."),
     EVENT_STATUS_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4007", "존재하지 않는 이벤트 상태입니다."),
 
+    // 이벤트 검색 관련 에러
+    EVENT_SEARCH_NOT_FOUND(HttpStatus.NOT_FOUND, "EVENT4008", "검색된 이벤트가 없습니다."),
+
     // 후기 검색 관련 에러
     REVIEW_SEARCH_NOT_FOUND(HttpStatus.NOT_FOUND, "SEARCH4001", "검색된 후기가 없습니다."),
 
@@ -112,7 +115,13 @@ public enum ErrorStatus implements BaseErrorCode {
     PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAYMENT4001", "결제 정보를 찾을 수 없습니다."),
     PAYMENT_STATUS_INVALID(HttpStatus.BAD_REQUEST, "PAYMENT4002", "결제 상태가 유효하지 않습니다."),
     PAYMENT_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST, "PAYMENT4003", "결제 금액이 일치하지 않습니다."),
-    PAYMENT_DUPLICATE(HttpStatus.BAD_REQUEST, "PAYMENT4004", "이미 처리된 결제입니다.");
+    PAYMENT_DUPLICATE(HttpStatus.BAD_REQUEST, "PAYMENT4004", "이미 처리된 결제입니다."),
+
+    // 내부 결제 관련 에러
+    PURCHASE_FREE_CONTENT(HttpStatus.BAD_REQUEST, "PURCHASE4001", "무료이므로 결제가 불가능합니다."),
+    PURCHASE_INSUFFICIENT_POINTS(HttpStatus.FORBIDDEN, "PURCHASE4002", "포인트가 모자라 결제가 불가능합니다."),
+    PURCHASE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "PURCHASE4003", "이미 결제된 글입니다."),
+    PURCHASE_SELF_CONTENT(HttpStatus.BAD_REQUEST, "PURCHASE4004", "본인의 글은 결제할 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
