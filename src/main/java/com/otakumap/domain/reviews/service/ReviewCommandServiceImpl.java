@@ -101,9 +101,11 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
                         .orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND)))
                 .collect(Collectors.toList());
 
+        Long price = (request.getVisibility() == ReviewRequestDTO.Visibility.PUBLIC) ? 0L : 500L;
+
         if (request.getReviewType() == ReviewType.PLACE) {
             // 먼저 PlaceReview를 저장
-            PlaceReview placeReview = ReviewConverter.toPlaceReview(request, user, route);
+            PlaceReview placeReview = ReviewConverter.toPlaceReview(request, user, route, price);
             placeReview.setAnimation(animation);
             placeReview = placeReviewRepository.save(placeReview);
 
@@ -121,7 +123,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             return ReviewConverter.toCreatedReviewDTO(placeReview.getId(), placeReview.getTitle());
         } else if (request.getReviewType() == ReviewType.EVENT) {
             // 먼저 EventReview를 저장
-            EventReview eventReview = ReviewConverter.toEventReview(request, user, route);
+            EventReview eventReview = ReviewConverter.toEventReview(request, user, route, price);
             eventReview.setAnimation(animation);
             eventReview = eventReviewRepository.save(eventReview);
 

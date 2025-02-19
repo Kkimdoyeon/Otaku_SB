@@ -133,23 +133,25 @@ public class ReviewConverter {
                 .build();
     }
 
-    public static EventReview toEventReview(ReviewRequestDTO.CreateDTO request, User user, Route route) {
+    public static EventReview toEventReview(ReviewRequestDTO.CreateDTO request, User user, Route route, Long price) {
         return EventReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
                 .route(route)
+                .price(price)
                 .build();
     }
 
-    public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, Route route) {
+    public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, Route route, Long price) {
         return PlaceReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
                 .route(route)
+                .price(price)
                 .build();
     }
 
