@@ -34,6 +34,12 @@ public class Transaction extends BaseEntity {
     @Column(name = "amount", nullable = false)
     private int amount;
 
+    @Column(name = "imp_uid")
+    private String impUid;
+
+    @Column(name = "merchant_uid")
+    private String merchantUid;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_review_id", referencedColumnName = "id")
     private EventReview eventReview;

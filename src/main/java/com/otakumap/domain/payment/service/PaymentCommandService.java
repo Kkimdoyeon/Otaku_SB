@@ -1,13 +1,14 @@
 package com.otakumap.domain.payment.service;
 
-import com.otakumap.domain.payment.dto.PaymentVerifyRequest;
+import com.otakumap.domain.order.dto.OrderDto;
 import com.otakumap.domain.user.entity.User;
-import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 public interface PaymentCommandService {
-    void verifyPayment(User user, PaymentVerifyRequest request) throws IamportResponseException, IOException;
+    IamportResponse<Payment> validateIamport(String imp_uid);
+    IamportResponse<Payment> cancelPayment(String imp_uid);
+    String saveOrder(OrderDto orderDto, User user);
 }
