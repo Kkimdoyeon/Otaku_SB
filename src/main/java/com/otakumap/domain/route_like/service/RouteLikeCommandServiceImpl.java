@@ -1,11 +1,9 @@
 package com.otakumap.domain.route_like.service;
 
-import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.event_review.repository.EventReviewRepository;
 import com.otakumap.domain.notification.service.NotificationCommandService;
 import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place.repository.PlaceRepository;
-import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.place_review.repository.PlaceReviewRepository;
 import com.otakumap.domain.route.converter.RouteConverter;
 import com.otakumap.domain.route.entity.Route;
