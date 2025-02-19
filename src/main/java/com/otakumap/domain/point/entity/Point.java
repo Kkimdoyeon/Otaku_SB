@@ -46,7 +46,7 @@ public class Point extends BaseEntity {
     private String chargedBy;
 
     // 주문 ID
-    @Column(name = "merchant_uid")
+    @Column(name = "merchant_uid", unique = true, nullable = false)
     private String merchantUid;
 
     // Iamport 결제 고유 ID

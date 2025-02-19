@@ -169,7 +169,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         // 이벤트 리뷰인 경우
         if(type == ReviewType.EVENT) {
             EventReview review = eventReviewRepository.findById(reviewId)
-                    .orElseThrow(() -> new ReviewHandler(ErrorStatus.REVIEW_NOT_FOUND));
+                    .orElseThrow(() -> new ReviewHandler(ErrorStatus.EVENT_REVIEW_NOT_FOUND));
             if (transactionRepository.existsByPoint_UserAndEventReview(user, review)) {
                 throw new TransactionHandler(ErrorStatus.PURCHASE_ALREADY_EXISTS);
             }
@@ -179,7 +179,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         }
         // 장소 리뷰인 경우
         PlaceReview review = placeReviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ReviewHandler(ErrorStatus.REVIEW_NOT_FOUND));
+                .orElseThrow(() -> new ReviewHandler(ErrorStatus.PLACE_REVIEW_NOT_FOUND));
         if (transactionRepository.existsByPoint_UserAndPlaceReview(user, review)) {
             throw new TransactionHandler(ErrorStatus.PURCHASE_ALREADY_EXISTS);
         }
@@ -199,12 +199,12 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
             throw new TransactionHandler(ErrorStatus.PURCHASE_INSUFFICIENT_POINTS);
         }
         // 글쓴이와 구매자가 다른지 확인
-        if(Objects.equals(user.getId(), seller.getId())) {
+        if (Objects.equals(user.getId(), seller.getId())) {
             throw new TransactionHandler(ErrorStatus.PURCHASE_SELF_CONTENT);
         }
 
         Point sellerPoint = pointRepository.findTopByUserOrderByCreatedAtDesc(seller);
-        if(sellerPoint == null) {
+        if (sellerPoint == null) {
             sellerPoint = new Point(0L, LocalDateTime.now(), PaymentStatus.PAID, seller);
         }
 
