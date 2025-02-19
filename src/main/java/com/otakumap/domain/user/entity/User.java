@@ -101,4 +101,6 @@ public class User extends BaseEntity {
     public void updateEmail(String email) {
         this.email = email;
     }
+
+    public void updatePassword(String password) { this.password = password; }
 }

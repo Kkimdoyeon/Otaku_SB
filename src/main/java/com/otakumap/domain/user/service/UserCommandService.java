@@ -11,4 +11,5 @@ public interface UserCommandService {
     void resetPassword(UserRequestDTO.ResetPasswordDTO request);
     String updateProfileImage(User user, MultipartFile file);
     void changeEmail(User user, UserRequestDTO.ChangeEmailDTO request);
+    void changePassword(User user, UserRequestDTO.ChangePasswordDTO request);
 }
