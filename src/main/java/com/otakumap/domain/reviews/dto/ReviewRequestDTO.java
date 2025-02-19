@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+import java.beans.Visibility;
 import java.util.List;
 
 public class ReviewRequestDTO {
@@ -22,6 +23,9 @@ public class ReviewRequestDTO {
 
         @NotNull(message = "애니메이션 id를 입력해주세요.")
         private Long animeId;
+
+        @NotBlank
+        private Visibility visibility;
 
         @Size(min = 1, message = "루트 아이템은 최소 1개 이상 필요합니다.")
         private List<RouteDTO> routeItems;
@@ -43,5 +47,9 @@ public class ReviewRequestDTO {
 
         @NotNull(message = "order를 입력해주세요.")
         private Integer order;
+    }
+
+    public enum Visibility {
+        PUBLIC, PURCHASERS_ONLY
     }
 }
