@@ -1,4 +1,4 @@
-package com.otakumap.domain.event_reaction.entity;
+package com.otakumap.domain.event_short_review_reaction.entity;
 
 import com.otakumap.domain.event_short_review.entity.EventShortReview;
 import com.otakumap.domain.user.entity.User;
@@ -13,8 +13,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "event_reaction", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "event_short_review_id"})})
-public class EventReaction extends BaseEntity {
+@Table(name = "event_short_review_reaction", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "event_short_review_id"})})
+public class EventShortReviewReaction extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
