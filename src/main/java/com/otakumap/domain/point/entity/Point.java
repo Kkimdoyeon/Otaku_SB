@@ -55,7 +55,7 @@ public class Point extends BaseEntity {
     private List<Transaction> transactionList = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_payment_id", nullable = false)
+    @JoinColumn(name = "user_payment_id", nullable = true)
     private UserPayment userPayment;
 
     public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user, UserPayment userPayment) {
@@ -66,4 +66,7 @@ public class Point extends BaseEntity {
         this.userPayment = userPayment; // userPayment 필드를 추가로 설정
     }
 
+    public void setUserPayment(UserPayment userPayment) {
+        this.userPayment = userPayment;
+    }
 }
