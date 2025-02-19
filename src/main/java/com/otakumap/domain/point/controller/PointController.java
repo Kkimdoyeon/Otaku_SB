@@ -26,12 +26,11 @@ public class PointController {
 
     @Operation(summary = "포인트 충전", description = "사용자가 포인트를 충전합니다.")
     @PostMapping("/charge")
-    public ResponseEntity<String> processOrder(@RequestBody OrderDto orderDto,
-                                               @CurrentUser User user) {
+    public ApiResponse<String> processOrder(@RequestBody OrderDto orderDto, @CurrentUser User user) {
         // 구매한 후기 정보를 로그에 출력
         log.info("Received orders: {}", orderDto.toString());
         // 성공적으로 받아들였다는 응답 반환
-        return ResponseEntity.ok(paymentCommandService.saveOrder(orderDto, user));
+        return ApiResponse.onSuccess(paymentCommandService.saveOrder(orderDto, user) );
     }
 
     @Operation(summary = "포인트 충전 내역 확인", description = "포인트 충전 내역을 확인합니다. page는 1부터 시작합니다.")
