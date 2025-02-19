@@ -8,6 +8,7 @@ import com.otakumap.domain.event_review.repository.EventReviewRepository;
 import com.otakumap.domain.mapping.QEventAnimation;
 import com.otakumap.domain.mapping.QPlaceAnimation;
 import com.otakumap.domain.mapping.QPlaceReviewPlace;
+import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.place.entity.QPlace;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.place_review.entity.QPlaceReview;
@@ -34,6 +35,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -202,6 +204,15 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         }
 
         Point sellerPoint = pointRepository.findTopByUserOrderByCreatedAtDesc(seller);
+        if(sellerPoint == null) {
+            sellerPoint = new Point(0L, LocalDateTime.now(), PaymentStatus.PAID, seller);
+        }
+
+        // 포인트 수정 후 업데이트
+        sellerPoint.addPoint(price);
+        Long remainingPoints = buyerPoint.subPoint(price);
+        pointRepository.save(sellerPoint);
+        pointRepository.save(buyerPoint);
 
         int priceInt = Math.toIntExact(price);
         // 거래 내역 저장(사용한 것과 번 것)
@@ -212,12 +223,6 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
             transactionRepository.save(new Transaction(buyerPoint, TransactionType.USAGE, priceInt, null, (PlaceReview) review));
             transactionRepository.save(new Transaction(sellerPoint, TransactionType.EARNING, priceInt, null, (PlaceReview) review));
         }
-
-        // 포인트 수정 후 업데이트
-        sellerPoint.addPoint(price);
-        Long remainingPoints = buyerPoint.subPoint(price);
-        pointRepository.save(sellerPoint);
-        pointRepository.save(buyerPoint);
         return ReviewResponseDTO.PurchaseReviewDTO.builder()
                 .remainingPoints(remainingPoints)
                 .build();

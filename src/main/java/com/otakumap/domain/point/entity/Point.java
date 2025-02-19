@@ -46,7 +46,7 @@ public class Point extends BaseEntity {
     private String chargedBy;
 
     // 주문 ID
-    @Column(name = "merchant_uid", unique = true, nullable = false)
+    @Column(name = "merchant_uid")
     private String merchantUid;
 
     // Iamport 결제 고유 ID
@@ -59,6 +59,13 @@ public class Point extends BaseEntity {
 
     @OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
+
+    public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user) {
+        this.point = point;
+        this.chargedAt = chargedAt;
+        this.status = status;
+        this.user = user;
+    }
 
     public Point(User user, String merchantUid, Long point) {
         this.user = user;
