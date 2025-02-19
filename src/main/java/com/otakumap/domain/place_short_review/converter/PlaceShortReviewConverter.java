@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class PlaceShortReviewConverter {
     public static PlaceShortReviewResponseDTO.PlaceShortReviewUserDTO placeShortReviewUserDTO(User user) {
         return PlaceShortReviewResponseDTO.PlaceShortReviewUserDTO.builder()
-                .userId(user.getUserId())
+                .userId(user.getId())
                 .nickname(user.getNickname())
                 .profileImage(user.getProfileImage().getFileUrl())
                 .build();

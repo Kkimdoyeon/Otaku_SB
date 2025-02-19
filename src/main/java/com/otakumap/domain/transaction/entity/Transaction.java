@@ -27,7 +27,8 @@ public class Transaction extends BaseEntity {
     @JoinColumn(name = "point_id", referencedColumnName = "id", nullable = false)
     private Point point;
 
-    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(10)")
     private TransactionType type;
 
     @Column(name = "amount", nullable = false)
