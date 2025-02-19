@@ -18,6 +18,8 @@ public class RouteLikeRequestDTO {
 
     @Getter
     public static class SaveCustomRouteLikeDTO {
+        @NotBlank(message = "기존 루트 이름 입력은 필수입니다.")
+        private Long originalRouteId;
         @NotBlank(message = "루트 이름 입력은 필수입니다.")
         String name;
         @NotEmpty(message = "루트 아이템 입력은 필수입니다.")

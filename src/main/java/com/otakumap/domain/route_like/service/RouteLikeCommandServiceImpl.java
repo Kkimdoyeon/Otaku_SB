@@ -93,7 +93,18 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
                     return RouteItemConverter.toRouteItem(routeItem.getItemOrder(), place);
                 }).toList();
 
+        // 기존 루트 정보 가져오기
+        Route existingRoute = routeRepository.findById(request.getOriginalRouteId())
+                .orElseThrow(() -> new RouteHandler(ErrorStatus.ROUTE_NOT_FOUND));
+
         Route route = RouteConverter.toRoute(request.getName(), routeItems);
+
+        // 기존 루트의 리뷰 타입을 확인하여 새로운 루트에 연결
+        if (existingRoute.getPlaceReview() != null) {
+            route.setPlaceReview(existingRoute.getPlaceReview()); // 기존 PlaceReview 연결
+        } else if (existingRoute.getEventReview() != null) {
+            route.setEventReview(existingRoute.getEventReview()); // 기존 EventReview 연결
+        }
 
         routeRepository.save(route);
         return routeLikeRepository.save(RouteLikeConverter.toRouteLike(user, route));
