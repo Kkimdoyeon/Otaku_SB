@@ -22,6 +22,7 @@ import com.otakumap.domain.transaction.entity.Transaction;
 import com.otakumap.domain.transaction.enums.TransactionType;
 import com.otakumap.domain.transaction.repository.TransactionRepository;
 import com.otakumap.domain.user.entity.User;
+import com.otakumap.domain.user.repository.UserRepository;
 import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.ReviewHandler;
 import com.otakumap.global.apiPayload.exception.handler.SearchHandler;
@@ -52,6 +53,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     private final PointRepository pointRepository;
     private final PlaceReviewRepository placeReviewRepository;
     private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Page<ReviewResponseDTO.SearchedReviewPreViewDTO> getReviewsByKeyword(String keyword, int page, int size, String sort) {
@@ -223,6 +225,9 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
             transactionRepository.save(new Transaction(buyerPoint, TransactionType.USAGE, priceInt, null, (PlaceReview) review));
             transactionRepository.save(new Transaction(sellerPoint, TransactionType.EARNING, priceInt, null, (PlaceReview) review));
         }
+        // 판매자 후원금 내역에 판매 금액만큼 추가하여 저장
+        seller.addEarnings(priceInt);
+        userRepository.save(seller);
         return ReviewResponseDTO.PurchaseReviewDTO.builder()
                 .remainingPoints(remainingPoints)
                 .build();
