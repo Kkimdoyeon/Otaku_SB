@@ -63,11 +63,6 @@ public class Point extends BaseEntity {
         this.status = status;
         this.user = user;
     }
-
-    public Point(User user, String merchantUid, Long point) {
-        this.user = user;
-        this.merchantUid = merchantUid;
-    }
       
     public Point(Long point, LocalDateTime chargedAt, PaymentStatus status, User user, UserPayment userPayment) {
         this.point = point;
