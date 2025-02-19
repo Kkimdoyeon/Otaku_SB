@@ -19,6 +19,7 @@ public class EventReactionConverter {
     public static EventReaction toLike(User user, EventShortReview eventShortReview, boolean isLiked) {
         return EventReaction.builder()
                 .user(user)
+                .eventShortReview(eventShortReview)
                 .isLiked(isLiked)
                 .build();
     }
