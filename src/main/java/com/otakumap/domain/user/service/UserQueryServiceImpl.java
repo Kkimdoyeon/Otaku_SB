@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -59,6 +60,11 @@ public class UserQueryServiceImpl implements UserQueryService {
         eventReviews.forEach(review -> reviews.add(
                 UserConverter.reviewDTO(review, getImageUrl(review))
         ));
+
+        // 리뷰가 없는 경우 빈 페이지 반환
+        if (reviews.isEmpty()) {
+            return new PageImpl<>(Collections.emptyList(), PageRequest.of(page - 1, 3, sortOrder), 0);
+        }
 
         // sort 파라미터에 따른 정렬
         if ("views".equals(sort)) {
