@@ -84,4 +84,12 @@ public class ReviewResponseDTO {
     public static class PurchaseReviewDTO {
         private Long remainingPoints;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class IsPurchasedReviewDTO {
+        private Boolean isPurchased;
+    }
 }

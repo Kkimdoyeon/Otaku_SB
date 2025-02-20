@@ -232,4 +232,13 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .remainingPoints(remainingPoints)
                 .build();
     }
+
+    @Override
+    public Boolean getIsPurchasedReview(User user, Long reviewId, ReviewType type) {
+        if(type == ReviewType.EVENT) {
+            return transactionRepository.existsByPoint_UserAndEventReview(user, eventReviewRepository.getById(reviewId));
+        } else {
+            return transactionRepository.existsByPoint_UserAndPlaceReview(user, placeReviewRepository.getById(reviewId));
+        }
+    }
 }

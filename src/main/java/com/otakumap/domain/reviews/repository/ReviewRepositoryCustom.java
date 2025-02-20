@@ -9,4 +9,5 @@ public interface ReviewRepositoryCustom {
     Page<ReviewResponseDTO.SearchedReviewPreViewDTO> getReviewsByKeyword(String keyword, int page, int size, String sort);
     ReviewResponseDTO.Top7ReviewPreViewListDTO getTop7Reviews();
     ReviewResponseDTO.PurchaseReviewDTO purchaseReview(User user, Long reviewId, ReviewType type);
+    Boolean getIsPurchasedReview(User user, Long reviewId, ReviewType type);
 }
