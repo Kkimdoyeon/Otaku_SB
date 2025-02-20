@@ -1,6 +1,5 @@
 package com.otakumap.domain.user.service;
 
-import com.otakumap.domain.auth.service.MailService;
 import com.otakumap.domain.image.entity.Image;
 import com.otakumap.domain.image.service.ImageCommandService;
 import com.otakumap.domain.user.dto.UserRequestDTO;
@@ -10,7 +9,6 @@ import com.otakumap.global.apiPayload.code.status.ErrorStatus;
 import com.otakumap.global.apiPayload.exception.handler.AuthHandler;
 import com.otakumap.global.apiPayload.exception.handler.UserHandler;
 import com.otakumap.global.util.EmailUtil;
-import com.otakumap.global.util.RedisUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +22,6 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final EmailUtil emailUtil;
     private final PasswordEncoder passwordEncoder;
     private final ImageCommandService imageCommandService;
-    private final MailService mailService;
-    private final RedisUtil redisUtil;
 
     @Override
     @Transactional

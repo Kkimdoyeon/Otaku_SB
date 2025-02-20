@@ -70,8 +70,4 @@ public class Point extends BaseEntity {
     public void setPoint(Long totalPoint) {
         this.point = totalPoint;
     }
-
-    public void setChargedAt(LocalDateTime now) {
-        this.chargedAt = now;
-    }
 }
