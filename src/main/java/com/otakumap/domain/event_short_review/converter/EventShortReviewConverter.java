@@ -35,6 +35,7 @@ public class EventShortReviewConverter {
     public static EventShortReviewResponseDTO.EventShortReviewDTO toEventShortReviewDTO(EventShortReview eventShortReview) {
         return EventShortReviewResponseDTO.EventShortReviewDTO.builder()
                 .id(eventShortReview.getId())
+                .user(EventShortReviewConverter.toEventShortReviewUserDTO(eventShortReview.getUser()))
                 .content(eventShortReview.getContent())
                 .rating(eventShortReview.getRating())
                 .profileImage(ImageConverter.toImageDTO(eventShortReview.getUser().getProfileImage()))
@@ -50,5 +51,13 @@ public class EventShortReviewConverter {
                 .currentPage(reviewList.getNumber())
                 .totalPages(reviewList.getTotalPages())
                 .build();
+    }
+
+    public static EventShortReviewResponseDTO.EventShortReviewUserDTO toEventShortReviewUserDTO(User user) {
+      return EventShortReviewResponseDTO.EventShortReviewUserDTO.builder()
+              .userId(user.getId())
+              .nickname(user.getNickname())
+              .profileImage(user.getProfileImage().getFileUrl())
+              .build();
     }
 }
