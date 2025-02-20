@@ -54,11 +54,11 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Integer donation;
 
-    @ColumnDefault("true")
+    @ColumnDefault("1")
     @Column(nullable = false)
     private Boolean isCommunityActivityNotified;
 
-    @ColumnDefault("true")
+    @ColumnDefault("1")
     @Column(nullable = false)
     private Boolean isEventBenefitsNotified;
 
