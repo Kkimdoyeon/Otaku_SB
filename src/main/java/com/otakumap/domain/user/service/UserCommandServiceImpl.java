@@ -58,7 +58,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         if (request.getNotificationType() != 1 && request.getNotificationType() != 2) {
             throw new UserHandler(ErrorStatus.INVALID_NOTIFICATION_TYPE);
         }
-        user.setNotification(request.getNotificationType(), request.isEnabled());
+        user.setNotification(request.getNotificationType(), request.getIsEnabled());
         userRepository.save(user);
     }
 

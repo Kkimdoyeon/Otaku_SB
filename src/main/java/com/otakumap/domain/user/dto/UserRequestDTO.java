@@ -31,7 +31,7 @@ public class UserRequestDTO {
         private Integer notificationType;
 
         @NotNull
-        private boolean isEnabled;
+        private Boolean isEnabled;
     }
 
     @Getter
