@@ -95,6 +95,7 @@ public class ReviewConverter {
                 .title(placeReview.getTitle())
                 .view(placeReview.getView())
                 .content(placeReview.getContent())
+                .price(placeReview.getPrice())
                 .reviewImages(placeReview.getImages().stream()
                         .filter(Objects::nonNull)
                         .map(ImageConverter::toImageDTO)
