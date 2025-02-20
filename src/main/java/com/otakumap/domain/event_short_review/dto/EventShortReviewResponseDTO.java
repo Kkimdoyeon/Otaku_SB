@@ -40,9 +40,20 @@ public class EventShortReviewResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class EventShortReviewDTO {
-        Long id;
-        String content;
-        Float rating;
-        ImageResponseDTO.ImageDTO profileImage;
+        private Long id;
+        private EventShortReviewUserDTO user;
+        private String content;
+        private Float rating;
+        private ImageResponseDTO.ImageDTO profileImage;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EventShortReviewUserDTO {
+        private Long userId;
+        private String nickname;
+        private String profileImage;
     }
 }
