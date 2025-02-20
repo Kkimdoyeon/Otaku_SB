@@ -42,7 +42,5 @@ public class EventReviewConverter {
                 .isFirst(eventReviewList.isFirst())
                 .isLast(eventReviewList.isLast())
                 .build();
-
-
     }
 }

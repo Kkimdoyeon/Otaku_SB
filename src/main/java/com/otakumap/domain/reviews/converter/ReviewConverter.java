@@ -144,9 +144,10 @@ public class ReviewConverter {
                 .build();
 
         // route를 리스트에 추가
-        eventReview.getRoutes().add(route);
+        route.setEventReview(eventReview);
         return eventReview;
     }
+
 
     public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, Route route, Long price) {
         PlaceReview placeReview = PlaceReview.builder()
@@ -158,7 +159,7 @@ public class ReviewConverter {
                 .build();
 
         // route를 리스트에 추가
-        placeReview.getRoutes().add(route);
+        route.setPlaceReview(placeReview);
         return placeReview;
     }
 
