@@ -25,9 +25,6 @@ public class PointController {
     @Operation(summary = "포인트 충전", description = "사용자가 포인트를 충전합니다.")
     @PostMapping("/charge")
     public ApiResponse<String> processOrder(@RequestBody PointResponseDTO.PointSaveResponseDTO pointResponseDTO, @CurrentUser User user) {
-        // 구매한 후기 정보를 로그에 출력
-        //log.info("Received orders: {}", pointResponseDTO.toString());
-        // 성공적으로 받아들였다는 응답 반환
         return ApiResponse.onSuccess(paymentCommandService.savePoint(pointResponseDTO, user));
     }
 

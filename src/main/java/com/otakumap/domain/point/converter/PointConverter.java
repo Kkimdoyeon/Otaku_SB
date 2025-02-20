@@ -1,9 +1,7 @@
 package com.otakumap.domain.point.converter;
 
-import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.point.dto.PointResponseDTO;
 import com.otakumap.domain.point.entity.Point;
-import com.otakumap.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
