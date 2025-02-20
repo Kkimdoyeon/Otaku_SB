@@ -1,6 +1,5 @@
 package com.otakumap.domain.point.service;
 
-import com.otakumap.domain.point.converter.PointConverter;
 import com.otakumap.domain.point.dto.PointResponseDTO;
 import com.otakumap.domain.point.entity.Point;
 import com.otakumap.domain.point.repository.PointRepository;
@@ -22,6 +21,9 @@ public class PointQueryserviceImpl implements PointQueryservice {
 
     @Override
     public PointResponseDTO.CurrentPointDTO getCurrentPoint(User user) {
-        return PointConverter.toCurrentPointDTO(pointRepository.findTopByUserOrderByChargedAtDesc(user));
+        return PointResponseDTO.CurrentPointDTO.builder()
+                .userId(user.getUserId())
+                .point(user.getTotalPoint()) // 유저 테이블의 totalPoint 값을 반환
+                .build();
     }
 }
