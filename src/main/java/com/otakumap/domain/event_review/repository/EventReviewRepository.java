@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface EventReviewRepository extends JpaRepository<EventReview, Long> {
@@ -20,7 +19,6 @@ public interface EventReviewRepository extends JpaRepository<EventReview, Long> 
     Optional<User> findUserByRouteId(@Param("routeId") Long routeId);
     @Query("SELECT er.user FROM EventReview er WHERE er.id = :reviewId")
     User findUserById(@Param("reviewId") Long reviewId);
-    List<EventReview> findByIdAndIsWrittenTrue(Long reviewId);
     Page<EventReview> findAllByEventAndIsWrittenTrue(Event event, Pageable pageable);
     List<EventReview> findAllByUserId(Long userId);
     void deleteAllByUserId(Long userId);

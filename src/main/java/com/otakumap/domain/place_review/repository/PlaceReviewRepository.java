@@ -22,7 +22,6 @@ public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long>,
     Optional<User> findUserByRouteId(@Param("routeId") Long routeId);
     @Query("SELECT pr.user FROM PlaceReview pr WHERE pr.id = :reviewId")
     User findUserById(@Param("reviewId") Long reviewId);
-    List<PlaceReview> findByIdAndIsWrittenTrue(Long reviewId);
     @Query("SELECT pr FROM PlaceReview pr " +
             "JOIN PlaceReviewPlace prp ON prp.placeReview = pr " +
             "WHERE prp.place = :place AND pr.isWritten = true")
