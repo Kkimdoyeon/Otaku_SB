@@ -114,4 +114,17 @@ public class User extends BaseEntity {
     public void updateTotalPoint(Long newTotalPoint) {
         this.totalPoint = newTotalPoint;
     }
+
+    public boolean isAffordable(Long point) {
+        return this.totalPoint >= point;
+    }
+
+    public Long subPoint(Long point) {
+        this.totalPoint -= point;
+        return this.totalPoint;
+    }
+    public void addPoint(Long point) {
+        this.totalPoint += point;
+    }
+
 }

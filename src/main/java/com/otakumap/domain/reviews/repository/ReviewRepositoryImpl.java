@@ -197,7 +197,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
             throw new TransactionHandler(ErrorStatus.PURCHASE_FREE_CONTENT);
         }
         // 포인트 부족 확인
-        if (!buyerPoint.isAffordable(price)) {
+        if (!user.isAffordable(price)) {
             throw new TransactionHandler(ErrorStatus.PURCHASE_INSUFFICIENT_POINTS);
         }
         // 글쓴이와 구매자가 다른지 확인
@@ -211,10 +211,10 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         }
 
         // 포인트 수정 후 업데이트
-        sellerPoint.addPoint(price);
-        Long remainingPoints = buyerPoint.subPoint(price);
-        pointRepository.save(sellerPoint);
-        pointRepository.save(buyerPoint);
+        seller.addPoint(price);
+        Long remainingPoints = user.subPoint(price);
+        userRepository.save(seller);
+        userRepository.save(user);
 
         int priceInt = Math.toIntExact(price);
         // 거래 내역 저장(사용한 것과 번 것)
