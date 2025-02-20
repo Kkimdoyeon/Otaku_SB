@@ -55,8 +55,7 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
 
         // 작성자에게 알림 전송
         int likeCount = routeLikeRepository.countByRoute(route);
-        if (likeCount <= 10 ||
-                (likeCount <= 50 && likeCount % 10 == 0) ||
+        if ((likeCount >= 10 && likeCount <= 50 && likeCount % 10 == 0) ||
                 (likeCount <= 100 && likeCount % 50 == 0) ||
                 (likeCount % 100 == 0)) {
 
