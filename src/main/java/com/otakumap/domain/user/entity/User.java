@@ -70,6 +70,11 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(10) DEFAULT 'USER'", nullable = false)
     private Role role;
 
+    // 현재 유저가 보유한 총 포인트
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Long totalPoint = 0L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
     private Image profileImage;
@@ -104,5 +109,17 @@ public class User extends BaseEntity {
 
     public void addEarnings(int price) {
         this.donation += price;
+    }
+
+    public void addPoint(Long point) {
+        this.totalPoint += point;
+    }
+
+    public boolean subPoint(Long point) {
+        if (this.totalPoint >= point) {
+            this.totalPoint -= point;
+            return true;
+        }
+        return false;
     }
 }
