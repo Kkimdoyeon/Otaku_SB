@@ -1,5 +1,6 @@
 package com.otakumap.domain.place_review.repository;
 
+import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -22,4 +23,8 @@ public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long>,
     @Query("SELECT pr.user FROM PlaceReview pr WHERE pr.id = :reviewId")
     User findUserById(@Param("reviewId") Long reviewId);
     List<PlaceReview> findByIdAndIsWrittenTrue(Long reviewId);
+    @Query("SELECT pr FROM PlaceReview pr " +
+            "JOIN PlaceReviewPlace prp ON prp.placeReview = pr " +
+            "WHERE prp.place = :place AND pr.isWritten = true")
+    List<PlaceReview> findByPlaceAndIsWrittenTrue(@Param("place") Place place);
 }

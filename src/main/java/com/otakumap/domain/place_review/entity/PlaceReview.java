@@ -70,4 +70,7 @@ public class PlaceReview extends BaseEntity {
         this.isWritten = b;
     }
 
+    public boolean getIsWritten() {
+        return this.isWritten;
+    }
 }

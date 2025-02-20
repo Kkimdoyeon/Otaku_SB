@@ -51,6 +51,7 @@ public class PlaceReviewQueryServiceImpl implements PlaceReviewQueryService {
         List<PlaceReview> allReviews = placeReviewPlaces.stream()
                 .map(prp -> placeReviewRepository.findById(prp.getPlaceReview().getId()))
                 .flatMap(Optional::stream)
+                .filter(PlaceReview::getIsWritten) // isWritten이 true인 것만 필터링
                 .distinct()
                 .toList();
 
