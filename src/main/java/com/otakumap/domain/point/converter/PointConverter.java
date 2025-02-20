@@ -1,6 +1,5 @@
 package com.otakumap.domain.point.converter;
 
-import com.otakumap.domain.order.dto.OrderDto;
 import com.otakumap.domain.payment.enums.PaymentStatus;
 import com.otakumap.domain.point.dto.PointResponseDTO;
 import com.otakumap.domain.point.entity.Point;
@@ -37,14 +36,6 @@ public class PointConverter {
         return PointResponseDTO.CurrentPointDTO.builder()
                 .userId(point.getUser().getUserId())
                 .point(point.getPoint())
-                .build();
-    }
-
-    public static Point savePoint(OrderDto orderDto, User user) {
-        return Point.builder()
-                .point(orderDto.getPrice())
-                .status(PaymentStatus.PAID)
-                .user(user)
                 .build();
     }
 }

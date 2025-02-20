@@ -32,9 +32,17 @@ public class Point extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // 충전된 포인트 금액
+    // 결제 금액
     @Column(nullable = false)
     private Long point;
+
+    // 아임포트 결제 고유번호 (imp_uid)
+    @Column(nullable = false, unique = true)
+    private String impUid;
+
+    // 주문 고유번호 (merchant_uid)
+    @Column(nullable = false, unique = true)
+    private String merchantUid;
 
     // 충전된 시간
     @Column(name = "charged_at", nullable = false, updatable = true)
