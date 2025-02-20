@@ -1,6 +1,7 @@
 package com.otakumap.domain.user.converter;
 
 import com.otakumap.domain.auth.dto.*;
+import com.otakumap.domain.event_review.entity.EventReview;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.user.dto.UserResponseDTO;
 import com.otakumap.domain.user.entity.User;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserConverter {
     public static User toUser(AuthRequestDTO.SignupDTO request) {
@@ -107,20 +107,32 @@ public class UserConverter {
                 .build();
     }
 
-    public static UserResponseDTO.UserReviewDTO reviewDTO(PlaceReview review) {
+    public static UserResponseDTO.UserReviewDTO reviewDTO(PlaceReview review, String imageUrl) {
         return UserResponseDTO.UserReviewDTO.builder()
                 .reviewId(review.getId())
+                .reviewType("place")
                 .title(review.getTitle())
                 .content(review.getContent())
-                .thumbnail(review.getImages().get(0) == null ? null : review.getImages().get(0).getFileUrl()) // 이미지 여러 개면 수정 -> 나중에 수정 필요!
+                .thumbnail(imageUrl)
                 .views(review.getView())
                 .createdAt(review.getCreatedAt().toLocalDate())
                 .build();
     }
 
-    public static UserResponseDTO.UserReviewListDTO reviewListDTO(Page<PlaceReview> reviews) {
-        List<UserResponseDTO.UserReviewDTO> userReviewDTOS = reviews.stream()
-                .map(UserConverter::reviewDTO).collect(Collectors.toList());
+    public static UserResponseDTO.UserReviewDTO reviewDTO(EventReview review, String imageUrl) {
+        return UserResponseDTO.UserReviewDTO.builder()
+                .reviewId(review.getId())
+                .reviewType("event")
+                .title(review.getTitle())
+                .content(review.getContent())
+                .thumbnail(imageUrl)
+                .views(review.getView())
+                .createdAt(review.getCreatedAt().toLocalDate())
+                .build();
+    }
+
+    public static UserResponseDTO.UserReviewListDTO reviewListDTO(Page<UserResponseDTO.UserReviewDTO> reviews) {
+        List<UserResponseDTO.UserReviewDTO> userReviewDTOS = reviews.getContent();
 
         return UserResponseDTO.UserReviewListDTO.builder()
                 .reviews(userReviewDTOS)

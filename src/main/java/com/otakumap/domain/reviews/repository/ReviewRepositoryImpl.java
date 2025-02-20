@@ -167,7 +167,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     @Override
     public ReviewResponseDTO.PurchaseReviewDTO purchaseReview(User user, Long reviewId, ReviewType type) {
-        Point buyerPoint = pointRepository.findTopByUserOrderByCreatedAtDesc(user);
+        Point buyerPoint = pointRepository.findTopByUserOrderByChargedAtDesc(user);
         // 이벤트 리뷰인 경우
         if(type == ReviewType.EVENT) {
             EventReview review = eventReviewRepository.findById(reviewId)
@@ -205,7 +205,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
             throw new TransactionHandler(ErrorStatus.PURCHASE_SELF_CONTENT);
         }
 
-        Point sellerPoint = pointRepository.findTopByUserOrderByCreatedAtDesc(seller);
+        Point sellerPoint = pointRepository.findTopByUserOrderByChargedAtDesc(seller);
         if (sellerPoint == null) {
             sellerPoint = new Point(0L, LocalDateTime.now(), PaymentStatus.PAID, seller);
         }

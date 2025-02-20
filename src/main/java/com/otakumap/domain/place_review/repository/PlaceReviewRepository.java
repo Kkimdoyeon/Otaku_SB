@@ -14,7 +14,7 @@ import java.util.Optional;
 
 
 public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long>, PlaceReviewRepositoryCustom {
-    Page<PlaceReview> findAllByUserId(Long userId, PageRequest pageRequest);
+    List<PlaceReview> findAllByUserId(Long userId);
     void deleteAllByUserId(Long userId);
     @Query("SELECT pr FROM PlaceReview pr JOIN pr.routes r WHERE r.id = :routeId")
     Optional<PlaceReview> findByRouteId(@Param("routeId") Long routeId);

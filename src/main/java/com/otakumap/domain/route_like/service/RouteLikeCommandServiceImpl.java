@@ -53,8 +53,7 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
 
         // 작성자에게 알림 전송
         int likeCount = routeLikeRepository.countByRoute(route);
-        if (likeCount <= 10 ||
-                (likeCount <= 50 && likeCount % 10 == 0) ||
+        if ((likeCount >= 10 && likeCount <= 50 && likeCount % 10 == 0) ||
                 (likeCount <= 100 && likeCount % 50 == 0) ||
                 (likeCount % 100 == 0)) {
 
@@ -123,7 +122,7 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
                     routeItem.setItemOrder(requestItem.getItemOrder());
                 }
 
-                Place place = placeRepository.findById(routeItem.getPlace().getId()).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
+                Place place = placeRepository.findById(requestItem.getPlaceId()).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
 
                 RouteItem updatedRouteItem = RouteItemConverter.toRouteItem(routeItem.getItemOrder(), place);
                 updatedRouteItem.setRoute(route);

@@ -133,12 +133,14 @@ public class ReviewConverter {
                 .build();
     }
 
-    public static EventReview toEventReview(ReviewRequestDTO.CreateDTO request, User user, Route route) {
+
+    public static EventReview toEventReview(ReviewRequestDTO.CreateDTO request, User user, Route route, Long price) {
         EventReview eventReview = EventReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
+                .price(price)
                 .build();
 
         // route를 리스트에 추가
@@ -146,12 +148,13 @@ public class ReviewConverter {
         return eventReview;
     }
 
-    public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, Route route) {
+    public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, Route route, Long price) {
         PlaceReview placeReview = PlaceReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
+                .price(price)
                 .build();
 
         // route를 리스트에 추가

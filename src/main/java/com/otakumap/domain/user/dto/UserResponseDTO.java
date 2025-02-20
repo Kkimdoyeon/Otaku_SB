@@ -41,6 +41,7 @@ public class UserResponseDTO {
     @AllArgsConstructor
     public static class UserReviewDTO {
         private Long reviewId;
+        private String reviewType;
         private String title;
         private String content;
         private String thumbnail;

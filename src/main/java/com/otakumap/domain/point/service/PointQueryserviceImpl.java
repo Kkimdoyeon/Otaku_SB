@@ -22,6 +22,6 @@ public class PointQueryserviceImpl implements PointQueryservice {
 
     @Override
     public PointResponseDTO.CurrentPointDTO getCurrentPoint(User user) {
-        return PointConverter.toCurrentPointDTO(pointRepository.findTopByUserOrderByCreatedAtDesc(user));
+        return PointConverter.toCurrentPointDTO(pointRepository.findTopByUserOrderByChargedAtDesc(user));
     }
 }
