@@ -111,15 +111,7 @@ public class User extends BaseEntity {
         this.donation += price;
     }
 
-    public void addPoint(Long point) {
-        this.totalPoint += point;
-    }
-
-    public boolean subPoint(Long point) {
-        if (this.totalPoint >= point) {
-            this.totalPoint -= point;
-            return true;
-        }
-        return false;
+    public void updateTotalPoint(Long newTotalPoint) {
+        this.totalPoint = newTotalPoint;
     }
 }

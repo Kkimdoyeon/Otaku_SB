@@ -60,6 +60,8 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
      */
     public String savePoint(PointResponseDTO.PointSaveResponseDTO pointResponseDTO, User user){
         try {
+            // 유저의 총 포인트 업데이트
+            user.updateTotalPoint(user.getTotalPoint() + pointResponseDTO.getPoint());
             pointRepository.save(pointResponseDTO.toEntity(user));
             return "주문 정보가 성공적으로 저장되었습니다.";
         } catch (Exception e) {
