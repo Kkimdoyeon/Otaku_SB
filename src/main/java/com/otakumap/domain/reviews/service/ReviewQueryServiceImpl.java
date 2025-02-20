@@ -37,15 +37,13 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     @Override
     public ReviewResponseDTO.ReviewDetailDTO getReviewDetail(Long reviewId, ReviewType type) {
-        if(type == ReviewType.EVENT) {
+        if (type == ReviewType.EVENT) {
             EventReview eventReview = eventReviewRepository.findById(reviewId)
                     .orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_REVIEW_NOT_FOUND));
-
             return ReviewConverter.toEventReviewDetailDTO(eventReview);
         } else if (type == ReviewType.PLACE) {
             PlaceReview placeReview = placeReviewRepository.findById(reviewId)
                     .orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_REVIEW_NOT_FOUND));
-
             return ReviewConverter.toPlaceReviewDetailDTO(placeReview);
         } else {
             throw new ReviewHandler(ErrorStatus.INVALID_REVIEW_TYPE);

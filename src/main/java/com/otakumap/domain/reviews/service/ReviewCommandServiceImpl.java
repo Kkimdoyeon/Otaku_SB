@@ -107,6 +107,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             // 먼저 PlaceReview를 저장
             PlaceReview placeReview = ReviewConverter.toPlaceReview(request, user, route, price);
             placeReview.setAnimation(animation);
+            placeReview.setIsWritten(true);
             placeReview = placeReviewRepository.save(placeReview);
 
             // placeReviewPlace를 저장(placeReview에 해당하는 routeItem의 place 저장)
@@ -125,6 +126,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             // 먼저 EventReview를 저장
             EventReview eventReview = ReviewConverter.toEventReview(request, user, route, price);
             eventReview.setAnimation(animation);
+            eventReview.setIsWritten(true);
             eventReview = eventReviewRepository.save(eventReview);
 
             // eventReviewPlaces 저장(eventReview에 해당하는 routeItem의 place 저장)

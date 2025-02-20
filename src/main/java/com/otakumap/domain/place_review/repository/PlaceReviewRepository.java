@@ -1,5 +1,6 @@
 package com.otakumap.domain.place_review.repository;
 
+import com.otakumap.domain.place.entity.Place;
 import com.otakumap.domain.place_review.entity.PlaceReview;
 import com.otakumap.domain.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -15,9 +16,14 @@ import java.util.Optional;
 public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long>, PlaceReviewRepositoryCustom {
     List<PlaceReview> findAllByUserId(Long userId);
     void deleteAllByUserId(Long userId);
-    Optional<PlaceReview> findByRouteId(Long routeId);
-    @Query("SELECT pr.user FROM PlaceReview pr WHERE pr.route.id = :routeId")
+    @Query("SELECT pr FROM PlaceReview pr JOIN pr.routes r WHERE r.id = :routeId")
+    Optional<PlaceReview> findByRouteId(@Param("routeId") Long routeId);
+    @Query("SELECT r.placeReview.user FROM Route r WHERE r.id = :routeId")
     Optional<User> findUserByRouteId(@Param("routeId") Long routeId);
     @Query("SELECT pr.user FROM PlaceReview pr WHERE pr.id = :reviewId")
     User findUserById(@Param("reviewId") Long reviewId);
+    @Query("SELECT pr FROM PlaceReview pr " +
+            "JOIN PlaceReviewPlace prp ON prp.placeReview = pr " +
+            "WHERE prp.place = :place AND pr.isWritten = true")
+    List<PlaceReview> findByPlaceAndIsWrittenTrue(@Param("place") Place place);
 }

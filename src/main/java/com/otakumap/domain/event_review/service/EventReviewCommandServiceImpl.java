@@ -21,8 +21,11 @@ public class EventReviewCommandServiceImpl implements EventReviewCommandService 
 
     @Override
     public Page<EventReview> getEventReviews(Long eventId, Integer page) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_NOT_FOUND));
-        return eventReviewRepository.findAllByEvent(event, PageRequest.of(page, 4));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventHandler(ErrorStatus.EVENT_NOT_FOUND));
+
+        // isWritten이 true인 EventReview만 조회
+        return eventReviewRepository.findAllByEventAndIsWrittenTrue(event, PageRequest.of(page, 4));
     }
 
     @Override

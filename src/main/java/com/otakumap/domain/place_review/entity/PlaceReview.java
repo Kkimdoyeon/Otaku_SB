@@ -39,6 +39,9 @@ public class PlaceReview extends BaseEntity {
     @Column(columnDefinition = "bigint default 0 not null")
     private Long price;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isWritten = false; // 후기 작성 여부를 추적하는 boolean 필드
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "placeReview", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
@@ -53,15 +56,21 @@ public class PlaceReview extends BaseEntity {
     @JoinColumn(name = "animation_id")
     private Animation animation;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_id", referencedColumnName = "id")
-    private Route route;
+    @OneToMany(mappedBy = "placeReview", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Route> routes = new ArrayList<>();
 
     @OneToMany(mappedBy = "placeReview", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
 
-
     public void setPlaceList(List<PlaceReviewPlace> placeList) { this.placeList = placeList; }
 
     public void setAnimation(Animation animation) { this.animation = animation; }
+
+    public void setIsWritten(boolean b) {
+        this.isWritten = b;
+    }
+
+    public boolean getIsWritten() {
+        return this.isWritten;
+    }
 }

@@ -42,6 +42,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 명소 후기 관련 에러
     PLACE_REVIEW_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLACE4005", "존재하지 않는 명소 후기입니다."),
+    MULTIPLE_WRITTEN_PLACE_REVIEWS_FOUND(HttpStatus.BAD_REQUEST, "PLACE4006", "고유한 명소 후기가 조회되지 않습니다."),
 
     // 이벤트 좋아요 관련 에러
     EVENT_LIKE_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4001", "저장되지 않은 이벤트입니다."),
@@ -52,6 +53,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 이벤트 후기 관련 에러
     EVENT_REVIEW_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4003", "존재하지 않는 이벤트 후기입니다."),
+    MULTIPLE_WRITTEN_EVENT_REVIEWS_FOUND(HttpStatus.BAD_REQUEST, "EVENT4009", "고유한 이벤트 후기가 조회되지 않습니다."),
 
     // 이벤트 카테고리별 검색 관련 에러
     EVENT_CONDITION_NOT_FOUND(HttpStatus.BAD_REQUEST, "EVENT4004", "이벤트 검색 조건이 존재하지 않습니다."),

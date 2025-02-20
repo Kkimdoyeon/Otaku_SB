@@ -102,7 +102,7 @@ public class ReviewConverter {
                 .userName(placeReview.getUser().getName())
                 .profileImage(ImageConverter.toImageDTO(placeReview.getUser().getProfileImage()))
                 .createdAt(placeReview.getCreatedAt())
-                .route(RouteConverter.toRouteDTO(placeReview.getRoute()))
+                .route(placeReview.getRoutes().isEmpty() ? null : RouteConverter.toRouteDTO(placeReview.getRoutes().get(0)))
                 .build();
     }
 
@@ -121,7 +121,7 @@ public class ReviewConverter {
                 .userName(eventReview.getUser().getName())
                 .profileImage(ImageConverter.toImageDTO(eventReview.getUser().getProfileImage()))
                 .createdAt(eventReview.getCreatedAt())
-                .route(RouteConverter.toRouteDTO(eventReview.getRoute()))
+                .route(eventReview.getRoutes().isEmpty() ? null : RouteConverter.toRouteDTO(eventReview.getRoutes().get(0)))
                 .build();
     }
 
@@ -133,26 +133,34 @@ public class ReviewConverter {
                 .build();
     }
 
+
     public static EventReview toEventReview(ReviewRequestDTO.CreateDTO request, User user, Route route, Long price) {
-        return EventReview.builder()
+        EventReview eventReview = EventReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
-                .route(route)
                 .price(price)
                 .build();
+
+        // route를 리스트에 추가
+        route.setEventReview(eventReview);
+        return eventReview;
     }
 
+
     public static PlaceReview toPlaceReview(ReviewRequestDTO.CreateDTO request, User user, Route route, Long price) {
-        return PlaceReview.builder()
+        PlaceReview placeReview = PlaceReview.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .view(0L)
                 .user(user)
-                .route(route)
                 .price(price)
                 .build();
+
+        // route를 리스트에 추가
+        route.setPlaceReview(placeReview);
+        return placeReview;
     }
 
     public static List<PlaceReviewPlace> toPlaceReviewPlaceList(List<Place> places, PlaceReview placeReview) {

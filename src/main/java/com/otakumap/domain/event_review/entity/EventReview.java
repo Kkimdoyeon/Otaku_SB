@@ -40,6 +40,9 @@ public class EventReview extends BaseEntity {
     @Column(columnDefinition = "bigint default 0 not null")
     private Long price;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isWritten = false; // 후기 작성 여부를 추적하는 boolean 필드
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventReview")
     private List<Image> images = new ArrayList<>();
 
@@ -58,14 +61,17 @@ public class EventReview extends BaseEntity {
     @JoinColumn(name = "animation_id")
     private Animation animation;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_id", referencedColumnName = "id")
-    private Route route;
-
     @OneToMany(mappedBy = "eventReview", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "eventReview", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Route> routes = new ArrayList<>();
 
     public void setPlaceList(List<EventReviewPlace> placeList) { this.placeList = placeList; }
 
     public void setAnimation(Animation animation) { this.animation = animation; }
+
+    public void setIsWritten(boolean b) {
+        this.isWritten = b;
+    }
 }
