@@ -198,4 +198,10 @@ public class ReviewConverter {
                 .animation(animation)
                 .build();
     }
+
+    public static ReviewResponseDTO.IsPurchasedReviewDTO toIsPurchasedReviewDTO(Boolean isPurchased) {
+        return ReviewResponseDTO.IsPurchasedReviewDTO.builder()
+                .isPurchased(isPurchased)
+                .build();
+    }
 }

@@ -53,8 +53,6 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     @Override
     public ReviewResponseDTO.IsPurchasedReviewDTO getIsPurchasedReview(User user, Long reviewId, ReviewType type) {
-        return ReviewResponseDTO.IsPurchasedReviewDTO.builder()
-                .isPurchased(reviewRepositoryCustom.getIsPurchasedReview(user, reviewId, type))
-                .build();
+        return ReviewConverter.toIsPurchasedReviewDTO(reviewRepositoryCustom.getIsPurchasedReview(user, reviewId, type));
     }
 }
