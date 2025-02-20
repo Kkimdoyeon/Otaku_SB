@@ -61,14 +61,10 @@ public class EventReview extends BaseEntity {
     @JoinColumn(name = "animation_id")
     private Animation animation;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "route_id", referencedColumnName = "id")
-    private Route route;
-
     @OneToMany(mappedBy = "eventReview", cascade = CascadeType.ALL)
     private List<Transaction> transactionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "placeReview", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "eventReview", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Route> routes = new ArrayList<>();
 
     public void setPlaceList(List<EventReviewPlace> placeList) { this.placeList = placeList; }
