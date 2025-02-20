@@ -2,6 +2,7 @@ package com.otakumap.domain.reviews.service;
 
 import com.otakumap.domain.reviews.dto.ReviewResponseDTO;
 import com.otakumap.domain.reviews.enums.ReviewType;
+import com.otakumap.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 
 public interface ReviewQueryService {
@@ -11,4 +12,5 @@ public interface ReviewQueryService {
 
     ReviewResponseDTO.Top7ReviewPreViewListDTO getTop7Reviews();
 
+    ReviewResponseDTO.IsPurchasedReviewDTO getIsPurchasedReview(User user, Long reviewId, ReviewType type);
 }

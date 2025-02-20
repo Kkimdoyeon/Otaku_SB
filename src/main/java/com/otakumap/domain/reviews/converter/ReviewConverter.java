@@ -95,6 +95,7 @@ public class ReviewConverter {
                 .title(placeReview.getTitle())
                 .view(placeReview.getView())
                 .content(placeReview.getContent())
+                .price(placeReview.getPrice())
                 .reviewImages(placeReview.getImages().stream()
                         .filter(Objects::nonNull)
                         .map(ImageConverter::toImageDTO)
@@ -195,6 +196,12 @@ public class ReviewConverter {
         return PlaceAnimation.builder()
                 .place(place)
                 .animation(animation)
+                .build();
+    }
+
+    public static ReviewResponseDTO.IsPurchasedReviewDTO toIsPurchasedReviewDTO(Boolean isPurchased) {
+        return ReviewResponseDTO.IsPurchasedReviewDTO.builder()
+                .isPurchased(isPurchased)
                 .build();
     }
 }
