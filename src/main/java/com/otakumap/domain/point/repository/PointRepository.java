@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface PointRepository extends JpaRepository<Point, Long> {
     Page<Point> findAllByUser(User user, PageRequest pageRequest);
-    Point findTopByUserOrderByCreatedAtDesc(User user);
+    Point findTopByUserOrderByChargedAtDesc(User user);
     List<Point> findByUserId(Long id);
 }
