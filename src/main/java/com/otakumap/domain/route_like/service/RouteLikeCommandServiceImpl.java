@@ -113,7 +113,7 @@ public class RouteLikeCommandServiceImpl implements RouteLikeCommandService {
                     routeItem.setItemOrder(requestItem.getItemOrder());
                 }
 
-                Place place = placeRepository.findById(routeItem.getPlace().getId()).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
+                Place place = placeRepository.findById(requestItem.getPlaceId()).orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
 
                 RouteItem updatedRouteItem = RouteItemConverter.toRouteItem(routeItem.getItemOrder(), place);
                 updatedRouteItem.setRoute(route);
