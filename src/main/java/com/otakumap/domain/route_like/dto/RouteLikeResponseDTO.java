@@ -1,5 +1,6 @@
 package com.otakumap.domain.route_like.dto;
 
+import com.otakumap.domain.reviews.enums.ReviewType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +45,7 @@ public class RouteLikeResponseDTO {
         Long id; // RoutelikeId
         Long routeId;
         String name;
+        ReviewType type;
         Boolean isFavorite;
     }
 

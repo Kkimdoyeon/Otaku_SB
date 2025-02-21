@@ -1,6 +1,6 @@
 package com.otakumap.domain.route_like.converter;
 
-import com.otakumap.domain.event_like.dto.EventLikeResponseDTO;
+import com.otakumap.domain.reviews.enums.ReviewType;
 import com.otakumap.domain.route.entity.Route;
 import com.otakumap.domain.route_like.dto.RouteLikeResponseDTO;
 import com.otakumap.domain.route_like.entity.RouteLike;
@@ -43,6 +43,7 @@ public class RouteLikeConverter {
         return RouteLikeResponseDTO.RouteLikePreViewDTO.builder()
                 .id(routeLike.getId())
                 .routeId(routeLike.getRoute().getId())
+                .type(routeLike.getRoute().getEventReview() == null ? ReviewType.PLACE : ReviewType.EVENT)
                 .name(routeLike.getRoute().getName())
                 .isFavorite(routeLike.getIsFavorite())
                 .build();
