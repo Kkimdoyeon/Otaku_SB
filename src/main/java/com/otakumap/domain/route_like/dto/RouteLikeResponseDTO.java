@@ -45,6 +45,7 @@ public class RouteLikeResponseDTO {
         Long id; // RoutelikeId
         Long routeId;
         String name;
+        Long reviewId;
         ReviewType type;
         Boolean isFavorite;
     }

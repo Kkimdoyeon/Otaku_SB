@@ -60,7 +60,7 @@ public class RouteLikeQueryServiceImpl implements RouteLikeQueryService {
         }
         List<RouteLikeResponseDTO.RouteLikePreViewDTO> list = routeLikes
                 .stream()
-                .map(RouteLikeConverter::routeLikePreViewDTO)
+                .map(routeLike -> RouteLikeConverter.routeLikePreViewDTO(routeLike, routeLike.getRoute()))
                 .collect(Collectors.toList());
 
         return RouteLikeConverter.routeLikePreViewListDTO(list, hasNext, lastId);

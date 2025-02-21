@@ -39,12 +39,13 @@ public class RouteLikeConverter {
                 .build();
     }
 
-    public static RouteLikeResponseDTO.RouteLikePreViewDTO routeLikePreViewDTO(RouteLike routeLike) {
+    public static RouteLikeResponseDTO.RouteLikePreViewDTO routeLikePreViewDTO(RouteLike routeLike, Route route) {
         return RouteLikeResponseDTO.RouteLikePreViewDTO.builder()
                 .id(routeLike.getId())
-                .routeId(routeLike.getRoute().getId())
-                .type(routeLike.getRoute().getEventReview() == null ? ReviewType.PLACE : ReviewType.EVENT)
-                .name(routeLike.getRoute().getName())
+                .routeId(route.getId())
+                .reviewId(route.getEventReview() == null ? route.getPlaceReview().getId() : route.getEventReview().getId())
+                .type(route.getEventReview() == null ? ReviewType.PLACE : ReviewType.EVENT)
+                .name(route.getName())
                 .isFavorite(routeLike.getIsFavorite())
                 .build();
     }
