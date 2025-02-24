@@ -60,7 +60,7 @@ public class ReviewResponseDTO {
         Long price;
         List<ImageResponseDTO.ImageDTO> reviewImages;
 
-        String userName;
+        String nickname;
         ImageResponseDTO.ImageDTO profileImage;
         LocalDateTime createdAt;
 
