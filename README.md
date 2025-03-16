@@ -56,7 +56,6 @@
     ![image](https://github.com/user-attachments/assets/5febfce8-3a75-4f48-bf4a-041aa63102af)
 
 # 🚀 ERD 설계 
-[ERD CLOUD LINK](https://www.erdcloud.com/d/MwZcX6wiZhNaoBwKN)
 ![image](https://github.com/user-attachments/assets/f06a596b-ce2a-4677-9f43-a56952e14fde)
 
 # 📂 구조
