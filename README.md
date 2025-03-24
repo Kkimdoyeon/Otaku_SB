@@ -57,6 +57,7 @@
 
 # 🔗 시연 영상
 https://drive.google.com/file/d/1IfbdOJDErCObPUY8XY0WAlSqjj-Y19aO/view?usp=sharing
+
 영상 타임라인
 <details>
   <summary>회원가입 및 로그인</summary>
