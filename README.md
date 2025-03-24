@@ -57,10 +57,7 @@
 
 # 🔗 시연 영상
 https://drive.google.com/file/d/1C8YBbJ5OJNF5h2ewsXaPC5WRU7IwS9um/view?usp=sharing
-
-
-# 🚀 ERD 설계 
-![image](https://github.com/user-attachments/assets/f06a596b-ce2a-4677-9f43-a56952e14fde)
+- 영상 타임라인
 <details>
   <summary>회원가입 및 로그인</summary>
 
@@ -135,7 +132,8 @@ https://drive.google.com/file/d/1C8YBbJ5OJNF5h2ewsXaPC5WRU7IwS9um/view?usp=shari
 
 </details>
 
-
+# 🚀 ERD 설계 
+![image](https://github.com/user-attachments/assets/f06a596b-ce2a-4677-9f43-a56952e14fde)
 
 # 📂 구조
   - 도메인별로 테이블을 나누었고 도메인마다 필요한 `controller`, `service`, `repository`, `enums`, `converter`, `dto` 적절히 사용
