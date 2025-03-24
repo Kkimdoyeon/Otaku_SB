@@ -56,8 +56,8 @@
     ![image](https://github.com/user-attachments/assets/5febfce8-3a75-4f48-bf4a-041aa63102af)
 
 # 🔗 시연 영상
-https://drive.google.com/file/d/1C8YBbJ5OJNF5h2ewsXaPC5WRU7IwS9um/view?usp=sharing
-- 영상 타임라인
+[https://drive.google.com/file/d/1IfbdOJDErCObPUY8XY0WAlSqjj-Y19aO/view](https://drive.google.com/file/d/1IfbdOJDErCObPUY8XY0WAlSqjj-Y19aO/view?usp=sharing)
+영상 타임라인
 <details>
   <summary>회원가입 및 로그인</summary>
 
